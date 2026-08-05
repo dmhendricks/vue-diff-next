@@ -23,6 +23,21 @@ updates:
       - dependency-name: '@speed-highlight/core'
         update-types: [version-update:semver-major]
 
+      # TypeScript majors are blocked on the dev toolchain, not on this library:
+      #
+      #   - typescript-eslint refuses to load, with "does not support TS 7.0".
+      #     Its peer range is >=4.8.4 <6.1.0 and 8.66.0 is already its latest, so
+      #     there is no version to upgrade into.
+      #   - vue-tsc fails with ERR_PACKAGE_PATH_NOT_EXPORTED, because TS 7 gained
+      #     an exports map that hides the typescript/lib/tsc it resolves
+      #     internally. Its own peer range (>=5.0.0) does not reflect that.
+      #
+      # Neither tool ships to consumers, and nothing in src/ is implicated — so
+      # this is purely "wait for upstream". Remove this entry once typescript-eslint
+      # supports TS 7; minor and patch updates still come through.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+
   - package-ecosystem: github-actions
     directory: /
     schedule:

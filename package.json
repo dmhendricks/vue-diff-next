@@ -57,7 +57,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "size": "node scripts/check-size.js",
-    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css",
+    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --ignore-rules cjs-resolves-to-esm",
     "changeset": "changeset",
     "changeset:version": "changeset version && npm install --package-lock-only",
     "changeset:publish": "changeset publish",

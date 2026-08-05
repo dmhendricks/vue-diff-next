@@ -58,14 +58,18 @@ jobs:
 
   # A matrix job kept separate from the gate job: it re-runs only the parts whose
   # result can vary by Node version, and does not duplicate lint/format/packaging.
+  #
+  # Node 20 is absent deliberately: jsdom 30 requires
+  # ^22.22.2 || ^24.15.0 || >=26.0.0, so the test environment cannot run there
+  # even though the library itself can. The `floor` job below covers it.
   test-matrix:
     name: Test on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        # Oldest supported (see `engines.node`), current LTS, and current.
-        node: [20.19.0, 22, 24]
+        # Current LTS and current.
+        node: [22, 24]
     steps:
       - uses: actions/checkout@v7
 
@@ -79,3 +83,26 @@ jobs:
       - run: npm run test
 
       - run: npm run build
+
+  # Guards the `engines.node` floor. The published library is ESM with no Node
+  # APIs, so what matters is that it builds and packages correctly on the oldest
+  # version consumers are told they can use. Tests are excluded because the dev
+  # toolchain, not the library, is what requires newer Node.
+  floor:
+    name: Build on oldest supported Node
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          # Pinned exactly, not `20`: this is the version `engines.node` claims,
+          # so testing "latest 20.x" would let the claim rot unnoticed.
+          node-version: 20.19.0
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - run: npm run check:exports

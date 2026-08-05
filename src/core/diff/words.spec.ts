@@ -77,3 +77,42 @@ describe('diffWords', () => {
         }
     });
 });
+
+describe('whitespace between changed words', () => {
+    it('marks interior gaps so a rewritten phrase highlights as one run', () => {
+        // diffWordsWithSpace emits whitespace as its own unchanged token, which
+        // rendered as stripes: words tinted, the spaces between them bare.
+        const segments = diffWords(
+            '  const results = [];',
+            '  // Parallel now: the sequential loop was the bottleneck.',
+        );
+
+        const modified = segments.filter((s) => s.modified);
+        expect(modified).toHaveLength(1);
+        expect(modified[0]!.value).toBe('// Parallel now: the sequential loop was the bottleneck.');
+    });
+
+    it('leaves leading indentation unmarked', () => {
+        // Indentation is not what changed, so highlighting it would misreport.
+        const segments = diffWords('    old value', '    new value');
+        expect(segments[0]).toEqual({ value: '    ', modified: false });
+    });
+
+    it('leaves trailing whitespace unmarked', () => {
+        const segments = diffWords('old   ', 'new   ');
+        expect(segments[segments.length - 1]!.modified).toBe(false);
+    });
+
+    it('does not widen a single-word change to its neighbours', () => {
+        const segments = diffWords('the quick brown fox', 'the quick red fox');
+        const modified = segments.filter((s) => s.modified);
+        expect(modified).toHaveLength(1);
+        expect(modified[0]!.value).toBe('red');
+    });
+
+    it('still reconstructs current exactly', () => {
+        const current = '  // a  b   c changed entirely here';
+        const segments = diffWords('  const x = 1;', current);
+        expect(segments.map((s) => s.value).join('')).toBe(current);
+    });
+});

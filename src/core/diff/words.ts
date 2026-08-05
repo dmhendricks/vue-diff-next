@@ -45,5 +45,47 @@ export function diffWords(prev: string, current: string): WordSegment[] {
         segments.push({ value: part.value, modified });
     }
 
-    return segments;
+    return bridgeWhitespace(segments);
+}
+
+/**
+ * Mark whitespace that sits between two changed runs as changed too.
+ *
+ * `diffWordsWithSpace` emits whitespace as its own unchanged token, so a rewritten
+ * phrase comes back as alternating changed words and unchanged gaps. Highlighted
+ * literally that renders as stripes — the words tinted, the spaces between them
+ * bare — which reads as though the spaces were somehow retained from the old text.
+ *
+ * The original had no such artefact because diff-match-patch works at character
+ * level and `diff_cleanupSemantic` coalesces neighbouring edits into whole runs.
+ * Bridging here reproduces that without giving up word-level granularity.
+ *
+ * Only interior gaps are bridged. Whitespace at either end of the line stays
+ * unchanged, so leading indentation is never highlighted just because the code
+ * after it changed.
+ */
+function bridgeWhitespace(segments: WordSegment[]): WordSegment[] {
+    const bridged: WordSegment[] = [];
+
+    for (let index = 0; index < segments.length; index++) {
+        const segment = segments[index]!;
+
+        const isInteriorGap =
+            !segment.modified &&
+            segment.value.trim() === '' &&
+            segments[index - 1]?.modified === true &&
+            segments[index + 1]?.modified === true;
+
+        const last = bridged[bridged.length - 1];
+        const modified = isInteriorGap ? true : segment.modified;
+
+        if (last && last.modified === modified) {
+            last.value += segment.value;
+            continue;
+        }
+
+        bridged.push({ value: segment.value, modified });
+    }
+
+    return bridged;
 }

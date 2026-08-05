@@ -12,4 +12,21 @@
 
     --vue-diff-added-word-bg: #9be9a8;
     --vue-diff-removed-word-bg: #ffb4b0;
+
+    // Syntax tokens, tuned to read against the diff row backgrounds above
+    // rather than against a plain editor background.
+    --vue-diff-syn-kwd: #af00db;
+    --vue-diff-syn-str: #a31515;
+    --vue-diff-syn-num: #098658;
+    --vue-diff-syn-bool: #0000ff;
+    --vue-diff-syn-cmnt: #008000;
+    --vue-diff-syn-func: #795e26;
+    --vue-diff-syn-class: #267f99;
+    --vue-diff-syn-var: #001080;
+    --vue-diff-syn-type: #267f99;
+    --vue-diff-syn-oper: #24292f;
+    --vue-diff-syn-section: #0000ff;
+    --vue-diff-syn-insert: #098658;
+    --vue-diff-syn-deleted: #b31d28;
+    --vue-diff-syn-err: #b31d28;
 }

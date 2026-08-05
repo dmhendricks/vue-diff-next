@@ -1,12 +1,10 @@
 // Entry point. Order matters: variables declare the surface, base consumes it,
-// modes adjust layout, themes supply values.
+// themes supply values.
 //
 // There is deliberately no _custom.scss. `theme="custom*"` lands on the wrapper
 // as `vue-diff-theme-<value>` and ships zero bytes of CSS — the consumer styles
 // it, overriding the custom properties declared in _variables.scss.
 @use 'variables';
 @use 'base';
-@use 'mode-split';
-@use 'mode-unified';
 @use 'themes/dark';
 @use 'themes/light';

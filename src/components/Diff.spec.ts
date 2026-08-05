@@ -70,16 +70,16 @@ describe('Diff', () => {
     });
 
     describe('wrap (the one additive prop)', () => {
-        it('is off by default', async () => {
+        it('wraps by default, matching the original which always wrapped', async () => {
             const wrapper = mount(Diff, { props: { prev: PREV, current: CURRENT } });
             await settle();
-            expect(wrapper.find('.vue-diff-wrap').exists()).toBe(false);
+            expect(wrapper.find('.vue-diff-nowrap').exists()).toBe(false);
         });
 
-        it('adds the wrap class when enabled', async () => {
-            const wrapper = mount(Diff, { props: { wrap: true, prev: PREV, current: CURRENT } });
+        it('marks the opt-out when wrap is false', async () => {
+            const wrapper = mount(Diff, { props: { wrap: false, prev: PREV, current: CURRENT } });
             await settle();
-            expect(wrapper.find('.vue-diff-wrap').exists()).toBe(true);
+            expect(wrapper.find('.vue-diff-nowrap').exists()).toBe(true);
         });
     });
 

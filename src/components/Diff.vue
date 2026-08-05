@@ -43,7 +43,11 @@ const props = withDefaults(
         inputDelay?: number;
         /** `true` uses the original's defaults; an object overrides any subset. */
         virtualScroll?: boolean | Partial<VirtualScroll>;
-        /** Soft-wrap long lines. Not in the original. */
+        /**
+         * Soft-wrap long lines. Not in the original, which always wrapped —
+         * hence the default of `true`. Setting `false` lets lines scroll
+         * horizontally instead.
+         */
         wrap?: boolean;
     }>(),
     {
@@ -55,7 +59,7 @@ const props = withDefaults(
         folding: false,
         inputDelay: 0,
         virtualScroll: false,
-        wrap: false,
+        wrap: true,
     },
 );
 
@@ -74,7 +78,9 @@ const scrollOptions = computed<false | VirtualScroll>(() => {
 const wrapperClass = computed(() => [
     `vue-diff-mode-${props.mode}`,
     `vue-diff-theme-${props.theme}`,
-    { 'vue-diff-wrap': props.wrap },
+    // Wrapping is the default (and the original's only behaviour), so the class
+    // marks the opt-out rather than the opt-in.
+    { 'vue-diff-nowrap': !props.wrap },
 ]);
 
 // Normalize null-ish text once, here, so the core never sees it.

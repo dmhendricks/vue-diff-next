@@ -12,29 +12,42 @@
 }
 
 .vue-diff-viewer-inner {
-    display: grid;
     position: relative;
 }
 
+// Flex with explicit widths, matching the original. A grid does not work here:
+// each side must be exactly half the container so long lines wrap *within* their
+// own column instead of pushing the other side out of view.
 .vue-diff-row {
-    display: grid;
-    // Overridden per mode.
-    grid-template-columns: var(--vue-diff-gutter-width) minmax(0, 1fr);
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+
+    > div {
+        padding: 0 0.5em;
+        box-sizing: border-box;
+    }
 }
 
 .vue-diff-line-num {
+    flex: 0 0 auto;
+    width: var(--vue-diff-gutter-width);
+    padding-top: 0.05em;
+    text-align: right;
     background: var(--vue-diff-gutter-bg);
     color: var(--vue-diff-gutter-fg);
-    padding: 0 0.5rem;
-    text-align: right;
+    font-size: 0.9em;
     user-select: none;
-    // Numbers should not stretch when a wrapped line grows.
-    align-self: stretch;
 }
 
 .vue-diff-line {
+    width: calc(100% - var(--vue-diff-gutter-width));
     min-width: 0;
-    padding: 0 0.5rem;
+}
+
+// Split mode: two gutter+code pairs, each pair taking half the width.
+.vue-diff-mode-split .vue-diff-line {
+    width: calc(50% - var(--vue-diff-gutter-width));
 }
 
 .vue-diff-code {
@@ -43,17 +56,20 @@
     padding: 0;
 }
 
-// pre/code preserve whitespace without wrapping by default.
+// Wrap by default, as the original does: a long line must not overflow its
+// column and hide the other side.
 .vue-diff-line pre {
     margin: 0;
-    white-space: pre;
-    overflow: visible;
-}
-
-// The `wrap` prop: opt-in soft wrapping. The original had no equivalent.
-.vue-diff-wrap .vue-diff-line pre {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
+}
+
+// `wrap: false` opts out, letting long lines scroll horizontally instead. The
+// original had no such control and always wrapped, so the default above matches
+// it and this is purely additive.
+.vue-diff-nowrap .vue-diff-line pre {
+    white-space: pre;
+    overflow-wrap: normal;
 }
 
 .vue-diff-line-added {
@@ -76,6 +92,26 @@
     background: var(--vue-diff-removed-gutter-bg);
 }
 
+// Change markers, as the original renders them: a +/- ahead of the code, so a
+// diff stays readable in monochrome. Applied to the <pre> rather than the flex
+// child, since a pseudo-element on the latter becomes its own flex line and
+// doubles the row height.
+.vue-diff-line-added pre::before,
+.vue-diff-line-removed pre::before {
+    display: inline-block;
+    width: 1em;
+    user-select: none;
+    opacity: 0.7;
+}
+
+.vue-diff-line-added pre::before {
+    content: '+';
+}
+
+.vue-diff-line-removed pre::before {
+    content: '-';
+}
+
 // Word-level change, inside a changed line.
 .vue-diff-line-added .vue-diff-modified {
     background: var(--vue-diff-added-word-bg);
@@ -83,4 +119,52 @@
 
 .vue-diff-line-removed .vue-diff-modified {
     background: var(--vue-diff-removed-word-bg);
+}
+
+// Syntax tokens. Class names are @speed-highlight's, so its own theme
+// stylesheets remain drop-in alternatives for anyone who wants one.
+.vue-diff-code {
+    .shj-syn-kwd {
+        color: var(--vue-diff-syn-kwd);
+    }
+    .shj-syn-str {
+        color: var(--vue-diff-syn-str);
+    }
+    .shj-syn-num {
+        color: var(--vue-diff-syn-num);
+    }
+    .shj-syn-bool {
+        color: var(--vue-diff-syn-bool);
+    }
+    .shj-syn-cmnt {
+        color: var(--vue-diff-syn-cmnt);
+        font-style: italic;
+    }
+    .shj-syn-func {
+        color: var(--vue-diff-syn-func);
+    }
+    .shj-syn-class {
+        color: var(--vue-diff-syn-class);
+    }
+    .shj-syn-var {
+        color: var(--vue-diff-syn-var);
+    }
+    .shj-syn-type {
+        color: var(--vue-diff-syn-type);
+    }
+    .shj-syn-oper {
+        color: var(--vue-diff-syn-oper);
+    }
+    .shj-syn-section {
+        color: var(--vue-diff-syn-section);
+    }
+    .shj-syn-insert {
+        color: var(--vue-diff-syn-insert);
+    }
+    .shj-syn-deleted {
+        color: var(--vue-diff-syn-deleted);
+    }
+    .shj-syn-err {
+        color: var(--vue-diff-syn-err);
+    }
 }

@@ -1,6 +1,0 @@
-// Split: gutter + code, twice across.
-.vue-diff-mode-split .vue-diff-row {
-    grid-template-columns:
-        var(--vue-diff-gutter-width) minmax(0, 1fr)
-        var(--vue-diff-gutter-width) minmax(0, 1fr);
-}

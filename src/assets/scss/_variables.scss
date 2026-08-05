@@ -4,7 +4,7 @@
     --vue-diff-font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --vue-diff-font-size: 13px;
     --vue-diff-line-height: 1.5;
-    --vue-diff-gutter-width: 3rem;
+    --vue-diff-gutter-width: 50px;
 
     --vue-diff-bg: transparent;
     --vue-diff-fg: inherit;
@@ -20,4 +20,22 @@
     // Word-level change highlight, brighter than the row background.
     --vue-diff-added-word-bg: transparent;
     --vue-diff-removed-word-bg: transparent;
+
+    // Syntax token colours. Declared here rather than pulling in one of
+    // @speed-highlight's theme stylesheets, so `custom*` themes can restyle
+    // tokens through the same custom-property surface as everything else.
+    --vue-diff-syn-kwd: inherit;
+    --vue-diff-syn-str: inherit;
+    --vue-diff-syn-num: inherit;
+    --vue-diff-syn-bool: inherit;
+    --vue-diff-syn-cmnt: inherit;
+    --vue-diff-syn-func: inherit;
+    --vue-diff-syn-class: inherit;
+    --vue-diff-syn-var: inherit;
+    --vue-diff-syn-type: inherit;
+    --vue-diff-syn-oper: inherit;
+    --vue-diff-syn-section: inherit;
+    --vue-diff-syn-insert: inherit;
+    --vue-diff-syn-deleted: inherit;
+    --vue-diff-syn-err: inherit;
 }

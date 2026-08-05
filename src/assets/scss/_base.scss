@@ -139,11 +139,16 @@
     content: none;
 }
 
+// Muted by opacity over currentColor rather than a fixed colour, for the same
+// reason as the dots: it composites over whatever the fold background is. Its own
+// variable because a line of text at the dots' 0.5 is harder to read than five
+// bullets are.
 .vue-diff-fold-hunk {
     display: block;
     padding-left: 0.5em;
     text-align: left;
-    color: var(--vue-diff-fold-fg);
+    color: currentColor;
+    opacity: var(--vue-diff-fold-hunk-opacity);
     font-size: 0.95em;
     white-space: pre;
 }

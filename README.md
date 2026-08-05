@@ -185,7 +185,7 @@ Available properties: `--vue-diff-{bg,fg,font-family,font-size,line-height,gutte
 `--vue-diff-{added,removed,disabled}-bg`,
 `--vue-diff-{added,removed}-gutter-bg`,
 `--vue-diff-{added,removed}-word-bg`,
-`--vue-diff-fold-{bg,fg}`, `--vue-diff-fold-dot-{size,spacing,opacity}`, and
+`--vue-diff-fold-{bg,fg}`, `--vue-diff-fold-dot-{size,spacing,opacity}`, `--vue-diff-fold-hunk-opacity`, and
 `--vue-diff-syn-{kwd,str,num,bool,cmnt,func,class,var,type,oper,section,insert,deleted,err}`.
 
 ## Size

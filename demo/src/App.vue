@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Diff } from '../../src';
 import type { FoldMarker, Mode, Theme } from '../../src/types';
-import { MODES, THEMES, samples } from './samples';
+import { MODES, THEMES, groups, samples } from './samples';
 
 const sampleKey = ref(samples[0]!.key);
 const mode = ref<Mode>('split');
@@ -36,9 +36,11 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
             <label>
                 Sample
                 <select v-model="sampleKey">
-                    <option v-for="s in samples" :key="s.key" :value="s.key">
-                        {{ s.title }}
-                    </option>
+                    <optgroup v-for="g in groups" :key="g.name" :label="g.name">
+                        <option v-for="s in g.samples" :key="s.key" :value="s.key">
+                            {{ s.title }}
+                        </option>
+                    </optgroup>
                 </select>
             </label>
 

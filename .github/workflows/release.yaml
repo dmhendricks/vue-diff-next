@@ -1,0 +1,70 @@
+name: Release
+
+## NOT YET ACTIVE.
+#
+# `0.1.0` has not been published, and npm trusted publishing cannot be configured
+# on a package that does not exist yet. Publish once by hand, set up OIDC, then
+# uncomment the `push` trigger — see RELEASING.md, "One-time setup".
+#
+# Until then only `workflow_dispatch` is enabled, so pushes to main don't attempt
+# a publish that would fail to authenticate.
+on:
+  # push:
+  #   branches: [main]
+  workflow_dispatch:
+
+# Two pushes releasing at once would race on the version-bump PR and the
+# registry. Never cancel a run mid-publish.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Version PR or publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # commit the version bump, push tags
+      pull-requests: write # open/update the "Version Packages" PR
+      id-token: write # npm trusted publishing (OIDC) + provenance
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # Changesets needs history to work out what changed since the last tag.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      # Node 22 bundles npm 10.x, but OIDC trusted publishing needs >= 11.5.1.
+      # Without this the publish step fails to authenticate.
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@latest
+
+      - run: npm ci
+
+      # `prepublishOnly` runs `verify` too, but failing here means a red release
+      # job instead of a half-published version.
+      - name: Verify
+        run: npm run verify
+
+      # With changesets pending, this opens/updates a version-bump PR and stops.
+      # When that PR is merged and no changesets remain, it publishes instead.
+      - name: Create version PR or publish
+        uses: changesets/action@v1
+        with:
+          version: npm run changeset:version
+          publish: npm run changeset:publish
+          commit: 'chore: version packages'
+          title: 'chore: version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # No NODE_AUTH_TOKEN: publishing authenticates via OIDC trusted
+          # publishing, configured on the npm package (see RELEASING.md).
+          NPM_CONFIG_PROVENANCE: true

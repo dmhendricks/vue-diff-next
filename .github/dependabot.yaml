@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for the dev toolchain rather than a dozen: these only need CI to
+      # pass, and reviewing them individually is noise.
+      dev-dependencies:
+        dependency-type: development
+        update-types: [minor, patch]
+    ignore:
+      # The two runtime dependencies ship in consumers' bundles, so their
+      # updates get reviewed individually — a major here can change diff output
+      # or drop a grammar.
+      - dependency-name: diff
+        update-types: [version-update:semver-major]
+      - dependency-name: '@speed-highlight/core'
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ['*']

@@ -3,8 +3,9 @@
  * Size budget gate.
  *
  * The central claim of this library is that it ships meaningfully smaller than
- * the retired vue-diff (~29.8 kB gzip for 7 languages). An estimate nobody
- * checks drifts, so CI fails when the budget is exceeded.
+ * the retired vue-diff (~75.6 kB gzip for 7 languages: its own 29.8 kB bundle
+ * plus the 44.5 kB highlight.js core and grammars it depends on at runtime).
+ * An estimate nobody checks drifts, so CI fails when the budget is exceeded.
  *
  * Measures gzip of the built JS + CSS. Vue is external and not counted;
  * @speed-highlight/core IS bundled, so it counts once imported.

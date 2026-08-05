@@ -1,0 +1,68 @@
+name: Deploy demo
+
+## NOT YET ACTIVE.
+#
+# The demo site and `vite.config.demo.ts` do not exist yet, so `npm run build:demo`
+# would fail. Only `workflow_dispatch` is enabled until they land — a push trigger
+# would leave a permanently red build on every commit.
+#
+# To activate: add the demo, set GitHub Pages' source to "GitHub Actions"
+# (see RELEASING.md), then uncomment the `push` trigger below.
+on:
+  # push:
+  #   branches: [main]
+  #   # The demo only changes when the library, the demo source, or the build
+  #   # config does. Skips redeploying for a README typo.
+  #   paths:
+  #     - src/**
+  #     - demo/**
+  #     - vite.config.demo.ts
+  #     - package.json
+  #     - package-lock.json
+  #     - .github/workflows/deploy-demo.yaml
+  workflow_dispatch:
+
+# A newer commit's demo supersedes an in-flight deploy of an older one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build demo
+        run: npm run build:demo
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist-demo
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

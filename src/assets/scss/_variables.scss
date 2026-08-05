@@ -14,6 +14,9 @@
     --vue-diff-added-bg: transparent;
     --vue-diff-removed-bg: transparent;
     --vue-diff-disabled-bg: transparent;
+    /* Width of the +/- marker column, reserved by `pre`'s left padding. */
+    --vue-diff-marker-width: 1.5em;
+
     --vue-diff-fold-bg: transparent;
     --vue-diff-fold-fg: inherit;
     --vue-diff-fold-dot-size: 0.6em;

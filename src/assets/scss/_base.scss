@@ -58,8 +58,15 @@
 
 // Wrap by default, as the original does: a long line must not overflow its
 // column and hide the other side.
+//
+// The left padding reserves a column for the +/- marker, which is positioned into
+// it absolutely. Reserving space rather than letting the marker sit in flow is
+// what keeps a wrapped line's continuation aligned with the code above it instead
+// of under the marker.
 .vue-diff-line pre {
+    position: relative;
     margin: 0;
+    padding-left: var(--vue-diff-marker-width);
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
@@ -153,14 +160,21 @@
     white-space: pre;
 }
 
-// Change markers, as the original renders them: a +/- ahead of the code, so a
-// diff stays readable in monochrome. Applied to the <pre> rather than the flex
-// child, since a pseudo-element on the latter becomes its own flex line and
+// Change markers, as the original renders them: a +/- in its own column, so a
+// diff stays readable in monochrome.
+//
+// Absolutely positioned into the padding `pre` reserves above. In normal flow it
+// would push the text and, worse, wrapped continuation lines would indent under
+// the marker rather than lining up with the code. Applied to `pre` rather than the
+// flex child, since a pseudo-element on the latter becomes its own flex line and
 // doubles the row height.
 .vue-diff-line-added pre::before,
 .vue-diff-line-removed pre::before {
-    display: inline-block;
-    width: 1em;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--vue-diff-marker-width);
+    text-align: center;
     user-select: none;
     opacity: 0.7;
 }

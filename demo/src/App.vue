@@ -19,87 +19,105 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
 </script>
 
 <template>
-    <div class="page" :class="`page-${theme}`">
-        <header class="masthead">
-            <h1>vue-diff-next</h1>
-            <p class="tagline">
-                A modern, lightweight diff viewer for Vue 3 — a successor to
-                <a href="https://github.com/hoiheart/vue-diff">vue-diff</a>.
-            </p>
-            <p class="links">
-                <a href="https://github.com/dmhendricks/vue-diff-next">GitHub</a>
-                <a href="https://www.npmjs.com/package/vue-diff-next">npm</a>
-            </p>
-        </header>
+    <!--
+      The theme control drives the page as well as the viewer, so a dark diff is
+      never framed by light chrome.
+    -->
+    <div class="page" :data-theme="theme">
+        <div class="atmosphere" aria-hidden="true"></div>
 
-        <div class="controls">
-            <label>
-                Sample
-                <select v-model="sampleKey">
-                    <optgroup v-for="g in groups" :key="g.name" :label="g.name">
-                        <option v-for="s in g.samples" :key="s.key" :value="s.key">
-                            {{ s.title }}
-                        </option>
-                    </optgroup>
-                </select>
-            </label>
+        <div class="shell">
+            <header class="masthead">
+                <h1>vue-diff-next</h1>
+                <p class="tagline">
+                    A modern, lightweight diff viewer for Vue 3 — a successor to
+                    <a href="https://github.com/hoiheart/vue-diff">vue-diff</a>.
+                </p>
+                <p class="links">
+                    <a href="https://github.com/dmhendricks/vue-diff-next">GitHub</a>
+                    <a href="https://www.npmjs.com/package/vue-diff-next">npm</a>
+                </p>
+            </header>
 
-            <label>
-                Mode
-                <select v-model="mode">
-                    <option v-for="m in MODES" :key="m" :value="m">{{ m }}</option>
-                </select>
-            </label>
+            <section class="section">
+                <h2>Options</h2>
 
-            <label>
-                Theme
-                <select v-model="theme">
-                    <option v-for="t in THEMES" :key="t" :value="t">{{ t }}</option>
-                </select>
-            </label>
+                <div class="controls">
+                    <label class="field">
+                        <span class="field__label">Sample</span>
+                        <select v-model="sampleKey">
+                            <optgroup v-for="g in groups" :key="g.name" :label="g.name">
+                                <option v-for="s in g.samples" :key="s.key" :value="s.key">
+                                    {{ s.title }}
+                                </option>
+                            </optgroup>
+                        </select>
+                    </label>
 
-            <label>
-                Fold marker
-                <select v-model="foldMarker" :disabled="!effectiveFolding">
-                    <option value="dots">dots</option>
-                    <option value="hunk">hunk</option>
-                </select>
-            </label>
+                    <label class="field">
+                        <span class="field__label">Mode</span>
+                        <select v-model="mode">
+                            <option v-for="m in MODES" :key="m" :value="m">{{ m }}</option>
+                        </select>
+                    </label>
 
-            <div class="switches">
-                <label class="switch">
-                    <input v-model="folding" type="checkbox" role="switch" />
-                    <span class="track"></span>
-                    Folding
-                </label>
+                    <label class="field">
+                        <span class="field__label">Theme</span>
+                        <select v-model="theme">
+                            <option v-for="t in THEMES" :key="t" :value="t">{{ t }}</option>
+                        </select>
+                    </label>
 
-                <label class="switch">
-                    <input v-model="wrap" type="checkbox" role="switch" />
-                    <span class="track"></span>
-                    Wrap
-                </label>
-            </div>
-        </div>
+                    <label class="field">
+                        <span class="field__label">Fold marker</span>
+                        <select v-model="foldMarker" :disabled="!effectiveFolding">
+                            <option value="dots">dots</option>
+                            <option value="hunk">hunk</option>
+                        </select>
+                    </label>
 
-        <div class="viewer">
-            <Diff
-                :key="sample.key"
-                :mode="mode"
-                :theme="theme"
-                :language="sample.language"
-                :prev="sample.prev"
-                :current="sample.current"
-                :folding="effectiveFolding"
-                :fold-marker="foldMarker"
-                :wrap="wrap"
-                :input-delay="sample.inputDelay ?? 0"
-            />
-        </div>
+                    <div class="toggles">
+                        <label class="switch">
+                            <input v-model="folding" type="checkbox" />
+                            <span class="switch__track">
+                                <span class="switch__thumb"></span>
+                            </span>
+                            <span class="switch__label">Folding</span>
+                        </label>
 
-        <section class="usage">
-            <h2>Usage</h2>
-            <pre><code>npm install vue-diff-next</code></pre>
-            <pre><code>&lt;script setup&gt;
+                        <label class="switch">
+                            <input v-model="wrap" type="checkbox" />
+                            <span class="switch__track">
+                                <span class="switch__thumb"></span>
+                            </span>
+                            <span class="switch__label">Wrap</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>{{ sample.title }}</h2>
+                <div class="viewer">
+                    <Diff
+                        :key="sample.key"
+                        :mode="mode"
+                        :theme="theme"
+                        :language="sample.language"
+                        :prev="sample.prev"
+                        :current="sample.current"
+                        :folding="effectiveFolding"
+                        :fold-marker="foldMarker"
+                        :wrap="wrap"
+                        :input-delay="sample.inputDelay ?? 0"
+                    />
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Usage</h2>
+                <pre class="code"><code>npm install vue-diff-next</code></pre>
+                <pre class="code"><code>&lt;script setup&gt;
 import { Diff } from 'vue-diff-next';
 import 'vue-diff-next/style.css';
 &lt;/script&gt;
@@ -113,148 +131,225 @@ import 'vue-diff-next/style.css';
     :current="after"
   /&gt;
 &lt;/template&gt;</code></pre>
-        </section>
+            </section>
+
+            <footer class="footer">
+                <small>
+                    MIT licensed. A from-scratch reimplementation of
+                    <a href="https://github.com/hoiheart/vue-diff">vue-diff</a>, archived in
+                    February 2025.
+                </small>
+            </footer>
+        </div>
     </div>
 </template>
 
 <style>
-:root {
-    color-scheme: light dark;
+/*
+  Design vocabulary borrowed from the style-detective options page: dark-first
+  with coral and green accents, elevated translucent surfaces, and a fixed
+  gradient "atmosphere" behind the content. Full-width rather than that page's
+  narrow container, since a side-by-side diff wants the room.
+*/
+
+.page {
+    --vd-coral: #f87575;
+    --vd-coral-soft: color-mix(in srgb, var(--vd-coral) 22%, transparent);
+    --vd-green: #6a8e46;
+    --vd-green-soft: color-mix(in srgb, var(--vd-green) 18%, transparent);
+    /* Section headings. Separate from --vd-green so light mode can diverge:
+       the green reaches only 3.48:1 on the light background, below AA. */
+    --vd-heading: var(--vd-green);
+
+    --vd-bg: #0e1218;
+    --vd-bg-elevated: #161c25;
+    --vd-text: #e8edf4;
+    --vd-text-muted: #9aa6b8;
+    --vd-border: color-mix(in srgb, #9aa6b8 22%, transparent);
+    --vd-link: #7eb6ff;
+    --vd-link-hover: #a8d0ff;
+    --vd-input-bg: #1c2430;
+    --vd-input-border: #2c3748;
+    --vd-glow: color-mix(in srgb, var(--vd-coral) 28%, transparent);
+    --vd-grid: color-mix(in srgb, #9aa6b8 7%, transparent);
+
+    /* system-ui rather than style-detective's Avenir Next lead: that is
+       macOS-only, so the page rendered differently per platform for no benefit. */
+    --vd-font-sans:
+        system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', ui-sans-serif, sans-serif;
+    --vd-font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', ui-monospace, monospace;
+    --vd-radius: 12px;
+}
+
+/* Driven by the theme control rather than prefers-color-scheme, so the page
+   follows the viewer the user explicitly chose. */
+.page[data-theme='light'] {
+    --vd-bg: #f4f6f9;
+    --vd-bg-elevated: #ffffff;
+    --vd-text: #1a2230;
+    --vd-text-muted: #52607a;
+    --vd-border: color-mix(in srgb, #1a2230 12%, transparent);
+    --vd-link: #1a6fd4;
+    --vd-link-hover: #0f4f9e;
+    --vd-input-bg: #eef2f7;
+    --vd-input-border: #c9d3e0;
+    --vd-glow: color-mix(in srgb, var(--vd-coral) 20%, transparent);
+    --vd-grid: color-mix(in srgb, #1a2230 5%, transparent);
+    /* Scarlet, 5.75:1 against this background — the dark theme's green muddies
+       on white and only clears 3.48:1. */
+    --vd-heading: #c1121f;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    font-family:
-        system-ui,
-        -apple-system,
-        'Segoe UI',
-        sans-serif;
 }
 
 .page {
+    position: relative;
     min-height: 100vh;
-    padding: 2rem 1.5rem 4rem;
-    box-sizing: border-box;
+    padding: 2.5rem 1.5rem 4rem;
+    font-family: var(--vd-font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--vd-text);
+    background: var(--vd-bg);
+    -webkit-font-smoothing: antialiased;
     transition:
-        background-color 0.15s,
-        color 0.15s;
+        background-color 0.2s,
+        color 0.2s;
 }
 
-.page-dark {
-    background: #0d1117;
-    color: #c9d1d9;
+/* Fixed gradient wash plus a faint grid, behind everything. */
+.atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 70% 45% at 15% -5%, var(--vd-glow), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 95% 10%, var(--vd-green-soft), transparent 50%),
+        repeating-linear-gradient(0deg, var(--vd-grid) 0 1px, transparent 1px 48px),
+        repeating-linear-gradient(90deg, var(--vd-grid) 0 1px, transparent 1px 48px);
 }
 
-.page-light {
-    background: #fff;
-    color: #24292f;
+/* Full width by design — a split diff needs the room. */
+.shell {
+    position: relative;
+    z-index: 1;
+    max-width: none;
 }
 
-.masthead,
-.controls,
-.viewer,
-.usage {
-    max-width: 1100px;
-    margin: 0 auto;
+.masthead {
+    margin-bottom: 2.25rem;
 }
 
 .masthead h1 {
-    margin: 0 0 0.25rem;
-    font-size: 1.75rem;
+    margin: 0 0 0.35rem;
+    font-size: 1.6rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
 }
 
 .tagline {
-    margin: 0 0 0.5rem;
-    opacity: 0.8;
+    margin: 0 0 0.6rem;
+    color: var(--vd-text-muted);
 }
 
 .links {
-    margin: 0 0 1.5rem;
+    margin: 0;
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .page a {
-    color: #58a6ff;
+    color: var(--vd-link);
+    text-decoration-color: color-mix(in srgb, var(--vd-link) 45%, transparent);
+    text-underline-offset: 0.15em;
 }
 
-.page-light a {
-    color: #0969da;
+.page a:hover {
+    color: var(--vd-link-hover);
 }
 
-/*
-  Controls are styled by hand rather than with a CSS framework. Classless
-  frameworks restyle `pre`/`code` semantically, which fights the diff viewer for
-  control of the page's main content — that is what made the earlier Pico
-  attempt wash out the rows.
-*/
-
-.page {
-    /* Themed via variables so the light overrides below stay to a few lines. */
-    --field-bg: #161b22;
-    --field-border: #30363d;
-    --field-border-hover: #484f58;
-    --accent: #2f81f7;
-    --track-off: #30363d;
-    --knob: #c9d1d9;
+.section {
+    margin-bottom: 2rem;
 }
 
-.page-light {
-    --field-bg: #fff;
-    --field-border: #d0d7de;
-    --field-border-hover: #afb8c1;
-    --accent: #0969da;
-    --track-off: #d0d7de;
-    --knob: #fff;
+.section h2 {
+    margin: 0 0 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--vd-heading);
 }
+
+/* —— Controls ———————————————————————————————————————————————————————————— */
 
 .controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.875rem;
     align-items: end;
-    margin-bottom: 1rem;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    background: color-mix(in srgb, var(--vd-bg-elevated) 70%, transparent);
+    border: 1px solid var(--vd-border);
+    border-radius: 0.75rem;
+    transition: border-color 0.15s ease;
 }
 
-.controls > label {
+.controls:hover {
+    border-color: color-mix(in srgb, var(--vd-coral) 35%, var(--vd-border));
+}
+
+.field {
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    text-transform: uppercase;
+    gap: 0.35rem;
+}
+
+.field__label {
+    font-size: 0.72rem;
+    font-weight: 650;
     letter-spacing: 0.06em;
-    opacity: 0.6;
+    text-transform: uppercase;
+    color: var(--vd-text-muted);
 }
 
 .controls select {
-    /* Drop the platform control so the arrow and padding are ours. */
     appearance: none;
+    min-width: 10rem;
+    padding: 0.5rem 2rem 0.5rem 0.7rem;
     font: inherit;
-    font-size: 0.875rem;
-    font-weight: 400;
-    text-transform: none;
-    letter-spacing: normal;
-    opacity: 1;
-    padding: 0.5rem 2rem 0.5rem 0.75rem;
-    border-radius: 8px;
-    border: 1px solid var(--field-border);
-    background-color: var(--field-bg);
-    color: inherit;
-    min-width: 9.5rem;
+    font-size: 0.9rem;
+    color: var(--vd-text);
+    background-color: var(--vd-input-bg);
+    border: 1px solid var(--vd-input-border);
+    border-radius: 0.55rem;
     cursor: pointer;
     transition:
-        border-color 0.15s,
-        box-shadow 0.15s;
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 
-    /* Chevron, inlined so the demo makes no network requests of its own. */
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    /* Inlined so the demo makes no network requests of its own. */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239aa6b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
     background-repeat: no-repeat;
-    background-position: right 0.625rem center;
+    background-position: right 0.6rem center;
 }
 
 .controls select:hover:not(:disabled) {
-    border-color: var(--field-border-hover);
+    border-color: color-mix(in srgb, var(--vd-coral) 40%, var(--vd-input-border));
+}
+
+.controls select:focus-visible {
+    outline: 2px solid var(--vd-link);
+    outline-offset: 2px;
 }
 
 .controls select:disabled {
@@ -262,106 +357,114 @@ body {
     cursor: not-allowed;
 }
 
-.controls select:focus-visible {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgb(47 129 247 / 30%);
-}
-
-.switches {
+.toggles {
     display: flex;
-    gap: 1.25rem;
     align-items: center;
-    /* Sit level with the selects rather than their uppercase labels. */
-    padding-bottom: 0.5rem;
+    gap: 1.25rem;
+    padding-bottom: 0.4rem;
+    margin-left: auto;
 }
 
 .switch {
-    display: flex;
+    position: relative;
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
+    gap: 0.6rem;
     cursor: pointer;
     user-select: none;
 }
 
-/* The checkbox stays in the DOM for semantics and keyboard use; `.track` is what
-   you actually see. Hiding it with `display: none` would take it out of the tab
-   order, so it is clipped instead. */
+/* Kept in the DOM and merely transparent, so it stays keyboard-operable. */
 .switch input {
     position: absolute;
-    width: 1px;
-    height: 1px;
+    inset: 0;
+    width: 2.75rem;
+    height: 100%;
+    margin: 0;
     opacity: 0;
-    pointer-events: none;
+    cursor: pointer;
 }
 
-.track {
+.switch__track {
     position: relative;
+    display: block;
     flex: 0 0 auto;
-    width: 2rem;
-    height: 1.125rem;
+    width: 2.75rem;
+    height: 1.55rem;
+    background: var(--vd-input-bg);
+    border: 1px solid var(--vd-input-border);
     border-radius: 999px;
-    background: var(--track-off);
     transition:
-        background-color 0.18s ease,
-        box-shadow 0.15s;
+        background 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
-.track::after {
-    content: '';
+.switch__thumb {
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: calc(1.125rem - 4px);
-    height: calc(1.125rem - 4px);
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    background: var(--vd-text-muted);
     border-radius: 50%;
-    background: var(--knob);
-    transition: transform 0.18s ease;
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease;
 }
 
-.switch input:checked + .track {
-    background: var(--accent);
+.switch input:checked + .switch__track {
+    background: var(--vd-coral-soft);
+    border-color: color-mix(in srgb, var(--vd-coral) 55%, var(--vd-input-border));
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--vd-coral) 20%, transparent);
 }
 
-.switch input:checked + .track::after {
-    background: #fff;
-    transform: translateX(calc(2rem - 1.125rem));
+.switch input:checked + .switch__track .switch__thumb {
+    transform: translateX(1.15rem);
+    background: var(--vd-coral);
 }
 
-.switch input:focus-visible + .track {
-    box-shadow: 0 0 0 3px rgb(47 129 247 / 30%);
+.switch input:focus-visible + .switch__track {
+    outline: 2px solid var(--vd-link);
+    outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .controls select,
-    .track,
-    .track::after {
-        transition: none;
-    }
+.switch__label {
+    font-size: 0.9rem;
 }
+
+/* —— Viewer and code ———————————————————————————————————————————————————— */
 
 .viewer {
-    border: 1px solid rgb(128 128 128 / 25%);
-    border-radius: 8px;
+    border: 1px solid var(--vd-border);
+    border-radius: var(--vd-radius);
     overflow: hidden;
 }
 
-.usage {
-    margin-top: 2.5rem;
-}
-
-.usage h2 {
-    font-size: 1.125rem;
-}
-
-.usage pre {
+.code {
     margin: 0 0 1rem;
-    padding: 0.875rem 1rem;
-    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    font-family: var(--vd-font-mono);
+    font-size: 0.85rem;
+    line-height: 1.55;
     overflow-x: auto;
-    background: rgb(128 128 128 / 12%);
-    font-size: 0.8125rem;
-    line-height: 1.5;
+    color: var(--vd-text);
+    background: color-mix(in srgb, var(--vd-bg-elevated) 70%, transparent);
+    border: 1px solid var(--vd-border);
+    border-radius: 0.75rem;
+}
+
+.footer {
+    color: var(--vd-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page,
+    .controls,
+    .controls select,
+    .switch__track,
+    .switch__thumb {
+        transition: none;
+    }
 }
 </style>

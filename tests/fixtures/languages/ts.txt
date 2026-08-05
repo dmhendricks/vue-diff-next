@@ -1,0 +1,2 @@
+interface A { b: string }
+const c: A = { b: "d" };

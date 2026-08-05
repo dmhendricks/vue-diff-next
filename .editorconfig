@@ -1,0 +1,27 @@
+# EditorConfig: https://EditorConfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# All files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# JavaScript, TypeScript, Vue files
+[*.{js,jsx,ts,tsx,vue,mjs}]
+indent_style = space
+indent_size = 4
+quote_type = single
+
+# JSON, YAML, Markdown
+[*.{json,yml,yaml,md}]
+indent_style = space
+indent_size = 2
+
+# CSS, SCSS
+[*.{css,scss,sass}]
+indent_style = space
+indent_size = 4

@@ -7,8 +7,11 @@
     --vue-diff-added-bg: #1b4332;
     --vue-diff-removed-bg: #4a1c1c;
     --vue-diff-disabled-bg: #232323;
-    --vue-diff-added-gutter-bg: #2d6a4f;
-    --vue-diff-removed-gutter-bg: #7f1d1d;
+    // A step above the row background, not a saturated block. These were
+    // originally 2.4x and 1.9x their row's luminance, which read as solid
+    // red/green bars rather than a tinted gutter.
+    --vue-diff-added-gutter-bg: #22503b;
+    --vue-diff-removed-gutter-bg: #552121;
 
     --vue-diff-added-word-bg: #2f5f45;
     --vue-diff-removed-word-bg: #6b2e2e;

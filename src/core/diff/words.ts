@@ -45,26 +45,43 @@ export function diffWords(prev: string, current: string): WordSegment[] {
         segments.push({ value: part.value, modified });
     }
 
-    return bridgeWhitespace(segments);
+    return bridgeGaps(segments);
 }
 
 /**
- * Mark whitespace that sits between two changed runs as changed too.
+ * Longest gap that may be bridged, in characters.
  *
- * `diffWordsWithSpace` emits whitespace as its own unchanged token, so a rewritten
- * phrase comes back as alternating changed words and unchanged gaps. Highlighted
- * literally that renders as stripes — the words tinted, the spaces between them
- * bare — which reads as though the spaces were somehow retained from the old text.
+ * Bounded because the rule is meant to close punctuation and spacing seams, not to
+ * smear a highlight across text that genuinely survived. `src="a.png"` → `"b.webp"`
+ * has to bridge a single `.`; `foo(a, reallyLongUnchangedArgument, b)` must not
+ * bridge the argument just because both `a` and `b` changed. Four characters covers
+ * the realistic seams — `.`, `", "`, `` -> ``, `::` — and stops well short of a word.
+ */
+const MAX_BRIDGE_LENGTH = 4;
+
+/**
+ * Mark short unchanged gaps between two changed runs as changed too.
+ *
+ * `diffWordsWithSpace` splits on word boundaries, so both whitespace and
+ * punctuation come back as their own unchanged tokens. A rewritten phrase or an
+ * edited path therefore arrives as alternating changed words and unchanged seams —
+ * `a` `.` `png` for `a.png` → `b.webp`. Highlighted literally that renders as
+ * stripes, which reads as though the seam were somehow retained from the old text.
  *
  * The original had no such artefact because diff-match-patch works at character
  * level and `diff_cleanupSemantic` coalesces neighbouring edits into whole runs.
  * Bridging here reproduces that without giving up word-level granularity.
  *
- * Only interior gaps are bridged. Whitespace at either end of the line stays
- * unchanged, so leading indentation is never highlighted just because the code
- * after it changed.
+ * A gap qualifies when it is interior (changed runs on both sides), short enough
+ * (see MAX_BRIDGE_LENGTH), and contains no letters or digits. That last condition
+ * is what keeps the rule from swallowing real words: `quick`, sitting between two
+ * changes, stays unmarked because it is alphanumeric, while `.` and `", "` do not.
+ *
+ * Whitespace at either end of the line is never bridged — it has no changed run on
+ * one side — so leading indentation stays unmarked when only the code after it
+ * changed.
  */
-function bridgeWhitespace(segments: WordSegment[]): WordSegment[] {
+function bridgeGaps(segments: WordSegment[]): WordSegment[] {
     const bridged: WordSegment[] = [];
 
     for (let index = 0; index < segments.length; index++) {
@@ -72,7 +89,7 @@ function bridgeWhitespace(segments: WordSegment[]): WordSegment[] {
 
         const isInteriorGap =
             !segment.modified &&
-            segment.value.trim() === '' &&
+            isBridgeable(segment.value) &&
             segments[index - 1]?.modified === true &&
             segments[index + 1]?.modified === true;
 
@@ -88,4 +105,16 @@ function bridgeWhitespace(segments: WordSegment[]): WordSegment[] {
     }
 
     return bridged;
+}
+
+/**
+ * Whether an unchanged run is a seam rather than surviving content.
+ *
+ * Whitespace of any length qualifies: a run of spaces between two rewritten words
+ * is still just the gap between them. Anything else must be short and free of
+ * letters and digits.
+ */
+function isBridgeable(value: string): boolean {
+    if (value.trim() === '') return true;
+    return value.length <= MAX_BRIDGE_LENGTH && !/[\p{L}\p{N}]/u.test(value);
 }

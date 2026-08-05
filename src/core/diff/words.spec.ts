@@ -78,6 +78,60 @@ describe('diffWords', () => {
     });
 });
 
+describe('punctuation between changed words', () => {
+    it('bridges a dot inside a changed filename', () => {
+        // diffWordsWithSpace splits on word boundaries, so `a.png` -> `b.webp`
+        // arrives as a/./png vs b/./webp with the dot unchanged. Left bare it
+        // showed as an unhighlighted speck mid-highlight.
+        const segments = diffWords('<img src="a.png">', '<img src="b.webp">');
+
+        const modified = segments.filter((s) => s.modified);
+        expect(modified).toHaveLength(1);
+        expect(modified[0]!.value).toBe('b.webp');
+    });
+
+    it('bridges other short seams between changes', () => {
+        const cases: Array<[string, string, string]> = [
+            ['a::b', 'x::y', 'x::y'],
+            ['one, two', 'three, four', 'three, four'],
+            ['a->b', 'c->d', 'c->d'],
+            ['v1.2.3', 'v4.5.6', 'v4.5.6'],
+        ];
+
+        for (const [prev, current, expected] of cases) {
+            const modified = diffWords(prev, current).filter((s) => s.modified);
+            expect(modified.map((s) => s.value).join('|')).toBe(expected);
+        }
+    });
+
+    it('does not bridge an unchanged word between two changes', () => {
+        // The guard that keeps the rule honest: `brown` survived, so it must not
+        // be swallowed just because both of its neighbours changed.
+        const segments = diffWords('the quick brown fox', 'a quick brown dog');
+        const modified = segments.filter((s) => s.modified);
+
+        expect(modified.map((s) => s.value)).toEqual(['a', 'dog']);
+        expect(segments.some((s) => !s.modified && s.value.includes('brown'))).toBe(true);
+    });
+
+    it('does not bridge a long punctuation run between two changes', () => {
+        // Over MAX_BRIDGE_LENGTH, so it reads as content rather than a seam.
+        const segments = diffWords('a ===== b', 'x ===== y');
+        expect(segments.some((s) => !s.modified && s.value.includes('====='))).toBe(true);
+    });
+
+    it('does not bridge digits, which are content even when short', () => {
+        const segments = diffWords('fn(a, 42, b)', 'fn(x, 42, y)');
+        expect(segments.some((s) => !s.modified && s.value.includes('42'))).toBe(true);
+    });
+
+    it('leaves a trailing seam unmarked when nothing follows it', () => {
+        // No changed run on the right, so there is nothing to bridge to.
+        const segments = diffWords('old.', 'new.');
+        expect(segments[segments.length - 1]).toEqual({ value: '.', modified: false });
+    });
+});
+
 describe('whitespace between changed words', () => {
     it('marks interior gaps so a rewritten phrase highlights as one run', () => {
         // diffWordsWithSpace emits whitespace as its own unchanged token, which

@@ -110,6 +110,7 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
                         :fold-marker="foldMarker"
                         :wrap="wrap"
                         :input-delay="sample.inputDelay ?? 0"
+                        :virtual-scroll="sample.virtualScroll ?? false"
                     />
                 </div>
             </section>

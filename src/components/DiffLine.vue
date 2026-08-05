@@ -1,5 +1,5 @@
 <template>
-    <div class="vue-diff-row">
+    <div ref="element" class="vue-diff-row" :style="rowStyle">
         <template v-for="(cell, index) in cells" :key="index">
             <!--
               A collapsed run of unchanged lines. The gutter and code markers are
@@ -37,9 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import DiffCode from './DiffCode.vue';
-import type { FoldMarker, FoldRange, Lines } from '../types';
+import type { FoldMarker, FoldRange, Lines, Meta, VirtualScroll } from '../types';
 
 const props = withDefaults(
     defineProps<{
@@ -48,9 +48,75 @@ const props = withDefaults(
         folding?: boolean;
         foldMarker?: FoldMarker;
         fold?: FoldRange;
+        /** Positioning data; only supplied when virtual scroll is on. */
+        meta?: Meta;
+        scrollOptions?: false | VirtualScroll;
     }>(),
-    { language: 'plaintext', folding: false, foldMarker: 'dots', fold: undefined },
+    {
+        language: 'plaintext',
+        folding: false,
+        foldMarker: 'dots',
+        fold: undefined,
+        meta: undefined,
+        scrollOptions: false,
+    },
 );
+
+const emit = defineEmits<{ height: [index: number, height: number] }>();
+
+const element = ref<HTMLElement | null>(null);
+
+/**
+ * Absolute placement, so absent rows leave no gap and present ones land at the
+ * offset the windowing pass computed. Without virtual scroll the rows simply
+ * stack in normal flow.
+ */
+const rowStyle = computed(() => {
+    if (!props.scrollOptions || !props.meta) return undefined;
+    return {
+        position: 'absolute' as const,
+        left: 0,
+        top: 0,
+        transform: `translate3d(0, ${props.meta.top ?? 0}px, 0)`,
+        minHeight: `${props.scrollOptions.lineMinHeight}px`,
+        width: '100%',
+    };
+});
+
+/**
+ * Report the rendered height so the container's total is real rather than
+ * estimated. A wrapped line can be any height, and the estimate would otherwise
+ * make the scrollbar lie.
+ */
+let observer: ResizeObserver | undefined;
+
+onMounted(() => {
+    if (!props.scrollOptions || !props.meta || !element.value) return;
+
+    const report = () => {
+        const node = element.value;
+        const meta = props.meta;
+        if (!node || !meta) return;
+        const height = node.offsetHeight;
+        if (height > 0 && height !== meta.height) emit('height', meta.index, height);
+    };
+
+    report();
+
+    // Height changes on wrap, which happens on resize and when async highlighting
+    // replaces the interim plain text. Guarded because jsdom has no
+    // ResizeObserver: without it the initial `report` above still runs, so
+    // heights are simply never revised.
+    if (typeof ResizeObserver === 'undefined') return;
+
+    observer = new ResizeObserver(report);
+    observer.observe(element.value);
+});
+
+onBeforeUnmount(() => {
+    observer?.disconnect();
+    observer = undefined;
+});
 
 /**
  * A unified-diff hunk header for the collapsed run, e.g. `@@ -12,8 +12,8 @@`.

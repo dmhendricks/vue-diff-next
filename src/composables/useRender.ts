@@ -57,14 +57,17 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
                 next[index - 1]?.[0]?.type === 'equal';
 
             if (options) {
-                // Carry height/top so a future useVirtualScroll has somewhere to
-                // record measurements. Rows stay visible: until that composable
-                // exists nothing would ever flip them back on, and starting
-                // hidden renders an empty view.
+                // Start hidden and let useVirtualScroll decide: it runs
+                // immediately, so the first paint is already windowed rather
+                // than mounting every row and then removing most of them.
+                //
+                // An unmeasured row counts as lineMinHeight so the container's
+                // height starts approximately right and converges as the
+                // ResizeObserver reports real heights.
                 meta.value[index] = {
                     index,
                     foldable,
-                    visible: previous?.visible ?? true,
+                    visible: previous?.visible ?? false,
                     top: previous?.top,
                     height: previous?.height ?? options.lineMinHeight,
                 };

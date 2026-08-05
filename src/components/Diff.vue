@@ -5,7 +5,7 @@
             class="vue-diff-viewer"
             :style="{ height: scrollOptions ? `${scrollOptions.height}px` : undefined }"
         >
-            <div class="vue-diff-viewer-inner">
+            <div class="vue-diff-viewer-inner" :style="{ minHeight }">
                 <DiffLine
                     v-for="item in visibleRows"
                     :key="item.index"
@@ -14,6 +14,9 @@
                     :folding="folding"
                     :fold-marker="foldMarker"
                     :fold="item.fold"
+                    :meta="item"
+                    :scroll-options="scrollOptions"
+                    @height="setHeight"
                 />
             </div>
         </div>
@@ -21,9 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue';
+import { computed, ref } from 'vue';
 import DiffLine from './DiffLine.vue';
 import { useRender } from '../composables/useRender';
+import { useVirtualScroll } from '../composables/useVirtualScroll';
 import type { FoldMarker, Mode, Theme, VirtualScroll } from '../types';
 
 defineOptions({ name: 'Diff' });
@@ -107,9 +111,7 @@ const renderProps = {
     },
 };
 
-const { rows, visibleRows } = useRender(renderProps, () => scrollOptions.value);
+const { rows, meta, visibleRows } = useRender(renderProps, () => scrollOptions.value);
 
-// Referenced so the template ref is retained for phase 2 (virtual scroll needs
-// a measurable scroll container).
-void toRef(viewer);
+const { minHeight, setHeight } = useVirtualScroll(viewer, scrollOptions, meta);
 </script>

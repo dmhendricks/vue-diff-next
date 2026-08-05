@@ -18,6 +18,7 @@ export interface Sample {
     /** Set where a sample exists to exercise a specific prop. */
     folding?: boolean;
     inputDelay?: number;
+    virtualScroll?: boolean | { height?: number; lineMinHeight?: number; delay?: number };
 }
 
 const lines = (n: number, f: (i: number) => string) => Array.from({ length: n }, (_, i) => f(i));
@@ -713,6 +714,7 @@ three
         group: 'At scale',
         language: 'javascript',
         inputDelay: 100,
+        virtualScroll: { height: 500 },
         prev: lines(600, (i) => `const value${i} = compute(${i}, 'alpha');`).join('\n'),
         current: lines(
             600,
@@ -725,6 +727,7 @@ three
         group: 'At scale',
         language: 'json',
         inputDelay: 150,
+        virtualScroll: { height: 500 },
         prev: '{\n' + lines(2000, (i) => `  "key${i}": ${i},`).join('\n') + '\n  "last": true\n}\n',
         current:
             '{\n' +

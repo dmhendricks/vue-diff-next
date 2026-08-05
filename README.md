@@ -54,18 +54,18 @@ createApp(App).use(VueDiff).mount('#app');
 
 ## Props
 
-| Prop            | Type                                          | Default       | Description                                                       |
-| --------------- | --------------------------------------------- | ------------- | ----------------------------------------------------------------- |
-| `mode`          | `'split' \| 'unified'`                        | `'split'`     | Side-by-side or interleaved.                                      |
-| `theme`         | `'dark' \| 'light' \| \`custom${string}\``    | `'dark'`      | See [Theming](#theming).                                          |
-| `language`      | `string`                                      | `'plaintext'` | See [Languages](#languages).                                      |
-| `prev`          | `string \| null`                              | `''`          | The "before" text.                                                |
-| `current`       | `string \| null`                              | `''`          | The "after" text.                                                 |
-| `folding`       | `boolean`                                     | `false`       | Collapse long runs of unchanged lines. See [Folding](#folding).   |
-| `foldMarker`    | `'dots' \| 'hunk'`                            | `'dots'`      | How a collapsed run is marked. See [Folding](#folding).           |
-| `inputDelay`    | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.     |
-| `virtualScroll` | `boolean \| { height, lineMinHeight, delay }` | `false`       | Sets viewer height; windowing not yet implemented.                |
-| `wrap`          | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead. |
+| Prop            | Type                                          | Default       | Description                                                              |
+| --------------- | --------------------------------------------- | ------------- | ------------------------------------------------------------------------ |
+| `mode`          | `'split' \| 'unified'`                        | `'split'`     | Side-by-side or interleaved.                                             |
+| `theme`         | `'dark' \| 'light' \| \`custom${string}\``    | `'dark'`      | See [Theming](#theming).                                                 |
+| `language`      | `string`                                      | `'plaintext'` | See [Languages](#languages).                                             |
+| `prev`          | `string \| null`                              | `''`          | The "before" text.                                                       |
+| `current`       | `string \| null`                              | `''`          | The "after" text.                                                        |
+| `folding`       | `boolean`                                     | `false`       | Collapse long runs of unchanged lines. See [Folding](#folding).          |
+| `foldMarker`    | `'dots' \| 'hunk'`                            | `'dots'`      | How a collapsed run is marked. See [Folding](#folding).                  |
+| `inputDelay`    | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.            |
+| `virtualScroll` | `boolean \| { height, lineMinHeight, delay }` | `false`       | Render only the rows near the viewport. See [Large diffs](#large-diffs). |
+| `wrap`          | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead.        |
 
 Every default matches `vue-diff` — including `theme`, which defaults to **`dark`**.
 
@@ -94,9 +94,8 @@ Three things to know:
   differently. See [Theming](#theming).
 - **Language names still work**, and more are accepted. `javascript`, `plaintext`,
   `markdown`, and `typescript` all resolve as before.
-- **`virtualScroll` does not yet window the output.** It is accepted and sets the viewer
-  height, so existing markup keeps working, but every row renders. See
-  [Not yet implemented](#not-yet-implemented).
+- **`virtualScroll` behaves as it did**, windowing the output to what is near the
+  viewport. See [Large diffs](#large-diffs).
 
 ## Folding
 
@@ -223,13 +222,40 @@ Same behaviour, different internals:
   first and upgrades when highlighting resolves — which is what the original did in practice
   too, since it also filled an initially empty element from a watcher.
 
+## Large diffs
+
+A few thousand rows lay out and paint slowly — the cost is DOM size, not diffing. Pass
+`virtualScroll` to render only the rows near the viewport:
+
+```vue
+<Diff :virtual-scroll="true" :prev="before" :current="after" />
+```
+
+```vue
+<!-- or tune it -->
+<Diff
+  :virtual-scroll="{ height: 500, lineMinHeight: 24, delay: 100 }"
+  :prev="before"
+  :current="after"
+/>
+```
+
+| Option          | Default | Meaning                                              |
+| --------------- | ------- | ---------------------------------------------------- |
+| `height`        | `500`   | Viewer height in px. Also sets the windowing extent. |
+| `lineMinHeight` | `24`    | Assumed row height until one is measured.            |
+| `delay`         | `100`   | Scroll throttle in ms.                               |
+
+The window extends 1.5 viewport heights past each edge, so ordinary scrolling does not
+outrun it. Row heights are measured rather than assumed — a wrapped line can be any
+height — so the container's scroll height converges on the truth as rows report in, and
+the scrollbar reflects the whole diff rather than only what is rendered.
+
+Measured on a 2000-line diff in a 500px viewer: **53 rows in the DOM instead of 2000**,
+with a 48,000px scroll range.
+
 ## Not yet implemented
 
-- **`virtualScroll`** is accepted, and sets the viewer's height, but does not yet window the
-  output — every row renders, so a very large diff will not perform as it did in the original.
-  Passing it is harmless rather than an error, so migrating code keeps working. The render path
-  already draws from the per-line metadata array that windowing needs, so enabling it later is
-  additive.
 - **Bundled themes beyond `dark` and `light`.** `theme="custom*"` covers this without adding
   weight for everyone.
 - **A dedicated `scss` grammar.** `scss`, `sass`, and `less` currently use the `css` grammar,

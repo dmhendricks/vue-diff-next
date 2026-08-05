@@ -312,10 +312,9 @@ describe('Diff', () => {
         });
 
         it('still renders content when enabled', async () => {
-            // Regression guard: enabling virtualScroll used to initialise every
-            // row as hidden, and since the windowing composable does not exist
-            // yet nothing ever made them visible again — so the whole diff
-            // vanished. The earlier tests only checked the container's height,
+            // Regression guard: enabling virtualScroll once initialised every row
+            // as hidden with nothing to make them visible again, so the whole
+            // diff vanished. The tests above only check the container's height,
             // which is why they missed it.
             const wrapper = mount(Diff, {
                 props: { prev: PREV, current: CURRENT, virtualScroll: true },
@@ -329,14 +328,98 @@ describe('Diff', () => {
         it.each([
             ['true', true],
             ['an options object', { height: 300 }],
-        ])('renders the same rows with virtualScroll as %s', async (_label, virtualScroll) => {
-            const off = mount(Diff, { props: { prev: PREV, current: CURRENT } });
-            await settle();
-            const expected = off.findAll('.vue-diff-row').length;
+        ])(
+            'renders a short diff in full with virtualScroll as %s',
+            async (_label, virtualScroll) => {
+                // A diff shorter than the viewport must not be windowed at all.
+                const off = mount(Diff, { props: { prev: PREV, current: CURRENT } });
+                await settle();
+                const expected = off.findAll('.vue-diff-row').length;
 
-            const on = mount(Diff, { props: { prev: PREV, current: CURRENT, virtualScroll } });
+                const on = mount(Diff, { props: { prev: PREV, current: CURRENT, virtualScroll } });
+                await settle();
+                expect(on.findAll('.vue-diff-row')).toHaveLength(expected);
+            },
+        );
+
+        it('reserves scroll height for every row, including absent ones', async () => {
+            // The container must span the whole diff even when most rows are not
+            // in the DOM, or the scrollbar misreports how much there is to read.
+            const lines = Array.from({ length: 200 }, (_, i) => `line ${i}`).join('\n') + '\n';
+            const wrapper = mount(Diff, {
+                props: {
+                    prev: lines,
+                    current: lines,
+                    virtualScroll: { height: 500, lineMinHeight: 24 },
+                },
+            });
             await settle();
-            expect(on.findAll('.vue-diff-row')).toHaveLength(expected);
+
+            const style = wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
+            // 200 rows at the 24px default, before any real measurement.
+            expect(style).toContain('min-height: 4800px');
+        });
+
+        it('positions rows absolutely so absent ones leave no gap', async () => {
+            const wrapper = mount(Diff, {
+                props: { prev: PREV, current: CURRENT, virtualScroll: true },
+            });
+            await settle();
+
+            const style = wrapper.find('.vue-diff-row').attributes('style') ?? '';
+            expect(style).toContain('position: absolute');
+            expect(style).toContain('translate3d');
+        });
+
+        it('leaves rows in normal flow when disabled', async () => {
+            const wrapper = mount(Diff, { props: { prev: PREV, current: CURRENT } });
+            await settle();
+
+            const style = wrapper.find('.vue-diff-row').attributes('style') ?? '';
+            expect(style).not.toContain('position: absolute');
+        });
+
+        it('windows out rows far below the viewport', async () => {
+            // jsdom reports offsetHeight as 0, so heights never converge from the
+            // DOM. Drive the metadata directly instead: with real heights, rows
+            // past the buffer must drop out.
+            const lines = Array.from({ length: 400 }, (_, i) => `line ${i}`).join('\n') + '\n';
+            const wrapper = mount(Diff, {
+                props: {
+                    prev: lines,
+                    current: lines,
+                    virtualScroll: { height: 200, lineMinHeight: 24 },
+                },
+                attachTo: document.body,
+            });
+            await settle();
+
+            const rendered = wrapper.findAll('.vue-diff-row').length;
+            // 200px viewport, 1.5x buffer each side, 24px rows => ~34 rows, well
+            // short of 400. The exact count is an implementation detail; that it
+            // is a small fraction is the contract.
+            expect(rendered).toBeGreaterThan(0);
+            expect(rendered).toBeLessThan(100);
+        });
+
+        it('renders every row again when virtualScroll is turned off', async () => {
+            const lines = Array.from({ length: 400 }, (_, i) => `line ${i}`).join('\n') + '\n';
+            const wrapper = mount(Diff, {
+                props: {
+                    prev: lines,
+                    current: lines,
+                    virtualScroll: { height: 200, lineMinHeight: 24 },
+                },
+                attachTo: document.body,
+            });
+            await settle();
+            const windowed = wrapper.findAll('.vue-diff-row').length;
+
+            await wrapper.setProps({ virtualScroll: false });
+            await settle();
+
+            expect(wrapper.findAll('.vue-diff-row').length).toBeGreaterThan(windowed);
+            expect(wrapper.findAll('.vue-diff-row')).toHaveLength(400);
         });
     });
 

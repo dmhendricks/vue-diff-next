@@ -57,7 +57,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "size": "node scripts/check-size.js",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size",
+    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:exports",
     "prepublishOnly": "npm run verify"
   },
   "peerDependencies": {
@@ -68,7 +69,9 @@
     "diff": "^9.0.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.1",
+    "@microsoft/api-extractor": "^7.58.12",
     "@types/node": "^26.1.2",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/coverage-v8": "^4.1.10",
@@ -79,6 +82,7 @@
     "globals": "^17.9.0",
     "jsdom": "^30.0.1",
     "prettier": "^3.9.6",
+    "publint": "^0.3.23",
     "sass-embedded": "^1.100.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.66.0",

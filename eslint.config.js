@@ -15,11 +15,25 @@ export default ts.config(
             parserOptions: { parser: ts.parser },
         },
     },
+    // Library source targets the browser.
+    {
+        files: ['src/**/*.{ts,vue}'],
+        languageOptions: {
+            globals: globals.browser,
+        },
+    },
     // Build scripts and configs run in Node, not the browser.
     {
         files: ['scripts/**/*.js', '*.config.{js,ts}'],
         languageOptions: {
             globals: globals.node,
+        },
+    },
+    // Specs run in jsdom with Node APIs available for fixture reading.
+    {
+        files: ['src/**/*.spec.ts'],
+        languageOptions: {
+            globals: { ...globals.browser, ...globals.node },
         },
     },
     {

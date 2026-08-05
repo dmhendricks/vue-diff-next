@@ -1,11 +1,10 @@
 {
   "name": "vue-diff-next",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A modern, lightweight Vue 3 diff viewer — the maintained successor to vue-diff",
   "license": "MIT",
   "author": {
     "name": "Daniel M. Hendricks",
-    "email": "hendridm@gmail.com",
     "url": "https://github.com/dmhendricks"
   },
   "keywords": [

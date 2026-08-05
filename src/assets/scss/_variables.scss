@@ -1,0 +1,23 @@
+// Theme surface. Every colour a consumer might want to override lives here as a
+// custom property, so `theme="custom*"` users can restyle without forking SCSS.
+.vue-diff-wrapper {
+    --vue-diff-font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --vue-diff-font-size: 13px;
+    --vue-diff-line-height: 1.5;
+    --vue-diff-gutter-width: 3rem;
+
+    --vue-diff-bg: transparent;
+    --vue-diff-fg: inherit;
+    --vue-diff-gutter-bg: transparent;
+    --vue-diff-gutter-fg: inherit;
+
+    --vue-diff-added-bg: transparent;
+    --vue-diff-removed-bg: transparent;
+    --vue-diff-disabled-bg: transparent;
+    --vue-diff-added-gutter-bg: transparent;
+    --vue-diff-removed-gutter-bg: transparent;
+
+    // Word-level change highlight, brighter than the row background.
+    --vue-diff-added-word-bg: transparent;
+    --vue-diff-removed-word-bg: transparent;
+}

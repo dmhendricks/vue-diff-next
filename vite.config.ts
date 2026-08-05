@@ -24,8 +24,12 @@ export default defineConfig({
             // Never bundle Vue into a component library.
             external: ['vue'],
             output: {
+                // The exports map publishes ./style.css, so the emitted CSS must
+                // use that exact name rather than Vite's package-name default.
                 assetFileNames: (assetInfo) =>
-                    assetInfo.names?.includes('style.css') ? 'style.css' : '[name][extname]',
+                    assetInfo.names?.some((n) => n.endsWith('.css'))
+                        ? 'style.css'
+                        : '[name][extname]',
             },
         },
     },

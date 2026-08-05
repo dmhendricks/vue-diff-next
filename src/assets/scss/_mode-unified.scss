@@ -1,0 +1,4 @@
+// Unified: a single gutter + code pair.
+.vue-diff-mode-unified .vue-diff-row {
+    grid-template-columns: var(--vue-diff-gutter-width) minmax(0, 1fr);
+}

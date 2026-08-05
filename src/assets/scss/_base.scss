@@ -1,0 +1,86 @@
+// Structural layout, shared by both modes and all themes.
+.vue-diff-wrapper {
+    background: var(--vue-diff-bg);
+    color: var(--vue-diff-fg);
+    font-family: var(--vue-diff-font-family);
+    font-size: var(--vue-diff-font-size);
+    line-height: var(--vue-diff-line-height);
+}
+
+.vue-diff-viewer {
+    overflow: auto;
+}
+
+.vue-diff-viewer-inner {
+    display: grid;
+    position: relative;
+}
+
+.vue-diff-row {
+    display: grid;
+    // Overridden per mode.
+    grid-template-columns: var(--vue-diff-gutter-width) minmax(0, 1fr);
+}
+
+.vue-diff-line-num {
+    background: var(--vue-diff-gutter-bg);
+    color: var(--vue-diff-gutter-fg);
+    padding: 0 0.5rem;
+    text-align: right;
+    user-select: none;
+    // Numbers should not stretch when a wrapped line grows.
+    align-self: stretch;
+}
+
+.vue-diff-line {
+    min-width: 0;
+    padding: 0 0.5rem;
+}
+
+.vue-diff-code {
+    font: inherit;
+    background: none;
+    padding: 0;
+}
+
+// pre/code preserve whitespace without wrapping by default.
+.vue-diff-line pre {
+    margin: 0;
+    white-space: pre;
+    overflow: visible;
+}
+
+// The `wrap` prop: opt-in soft wrapping. The original had no equivalent.
+.vue-diff-wrap .vue-diff-line pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.vue-diff-line-added {
+    background: var(--vue-diff-added-bg);
+}
+
+.vue-diff-line-removed {
+    background: var(--vue-diff-removed-bg);
+}
+
+.vue-diff-line-disabled {
+    background: var(--vue-diff-disabled-bg);
+}
+
+.vue-diff-line-num.vue-diff-line-added {
+    background: var(--vue-diff-added-gutter-bg);
+}
+
+.vue-diff-line-num.vue-diff-line-removed {
+    background: var(--vue-diff-removed-gutter-bg);
+}
+
+// Word-level change, inside a changed line.
+.vue-diff-line-added .vue-diff-modified {
+    background: var(--vue-diff-added-word-bg);
+}
+
+.vue-diff-line-removed .vue-diff-modified {
+    background: var(--vue-diff-removed-word-bg);
+}

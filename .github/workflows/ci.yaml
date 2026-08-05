@@ -45,6 +45,16 @@ jobs:
       - name: Test
         run: npm run test
 
+      # Layout assertions need a real engine. jsdom has no layout at all — every
+      # element measures 0px and there is no ResizeObserver — so row geometry is
+      # not merely untested there, it is untestable. A virtual-scroll bug that
+      # overlapped every wrapped row passed the whole jsdom suite.
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Test layout in a browser
+        run: npm run test:browser
+
       - name: Build
         run: npm run build
 

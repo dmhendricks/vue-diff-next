@@ -29,9 +29,10 @@ export default ts.config(
             globals: globals.node,
         },
     },
-    // Specs run in jsdom with Node APIs available for fixture reading.
+    // Specs run in jsdom (or a real browser, for *.browser-spec.ts) with Node APIs
+    // available for fixture reading.
     {
-        files: ['src/**/*.spec.ts'],
+        files: ['src/**/*.spec.ts', 'src/**/*.browser-spec.ts'],
         languageOptions: {
             globals: { ...globals.browser, ...globals.node },
         },

@@ -51,6 +51,7 @@
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:coverage": "vitest --run --coverage",
+    "test:browser": "vitest --run -c vitest.browser.config.ts",
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -61,7 +62,7 @@
     "changeset": "changeset",
     "changeset:version": "changeset version && npm install --package-lock-only",
     "changeset:publish": "changeset publish",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:exports",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
     "prepublishOnly": "npm run verify"
   },
   "peerDependencies": {
@@ -79,6 +80,8 @@
     "@microsoft/api-extractor": "^7.58.12",
     "@types/node": "^26.1.2",
     "@vitejs/plugin-vue": "^6.0.8",
+    "@vitest/browser": "^4.1.10",
+    "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "@vue/test-utils": "^2.4.11",
     "eslint": "^10.8.0",
@@ -86,6 +89,7 @@
     "eslint-plugin-vue": "^10.10.0",
     "globals": "^17.9.0",
     "jsdom": "^30.0.1",
+    "playwright": "^1.62.1",
     "prettier": "^3.9.6",
     "publint": "^0.3.23",
     "sass-embedded": "^1.100.0",
@@ -94,7 +98,7 @@
     "vite": "^8.2.0",
     "vite-plugin-dts": "^5.0.3",
     "vitest": "^4.1.10",
-    "vue": "^3.5.40",
+    "vue": "^3.5.41",
     "vue-tsc": "^3.3.9"
   }
 }

@@ -31,3 +31,9 @@ pnpm-debug.log*
 
 # Workspace
 *.code-workspace
+
+# Vitest browser mode writes failure screenshots and attachments next to the
+# specs. Diagnostic output from a run, not fixtures — the assertions are on
+# geometry read from the DOM, so nothing here is compared against.
+.vitest-attachments/
+**/__screenshots__/

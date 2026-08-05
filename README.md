@@ -1,6 +1,6 @@
 # vue-diff-next
 
-A modern, lightweight diff viewer component for Vue 3 — the maintained successor to
+A modern, lightweight diff viewer component for Vue 3 — a successor to
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
 Same props, same modes, same look. **16.3 kB gzip with 35 languages bundled**, versus roughly
@@ -61,15 +61,16 @@ createApp(App).use(VueDiff).mount('#app');
 | `language`      | `string`                                      | `'plaintext'` | See [Languages](#languages).                                      |
 | `prev`          | `string \| null`                              | `''`          | The "before" text.                                                |
 | `current`       | `string \| null`                              | `''`          | The "after" text.                                                 |
-| `folding`       | `boolean`                                     | `false`       | Hide long runs of unchanged lines.                                |
+| `folding`       | `boolean`                                     | `false`       | Collapse long runs of unchanged lines. See [Folding](#folding).   |
+| `foldMarker`    | `'dots' \| 'hunk'`                            | `'dots'`      | How a collapsed run is marked. See [Folding](#folding).           |
 | `inputDelay`    | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.     |
 | `virtualScroll` | `boolean \| { height, lineMinHeight, delay }` | `false`       | Sets viewer height; windowing not yet implemented.                |
 | `wrap`          | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead. |
 
 Every default matches `vue-diff` — including `theme`, which defaults to **`dark`**.
 
-`wrap` is the only prop the original lacked. It defaults to `true` because the original always
-wrapped, so leaving it alone reproduces the original's behaviour.
+`wrap` and `foldMarker` are the only props the original lacked, and both default to reproducing
+its behaviour: it always wrapped, and it always marked folds with dots.
 
 Unlike the original, `prev` and `current` accept `null` and `undefined`, which are treated as
 empty strings.
@@ -96,6 +97,38 @@ Three things to know:
 - **`virtualScroll` does not yet window the output.** It is accepted and sets the viewer
   height, so existing markup keeps working, but every row renders. See
   [Not yet implemented](#not-yet-implemented).
+
+## Folding
+
+With `folding`, runs of unchanged lines collapse to a single marker row, so a small change in a
+large file doesn't bury the diff. `foldMarker` chooses how that row looks:
+
+```vue
+<Diff :folding="true" fold-marker="hunk" :prev="before" :current="after" />
+```
+
+**`dots`** (default) — a centred `•••••`, matching the original:
+
+```
+  12  const config = {
+   >  • • • • •
+  47    timeout: 5000,
+```
+
+**`hunk`** — a unified-diff header, stating how much was skipped rather than only that
+something was:
+
+```
+  12  const config = {
+   >  @@ -13,34 +13,34 @@
+  47    timeout: 5000,
+```
+
+Both are styleable — see `--vue-diff-fold-*` under [Theming](#theming). The dots' size and
+spacing are variables, so you can tune them without overriding the content.
+
+A changed line is never hidden by folding, and the first unchanged line after each change stays
+visible as context.
 
 ## Languages
 
@@ -151,7 +184,8 @@ Available properties: `--vue-diff-{bg,fg,font-family,font-size,line-height,gutte
 `--vue-diff-{gutter-bg,gutter-fg}`,
 `--vue-diff-{added,removed,disabled}-bg`,
 `--vue-diff-{added,removed}-gutter-bg`,
-`--vue-diff-{added,removed}-word-bg`, and
+`--vue-diff-{added,removed}-word-bg`,
+`--vue-diff-fold-{bg,fg}`, `--vue-diff-fold-dot-{size,spacing,opacity}`, and
 `--vue-diff-syn-{kwd,str,num,bool,cmnt,func,class,var,type,oper,section,insert,deleted,err}`.
 
 ## Size
@@ -215,7 +249,7 @@ Found a hole? Please report it privately — see [SECURITY.md](SECURITY.md).
 This is a from-scratch reimplementation of [`vue-diff`](https://github.com/hoiheart/vue-diff)
 by [hoiheart](https://github.com/hoiheart) (ISC), whose API and rendering behaviour it
 deliberately reproduces. The original was archived read-only in February 2025; this exists so
-that Vue 3 projects relying on it have a maintained path forward.
+that Vue 3 projects relying on it have a path forward.
 
 ## License
 

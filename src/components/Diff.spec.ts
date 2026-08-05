@@ -99,6 +99,109 @@ describe('Diff', () => {
             expect(after).toBeLessThan(before);
             expect(after).toBeGreaterThan(0);
         });
+
+        it('marks each collapsed run instead of dropping it silently', async () => {
+            // Two separate unchanged runs around one change, so a reader needs two
+            // markers to know content was skipped in both places.
+            const lines = (mid: string) =>
+                ['a', 'b', 'c', 'd', 'e', mid, 'g', 'h', 'i', 'j'].join('\n') + '\n';
+
+            const wrapper = mount(Diff, {
+                props: { prev: lines('CHANGED'), current: lines('changed'), folding: true },
+            });
+            await settle();
+
+            const folds = wrapper.findAll('.vue-diff-line-fold');
+            expect(folds.length).toBeGreaterThan(0);
+
+            // The placeholder must carry no text of its own — the markers are CSS,
+            // so nothing here can be word-diffed or highlighted.
+            for (const fold of folds) expect(fold.text()).toBe('');
+        });
+
+        it('does not mark anything when folding is off', async () => {
+            const prev = ['a', 'b', 'c', 'CHANGED', 'e', 'f'].join('\n') + '\n';
+            const current = ['a', 'b', 'c', 'changed', 'e', 'f'].join('\n') + '\n';
+
+            const wrapper = mount(Diff, { props: { prev, current } });
+            await settle();
+
+            expect(wrapper.find('.vue-diff-line-fold').exists()).toBe(false);
+        });
+
+        it('marks folds in unified mode too', async () => {
+            const prev = ['a', 'b', 'c', 'd', 'CHANGED', 'f', 'g', 'h'].join('\n') + '\n';
+            const current = ['a', 'b', 'c', 'd', 'changed', 'f', 'g', 'h'].join('\n') + '\n';
+
+            const wrapper = mount(Diff, {
+                props: { prev, current, folding: true, mode: 'unified' },
+            });
+            await settle();
+
+            expect(wrapper.findAll('.vue-diff-line-fold').length).toBeGreaterThan(0);
+        });
+
+        it('renders a hunk header when foldMarker is hunk', async () => {
+            const lines = (mid: string) =>
+                ['a', 'b', 'c', 'd', 'e', 'f', mid, 'h', 'i', 'j'].join('\n') + '\n';
+
+            const wrapper = mount(Diff, {
+                props: {
+                    prev: lines('OLD'),
+                    current: lines('NEW'),
+                    folding: true,
+                    foldMarker: 'hunk',
+                },
+            });
+            await settle();
+
+            const hunk = wrapper.find('.vue-diff-fold-hunk');
+            expect(hunk.exists()).toBe(true);
+            // `@@ -start,count +start,count @@`
+            expect(hunk.text()).toMatch(/^@@ -\d+,\d+ \+\d+,\d+ @@$/);
+        });
+
+        it('renders no hunk header under the default dots marker', async () => {
+            const lines = (mid: string) =>
+                ['a', 'b', 'c', 'd', 'e', 'f', mid, 'h', 'i'].join('\n') + '\n';
+
+            const wrapper = mount(Diff, {
+                props: { prev: lines('OLD'), current: lines('NEW'), folding: true },
+            });
+            await settle();
+
+            expect(wrapper.find('.vue-diff-fold-hunk').exists()).toBe(false);
+            expect(wrapper.find('.vue-diff-line-fold').exists()).toBe(true);
+        });
+
+        it('counts the collapsed lines in the hunk header', async () => {
+            // 12 identical lines between two changes: the header must report the
+            // span, not a constant.
+            const middle = Array.from({ length: 12 }, (_, i) => `same ${i}`);
+            const prev = ['OLD', ...middle, 'tail'].join('\n') + '\n';
+            const current = ['NEW', ...middle, 'tail'].join('\n') + '\n';
+
+            const wrapper = mount(Diff, {
+                props: { prev, current, folding: true, foldMarker: 'hunk' },
+            });
+            await settle();
+
+            const text = wrapper.find('.vue-diff-fold-hunk').text();
+            const count = Number(/-\d+,(\d+)/.exec(text)?.[1]);
+            expect(count).toBeGreaterThan(1);
+        });
+
+        it('keeps changed lines visible alongside the markers', async () => {
+            const prev = ['a', 'b', 'c', 'd', 'e', 'OLD', 'g', 'h', 'i'].join('\n') + '\n';
+            const current = ['a', 'b', 'c', 'd', 'e', 'NEW', 'g', 'h', 'i'].join('\n') + '\n';
+
+            const wrapper = mount(Diff, { props: { prev, current, folding: true } });
+            await settle();
+
+            // Folding must never hide the change itself.
+            expect(wrapper.text()).toContain('OLD');
+            expect(wrapper.text()).toContain('NEW');
+        });
     });
 
     describe('null-ish input', () => {

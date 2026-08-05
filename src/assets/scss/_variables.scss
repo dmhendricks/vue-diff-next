@@ -14,6 +14,11 @@
     --vue-diff-added-bg: transparent;
     --vue-diff-removed-bg: transparent;
     --vue-diff-disabled-bg: transparent;
+    --vue-diff-fold-bg: transparent;
+    --vue-diff-fold-fg: inherit;
+    --vue-diff-fold-dot-size: 0.6em;
+    --vue-diff-fold-dot-spacing: 0.3em;
+    --vue-diff-fold-dot-opacity: 0.5;
     --vue-diff-added-gutter-bg: transparent;
     --vue-diff-removed-gutter-bg: transparent;
 

@@ -72,6 +72,46 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
                 meta.value[index] = { index, foldable, visible: true };
             }
         }
+
+        annotateFolds(next);
+    }
+
+    /**
+     * Record what each surviving marker row stands in for.
+     *
+     * A row is foldable only when the row before it is also unchanged, so the
+     * first unchanged row after a change always survives filtering — that
+     * survivor is the marker, and the foldable rows immediately after it are what
+     * it hides.
+     */
+    function annotateFolds(next: Lines[]): void {
+        if (!props.folding) return;
+
+        for (let index = 0; index < next.length; index++) {
+            const item = meta.value[index];
+            if (!item || item.foldable) continue;
+            if (next[index]?.[0]?.type !== 'equal') continue;
+
+            let end = index + 1;
+            while (meta.value[end]?.foldable) end++;
+
+            // A marker with nothing collapsed after it is just an unchanged line.
+            if (end === index + 1) continue;
+
+            const last = next[end - 1];
+            item.fold = {
+                count: end - index,
+                prevStart: numberOf(next[index], 0),
+                currentStart: numberOf(next[index], next[index]!.length > 1 ? 1 : 0),
+                prevEnd: numberOf(last, 0),
+                currentEnd: numberOf(last, last && last.length > 1 ? 1 : 0),
+            };
+        }
+    }
+
+    /** The line number on one side of a row, if that side has one. */
+    function numberOf(row: Lines | undefined, side: number): number | undefined {
+        return row?.[side]?.lineNum;
     }
 
     useDebouncedWatch(

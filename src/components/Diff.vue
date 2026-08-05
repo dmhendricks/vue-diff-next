@@ -11,6 +11,9 @@
                     :key="item.index"
                     :row="rows[item.index]!"
                     :language="language"
+                    :folding="folding"
+                    :fold-marker="foldMarker"
+                    :fold="item.fold"
                 />
             </div>
         </div>
@@ -21,7 +24,7 @@
 import { computed, ref, toRef } from 'vue';
 import DiffLine from './DiffLine.vue';
 import { useRender } from '../composables/useRender';
-import type { Mode, Theme, VirtualScroll } from '../types';
+import type { FoldMarker, Mode, Theme, VirtualScroll } from '../types';
 
 defineOptions({ name: 'Diff' });
 
@@ -40,6 +43,7 @@ const props = withDefaults(
         prev?: string | null;
         current?: string | null;
         folding?: boolean;
+        foldMarker?: FoldMarker;
         inputDelay?: number;
         /** `true` uses the original's defaults; an object overrides any subset. */
         virtualScroll?: boolean | Partial<VirtualScroll>;
@@ -57,6 +61,7 @@ const props = withDefaults(
         prev: '',
         current: '',
         folding: false,
+        foldMarker: 'dots',
         inputDelay: 0,
         virtualScroll: false,
         wrap: true,

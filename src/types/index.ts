@@ -43,10 +43,37 @@ export interface Meta {
     index: number;
     foldable: boolean;
     visible: boolean;
+    /**
+     * The run of unchanged lines this row stands in for, when folding is on.
+     *
+     * Only the `hunk` marker style needs it — the `dots` style renders the same
+     * regardless of how much was collapsed — but it is computed once here rather
+     * than recovered from the DOM.
+     */
+    fold?: FoldRange;
     /** Set by virtual scroll (phase 2) once heights are measured. */
     top?: number;
     height?: number;
 }
+
+/** The extent of a collapsed run, in 1-based line numbers per side. */
+export interface FoldRange {
+    /** How many rows the run spans, including this marker row. */
+    count: number;
+    prevStart?: number;
+    prevEnd?: number;
+    currentStart?: number;
+    currentEnd?: number;
+}
+
+/**
+ * How a collapsed run is marked.
+ *
+ * - `dots` — a centred `⋯` marker, as the original renders it.
+ * - `hunk` — a unified-diff header, `@@ -12,8 +12,8 @@`, which states how much
+ *   was skipped instead of only that something was.
+ */
+export type FoldMarker = 'dots' | 'hunk';
 
 /** Virtual scroll tuning. Defaults match the original when enabled with `true`. */
 export interface VirtualScroll {

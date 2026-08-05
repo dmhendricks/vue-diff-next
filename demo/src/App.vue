@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Diff } from '../../src';
-import type { Mode, Theme } from '../../src/types';
+import type { FoldMarker, Mode, Theme } from '../../src/types';
 import { MODES, THEMES, samples } from './samples';
 
 const sampleKey = ref(samples[0]!.key);
 const mode = ref<Mode>('split');
 const theme = ref<Theme>('dark');
 const folding = ref(false);
+const foldMarker = ref<FoldMarker>('dots');
 const wrap = ref(true);
 
 const sample = computed(() => samples.find((s) => s.key === sampleKey.value) ?? samples[0]!);
@@ -22,7 +23,7 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
         <header class="masthead">
             <h1>vue-diff-next</h1>
             <p class="tagline">
-                A modern, lightweight diff viewer for Vue 3 — the maintained successor to
+                A modern, lightweight diff viewer for Vue 3 — a successor to
                 <a href="https://github.com/hoiheart/vue-diff">vue-diff</a>.
             </p>
             <p class="links">
@@ -55,6 +56,14 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
                 </select>
             </label>
 
+            <label>
+                Fold marker
+                <select v-model="foldMarker" :disabled="!effectiveFolding">
+                    <option value="dots">dots</option>
+                    <option value="hunk">hunk</option>
+                </select>
+            </label>
+
             <div class="switches">
                 <label class="switch">
                     <input v-model="folding" type="checkbox" role="switch" />
@@ -79,6 +88,7 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
                 :prev="sample.prev"
                 :current="sample.current"
                 :folding="effectiveFolding"
+                :fold-marker="foldMarker"
                 :wrap="wrap"
                 :input-delay="sample.inputDelay ?? 0"
             />
@@ -241,8 +251,13 @@ body {
     background-position: right 0.625rem center;
 }
 
-.controls select:hover {
+.controls select:hover:not(:disabled) {
     border-color: var(--field-border-hover);
+}
+
+.controls select:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 .controls select:focus-visible {

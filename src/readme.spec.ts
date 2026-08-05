@@ -56,6 +56,7 @@ describe('README examples', () => {
             'prev',
             'current',
             'folding',
+            'foldMarker',
             'inputDelay',
             'virtualScroll',
             'wrap',

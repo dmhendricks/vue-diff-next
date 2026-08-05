@@ -92,6 +92,62 @@
     background: var(--vue-diff-removed-gutter-bg);
 }
 
+// A collapsed run of unchanged lines, marking where content was skipped rather
+// than dropping it silently. Both markers come from CSS, matching the original,
+// so the placeholder cells stay empty of real text.
+.vue-diff-line-fold {
+    background: var(--vue-diff-fold-bg);
+}
+
+// Inherits `text-align: right` from .vue-diff-line-num on purpose, so the '>'
+// lands in the same column as the line numbers above and below it.
+.vue-diff-line-num.vue-diff-line-fold {
+    font-size: 0.8em;
+    opacity: 0.8;
+
+    &::before {
+        content: '>';
+    }
+}
+
+.vue-diff-line.vue-diff-line-fold {
+    color: var(--vue-diff-fold-fg);
+    text-align: center;
+
+    // Separate bullets rather than U+22EF, whose dots are fixed and tight. '•'
+    // stays round in a monospace face, where '·' renders squarish. Size, spacing
+    // and opacity are all variables so the density is tunable.
+    //
+    // The colour is the theme's own foreground muted by opacity rather than a
+    // fixed grey, so it composites over whatever `--vue-diff-fold-bg` is — a
+    // custom theme gets a proportionally muted marker for free. Note this must
+    // stay `currentColor`, not white: on a light theme white goes paler, not
+    // dimmer, and the marker would vanish.
+    &::before {
+        content: '•••••';
+        letter-spacing: var(--vue-diff-fold-dot-spacing);
+        font-size: var(--vue-diff-fold-dot-size);
+        opacity: var(--vue-diff-fold-dot-opacity);
+        line-height: 1;
+        vertical-align: middle;
+    }
+}
+
+// The hunk header carries line numbers, so it is text rather than a pseudo
+// element. Suppress the dots when it is present.
+.vue-diff-line.vue-diff-line-fold:has(.vue-diff-fold-hunk)::before {
+    content: none;
+}
+
+.vue-diff-fold-hunk {
+    display: block;
+    padding-left: 0.5em;
+    text-align: left;
+    color: var(--vue-diff-fold-fg);
+    font-size: 0.95em;
+    white-space: pre;
+}
+
 // Change markers, as the original renders them: a +/- ahead of the code, so a
 // diff stays readable in monochrome. Applied to the <pre> rather than the flex
 // child, since a pseudo-element on the latter becomes its own flex line and

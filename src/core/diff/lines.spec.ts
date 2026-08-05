@@ -94,9 +94,7 @@ describe('toUnifiedLines', () => {
         const removed = rows.find((r) => r[0]!.type === 'removed');
         expect(removed?.[0]!.lineNum).toBeUndefined();
 
-        const nums = rows
-            .filter((r) => r[0]!.type !== 'removed')
-            .map((r) => r[0]!.lineNum);
+        const nums = rows.filter((r) => r[0]!.type !== 'removed').map((r) => r[0]!.lineNum);
         expect(nums).toEqual([1, 2, 3]);
     });
 

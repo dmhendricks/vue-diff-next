@@ -186,7 +186,9 @@ describe('Diff', () => {
 
     describe('virtualScroll', () => {
         it('applies the original default height when enabled with true', async () => {
-            const wrapper = mount(Diff, { props: { virtualScroll: true, prev: PREV, current: CURRENT } });
+            const wrapper = mount(Diff, {
+                props: { virtualScroll: true, prev: PREV, current: CURRENT },
+            });
             await settle();
             expect(wrapper.find('.vue-diff-viewer').attributes('style')).toContain('500px');
         });
@@ -204,6 +206,34 @@ describe('Diff', () => {
             await settle();
             const style = wrapper.find('.vue-diff-viewer').attributes('style');
             expect(style ?? '').not.toContain('height');
+        });
+
+        it('still renders content when enabled', async () => {
+            // Regression guard: enabling virtualScroll used to initialise every
+            // row as hidden, and since the windowing composable does not exist
+            // yet nothing ever made them visible again — so the whole diff
+            // vanished. The earlier tests only checked the container's height,
+            // which is why they missed it.
+            const wrapper = mount(Diff, {
+                props: { prev: PREV, current: CURRENT, virtualScroll: true },
+            });
+            await settle();
+
+            expect(wrapper.findAll('.vue-diff-row').length).toBeGreaterThan(0);
+            expect(wrapper.text()).toContain('line two');
+        });
+
+        it.each([
+            ['true', true],
+            ['an options object', { height: 300 }],
+        ])('renders the same rows with virtualScroll as %s', async (_label, virtualScroll) => {
+            const off = mount(Diff, { props: { prev: PREV, current: CURRENT } });
+            await settle();
+            const expected = off.findAll('.vue-diff-row').length;
+
+            const on = mount(Diff, { props: { prev: PREV, current: CURRENT, virtualScroll } });
+            await settle();
+            expect(on.findAll('.vue-diff-row')).toHaveLength(expected);
         });
     });
 
@@ -245,7 +275,10 @@ describe('install paths', () => {
 
     it('honours a custom componentName', async () => {
         const wrapper = mount(
-            { template: '<VueDiff :prev="p" :current="c" />', data: () => ({ p: PREV, c: CURRENT }) },
+            {
+                template: '<VueDiff :prev="p" :current="c" />',
+                data: () => ({ p: PREV, c: CURRENT }),
+            },
             { global: { plugins: [[VueDiffPlugin, { componentName: 'VueDiff' }]] } },
         );
         await settle();

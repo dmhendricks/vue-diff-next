@@ -35,6 +35,11 @@ export default ts.config(
         languageOptions: {
             globals: { ...globals.browser, ...globals.node },
         },
+        rules: {
+            // Specs legitimately call createApp more than once per file; the rule
+            // is about SFC authoring, not tests.
+            'vue/one-component-per-file': 'off',
+        },
     },
     {
         rules: {

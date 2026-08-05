@@ -31,7 +31,9 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
      * is always true until virtual scroll starts managing it.
      */
     const visibleRows = computed(() =>
-        meta.value.filter((item) => (props.folding ? !item.foldable && item.visible : item.visible)),
+        meta.value.filter((item) =>
+            props.folding ? !item.foldable && item.visible : item.visible,
+        ),
     );
 
     function build() {
@@ -55,11 +57,14 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
                 next[index - 1]?.[0]?.type === 'equal';
 
             if (options) {
-                // Virtual scroll owns visibility; start hidden and let it decide.
+                // Carry height/top so a future useVirtualScroll has somewhere to
+                // record measurements. Rows stay visible: until that composable
+                // exists nothing would ever flip them back on, and starting
+                // hidden renders an empty view.
                 meta.value[index] = {
                     index,
                     foldable,
-                    visible: previous?.visible ?? false,
+                    visible: previous?.visible ?? true,
                     top: previous?.top,
                     height: previous?.height ?? options.lineMinHeight,
                 };

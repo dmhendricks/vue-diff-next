@@ -85,12 +85,7 @@ export function composeSpans(tokens: Token[], segments: WordSegment[]): Composed
 }
 
 /** Append text, merging into the previous span when both classifications match. */
-function push(
-    spans: ComposedSpan[],
-    value: string,
-    type: string | null,
-    modified: boolean,
-): void {
+function push(spans: ComposedSpan[], value: string, type: string | null, modified: boolean): void {
     if (value === '') return;
 
     const last = spans[spans.length - 1];

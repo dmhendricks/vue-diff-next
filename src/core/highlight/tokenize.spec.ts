@@ -101,7 +101,11 @@ describe('losslessness invariant', () => {
             ['unterminated string', 'const s = "never closed', 'js'],
             ['unterminated comment', '/* never closed', 'css'],
             ['deeply nested', '{'.repeat(200) + '}'.repeat(200), 'json'],
-            ['many short lines', Array.from({ length: 500 }, (_, i) => `l${i}`).join('\n'), 'plain'],
+            [
+                'many short lines',
+                Array.from({ length: 500 }, (_, i) => `l${i}`).join('\n'),
+                'plain',
+            ],
             ['mixed scripts', 'ascii 中文 العربية 🎉 ñ', 'plain'],
             ['combining marks', 'é à', 'plain'],
             ['zero-width chars', 'a​b‍c', 'plain'],

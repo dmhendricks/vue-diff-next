@@ -43,10 +43,7 @@ describe('composeSpans', () => {
 
     it('handles boundaries that interleave from both sides', () => {
         // Tokens cut at 2/5, segments at 3/4 — every boundary must survive.
-        const spans = composeSpans(
-            [t('ab', 'a'), t('cde', 'b')],
-            [s('abc'), s('d', true), s('e')],
-        );
+        const spans = composeSpans([t('ab', 'a'), t('cde', 'b')], [s('abc'), s('d', true), s('e')]);
         expect(text(spans)).toBe('abcde');
         expect(spans).toEqual([
             { value: 'ab', type: 'a', modified: false },
@@ -146,9 +143,7 @@ describe('spansToHtml', () => {
 
             const withoutOurSpans = html.replace(/<\/?span[^>]*>/g, '');
             expect(withoutOurSpans).not.toMatch(/[<>]/);
-            expect(withoutOurSpans).toBe(
-                '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;',
-            );
+            expect(withoutOurSpans).toBe('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
         });
     });
 });

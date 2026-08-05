@@ -6,6 +6,8 @@ A modern, lightweight diff viewer component for Vue 3 — the maintained success
 Same props, same modes, same look. **16.3 kB gzip with 35 languages bundled**, versus roughly
 75 kB for the original covering 7.
 
+Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it in action.
+
 - **Drop-in replacement** — every `vue-diff` prop and default is preserved, verified against
   the original's own output
 - **35 languages**, all bundled; no per-language imports or registration
@@ -205,6 +207,8 @@ The component renders untrusted text as HTML, so escaping is a correctness requi
 than a detail. All text is escaped before insertion — the interim plain-text render and the
 final highlighted markup both — and the escaping boundary is a single small module with its
 own test suite covering `<script>` tags, inline event handlers, and attribute-breaking quotes.
+
+Found a hole? Please report it privately — see [SECURITY.md](SECURITY.md).
 
 ## Credit
 

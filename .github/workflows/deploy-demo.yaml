@@ -1,13 +1,9 @@
 name: Deploy demo
 
-## NOT YET ACTIVE.
+## Requires Pages source set to "GitHub Actions" — see RELEASING.md.
 #
-# The demo site and `vite.config.demo.ts` do not exist yet, so `npm run build:demo`
-# would fail. Only `workflow_dispatch` is enabled until they land — a push trigger
-# would leave a permanently red build on every commit.
-#
-# To activate: add the demo, set GitHub Pages' source to "GitHub Actions"
-# (see RELEASING.md), then uncomment the `push` trigger below.
+# The push trigger is commented out along with CI's while the project settles.
+# Deploys run on demand until then: `gh workflow run deploy-demo.yaml`.
 on:
   # push:
   #   branches: [main]

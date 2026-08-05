@@ -58,6 +58,11 @@ jobs:
       - name: Check packaging
         run: npm run check:exports
 
+      # The demo imports from src/, so it breaks when a public API changes. Building
+      # it here catches that in the gates rather than at deploy time.
+      - name: Build demo
+        run: npm run build:demo
+
   # A matrix job kept separate from the gate job: it re-runs only the parts whose
   # result can vary by Node version, and does not duplicate lint/format/packaging.
   #

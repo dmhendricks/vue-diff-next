@@ -100,5 +100,9 @@
     "vitest": "^4.1.10",
     "vue": "^3.5.41",
     "vue-tsc": "^3.3.9"
+  },
+  "allowScripts": {
+    "@parcel/watcher": true,
+    "fsevents": true
   }
 }

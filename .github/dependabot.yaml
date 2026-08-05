@@ -2,9 +2,12 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
+    # Monthly rather than weekly while the project is still taking shape. Security
+    # advisories are unscheduled and still arrive immediately, so this only slows
+    # routine version bumps.
     schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
+      interval: monthly
+    open-pull-requests-limit: 3
     groups:
       # One PR for the dev toolchain rather than a dozen: these only need CI to
       # pass, and reviewing them individually is noise.

@@ -31,21 +31,22 @@ jobs:
       pull-requests: write # open/update the "Version Packages" PR
       id-token: write # npm trusted publishing (OIDC) + provenance
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           # Changesets needs history to work out what changed since the last tag.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version-file: .nvmrc
-          cache: npm
+          # Not .nvmrc (Node 22) here: trusted publishing needs npm >= 11.5.1,
+          # and Node 24 is the first release to bundle a compliant npm. Pinning
+          # the version beats installing npm globally over the bundled one.
+          node-version: 24
           registry-url: https://registry.npmjs.org
-
-      # Node 22 bundles npm 10.x, but OIDC trusted publishing needs >= 11.5.1.
-      # Without this the publish step fails to authenticate.
-      - name: Upgrade npm for trusted publishing
-        run: npm install -g npm@latest
+          # No dependency cache in the publishing workflow: a poisoned cache can
+          # expose credentials — including the OIDC token — to attacker-controlled
+          # code. Upstream's own OIDC example disables it for this reason.
+          package-manager-cache: false
 
       - run: npm ci
 

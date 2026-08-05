@@ -18,10 +18,6 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Editor directories and files
-# Only extensions.json is shared — it recommends tooling without overriding
-# anyone's editor preferences. settings.json stays local: correctness is enforced
-# by .editorconfig, eslint.config.js, .prettierrc.json and CI, none of which
-# depend on an editor.
 .vscode/*
 !.vscode/extensions.json
 .idea

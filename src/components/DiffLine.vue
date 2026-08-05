@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import DiffCode from './DiffCode.vue';
 import type { FoldMarker, FoldRange, Lines, Meta, VirtualScroll } from '../types';
 
@@ -89,33 +89,95 @@ const rowStyle = computed(() => {
  * make the scrollbar lie.
  */
 let observer: ResizeObserver | undefined;
+let frame: number | undefined;
 
-onMounted(() => {
+function report(): void {
+    const node = element.value;
+    const meta = props.meta;
+    if (!node || !meta) return;
+    const height = node.offsetHeight;
+    if (height > 0 && height !== meta.height) emit('height', meta.index, height);
+}
+
+/**
+ * Start measuring this row, and keep measuring it as it reflows.
+ *
+ * Idempotent, because it runs both on mount and whenever measuring first becomes
+ * possible — `scrollOptions` can arrive after mount, and a row that bailed on the
+ * first attempt has to be picked up on the second.
+ */
+function observe(): void {
     if (!props.scrollOptions || !props.meta || !element.value) return;
 
-    const report = () => {
-        const node = element.value;
-        const meta = props.meta;
-        if (!node || !meta) return;
-        const height = node.offsetHeight;
-        if (height > 0 && height !== meta.height) emit('height', meta.index, height);
-    };
-
     report();
+
+    // Measure again after the browser has laid the row out.
+    //
+    // Mount fires once the row is in the DOM but before layout has necessarily
+    // settled, so a line that wraps to two rows can still report a single line's
+    // height. Reading in a rAF gets the post-layout value, which is what renders.
+    if (frame === undefined && typeof requestAnimationFrame !== 'undefined') {
+        frame = requestAnimationFrame(() => {
+            frame = undefined;
+            report();
+        });
+    }
 
     // Height changes on wrap, which happens on resize and when async highlighting
     // replaces the interim plain text. Guarded because jsdom has no
     // ResizeObserver: without it the initial `report` above still runs, so
     // heights are simply never revised.
-    if (typeof ResizeObserver === 'undefined') return;
+    if (observer || typeof ResizeObserver === 'undefined') return;
 
     observer = new ResizeObserver(report);
     observer.observe(element.value);
-});
+
+    // Observe each code cell as well, not just the row.
+    //
+    // In split mode a row's height is driven by the taller of its two cells, and
+    // the row itself carries `min-height: lineMinHeight`. While the content is
+    // still one line tall that floor means the row's own box does not change size
+    // as the highlighter swaps markup in and the text starts wrapping, so an
+    // observer on the row alone can stay silent while the row keeps its one-line
+    // measurement. The cells have no floor, so they do report the reflow.
+    for (const cell of element.value.querySelectorAll('.vue-diff-line')) {
+        observer.observe(cell);
+    }
+}
+
+onMounted(observe);
+
+/**
+ * Re-measure when the row changes, and start measuring if mount could not.
+ *
+ * Two distinct cases, both of which left rows stuck at their seeded estimate:
+ *
+ *  - `scrollOptions` is false at mount and becomes an object afterwards, which is
+ *    what happens when virtual scroll is toggled on or applied by a parent after
+ *    first paint. `onMounted` had already bailed, so the row never measured and
+ *    never got a ResizeObserver.
+ *  - `v-for` reuses component instances as the window slides, so a row that is
+ *    already mounted receives new content without mounting again.
+ *
+ * In both cases the row kept whichever height it was first measured at: rows that
+ * wrap to two lines stayed recorded as one line tall, and every row after them was
+ * positioned too high, so they overlapped.
+ *
+ * Measured after the DOM has been patched, hence the flush.
+ */
+watch(
+    () => [props.meta?.index, props.scrollOptions] as const,
+    () => observe(),
+    { flush: 'post' },
+);
 
 onBeforeUnmount(() => {
     observer?.disconnect();
     observer = undefined;
+    if (frame !== undefined) {
+        cancelAnimationFrame(frame);
+        frame = undefined;
+    }
 });
 
 /**

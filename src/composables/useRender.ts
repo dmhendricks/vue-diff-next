@@ -57,6 +57,16 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
                 next[index - 1]?.[0]?.type === 'equal';
 
             if (options) {
+                // Mutate in place when the row already exists, rather than
+                // replacing the object.
+                //
+                // Identity matters here: DiffLine captures its own `meta` object at
+                // mount and reports measured heights against it. This watcher is
+                // debounced, so it runs *after* those mounts — replacing the object
+                // would discard the measurement and reseed the estimate, and since
+                // the row is already mounted nothing would ever measure it again.
+                // Wrapped rows stayed at lineMinHeight forever and overlapped.
+                //
                 // Start hidden and let useVirtualScroll decide: it runs
                 // immediately, so the first paint is already windowed rather
                 // than mounting every row and then removing most of them.
@@ -64,13 +74,17 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
                 // An unmeasured row counts as lineMinHeight so the container's
                 // height starts approximately right and converges as the
                 // ResizeObserver reports real heights.
-                meta.value[index] = {
-                    index,
-                    foldable,
-                    visible: previous?.visible ?? false,
-                    top: previous?.top,
-                    height: previous?.height ?? options.lineMinHeight,
-                };
+                if (previous) {
+                    previous.foldable = foldable;
+                    previous.height ??= options.lineMinHeight;
+                } else {
+                    meta.value[index] = {
+                        index,
+                        foldable,
+                        visible: false,
+                        height: options.lineMinHeight,
+                    };
+                }
             } else {
                 meta.value[index] = { index, foldable, visible: true };
             }

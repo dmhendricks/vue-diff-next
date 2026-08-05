@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
 import type { Meta, VirtualScroll } from '../types';
 
@@ -30,17 +30,37 @@ export function useVirtualScroll(
      * Assigning `top` here as a side effect of the reduce mirrors the original:
      * the same pass that totals the height also records where each row sits.
      */
-    const minHeight = computed(() => {
-        if (!scrollOptions.value) return undefined;
+    /**
+     * A row's height for layout purposes.
+     *
+     * Falling back to `lineMinHeight` rather than 0 is essential: a row that has
+     * not reported yet still occupies space on screen, so treating it as zero
+     * stacks every later row on top of it. The fallback is also the floor, because
+     * `minHeight` on the row means a measurement below it cannot be what renders.
+     */
+    function heightOf(item: Meta, lineMinHeight: number): number {
+        return Math.max(item.height ?? lineMinHeight, lineMinHeight);
+    }
 
-        const total = meta.value.reduce((offset, item) => {
-            item.top = offset;
-            // A folded row occupies no space, so it must not advance the offset.
-            return item.foldable ? offset : offset + (item.height ?? 0);
-        }, 0);
+    /**
+     * Total height of every row, so the container scrolls the full distance even
+     * though most rows are absent from the DOM.
+     *
+     * Plain state rather than a computed, and `update()` is what maintains it.
+     *
+     * It used to be a computed that assigned each row's `top` as a side effect of
+     * totalling the height. That looked economical and was subtly broken: Vue
+     * deliberately ignores reactive writes performed while a computed is
+     * evaluating, so the new `top` values never invalidated the rows that read
+     * them. The heights were correct and the positions were stale, which stacked
+     * wrapped rows on top of each other. Positioning has to happen in an effect,
+     * not in a getter.
+     */
+    const totalHeight = ref(0);
 
-        return `${total}px`;
-    });
+    const minHeight = computed(() =>
+        scrollOptions.value ? `${totalHeight.value}px` : undefined,
+    );
 
     /**
      * Recompute which rows are visible, and where each one sits.
@@ -61,19 +81,40 @@ export function useVirtualScroll(
         const min = scrollTop - buffer;
         const max = scrollTop + options.height + buffer;
 
-        meta.value.reduce((offset, item) => {
-            item.visible = offset >= min && offset <= max;
+        const total = meta.value.reduce((offset, item) => {
+            const height = heightOf(item, options.lineMinHeight);
+            // Compare the row's whole extent, not just its start: a tall row whose
+            // top sits above the window can still occupy most of the viewport.
+            item.visible = offset + height >= min && offset <= max;
             item.top = offset;
-            return item.foldable ? offset : offset + (item.height ?? 0);
+            return item.foldable ? offset : offset + height;
         }, 0);
+
+        totalHeight.value = total;
     }
 
-    /** Record a row's measured height, and reflow if it changed. */
+    /**
+     * Record a row's measured height, and reflow if it changed.
+     *
+     * The reflow is coalesced to the next microtask. Rows report their heights
+     * individually but arrive in a burst — the whole first window measures in one
+     * tick — and reflowing per report would position later rows using the earlier
+     * rows' estimates, which is exactly the state that leaves the first paint
+     * overlapped. Batching means one pass over already-measured heights.
+     */
+    let pending = false;
+
     function setHeight(index: number, height: number): void {
         const item = meta.value[index];
         if (!item || item.height === height) return;
         item.height = height;
-        update();
+
+        if (pending) return;
+        pending = true;
+        void Promise.resolve().then(() => {
+            pending = false;
+            update();
+        });
     }
 
     // Throttle rather than debounce for scrolling: a debounce would leave the

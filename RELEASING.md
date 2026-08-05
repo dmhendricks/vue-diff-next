@@ -51,6 +51,20 @@ So a release is: merge the version PR. Nothing else.
 These are not in the workflow files because they're configured outside the repo.
 **All of them require the repo to be public.**
 
+### 0. Re-enable what was switched off during development
+
+Several triggers were deliberately disabled while the project was unstable. None of
+them announce themselves, so check each one before shipping:
+
+| File                                 | Change                                                |
+| ------------------------------------ | ----------------------------------------------------- |
+| `.github/workflows/ci.yaml`          | Uncomment the `push` trigger.                         |
+| `.github/workflows/release.yaml`     | Uncomment the `push` trigger (after step 1 below).    |
+| `.github/workflows/deploy-demo.yaml` | Uncomment the `push` trigger (after the demo exists). |
+| `.github/dependabot.yaml`            | npm interval back to `weekly`, PR limit back to `5`.  |
+
+Security advisories were never affected — those are unscheduled.
+
 ### 1. npm trusted publishing (OIDC)
 
 Publishing uses OIDC rather than a long-lived `NPM_TOKEN`, so there's no secret to

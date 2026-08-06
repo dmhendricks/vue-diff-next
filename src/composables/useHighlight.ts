@@ -38,6 +38,11 @@ export function useHighlight(source: () => HighlightSource) {
         (current) => {
             const { value, language, counterpart, words } = current;
 
+            // Invalidate any in-flight tokenize, including when the line clears.
+            // Without bumping here, a slow tokenize for the previous value can
+            // still resolve and write highlighted HTML into an empty cell.
+            const token = ++generation;
+
             if (value === '') {
                 html.value = '';
                 return;
@@ -45,9 +50,6 @@ export function useHighlight(source: () => HighlightSource) {
 
             // Paint escaped text now so there is never a blank frame.
             html.value = escapeHtml(value);
-
-            // Guards against an older, slower tokenize resolving last.
-            const token = ++generation;
 
             void tokenizeSource(value, language).then((tokens) => {
                 if (token !== generation) return;

@@ -91,6 +91,14 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
         }
 
         annotateFolds(next);
+
+        // Publish a new array identity after every rebuild.
+        //
+        // When virtual scroll is on we mutate existing Meta objects in place so
+        // DiffLine's height measurements survive. That means a same-length edit
+        // leaves `meta.length` unchanged — useVirtualScroll keys on the array
+        // reference so it can still re-window and recompute tops.
+        meta.value = meta.value.slice();
     }
 
     /**

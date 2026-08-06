@@ -421,6 +421,40 @@ describe('Diff', () => {
             expect(wrapper.findAll('.vue-diff-row').length).toBeGreaterThan(windowed);
             expect(wrapper.findAll('.vue-diff-row')).toHaveLength(400);
         });
+
+        it('re-windows after a same-length content edit', async () => {
+            // Regression: useRender mutates Meta in place under virtual scroll, so
+            // meta.length stays put when the line count does not change. Windowing
+            // must still recompute — foldable layout (and therefore scroll height)
+            // can change with no length delta.
+            const equal = Array.from({ length: 100 }, () => 'same').join('\n') + '\n';
+            const changed =
+                Array.from({ length: 100 }, (_, i) => (i === 50 ? 'DIFF' : 'same')).join('\n') +
+                '\n';
+
+            const wrapper = mount(Diff, {
+                props: {
+                    prev: equal,
+                    current: equal,
+                    folding: true,
+                    virtualScroll: { height: 500, lineMinHeight: 24 },
+                },
+            });
+            await settle();
+
+            const before =
+                wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
+            expect(before).toContain('min-height: 24px');
+
+            await wrapper.setProps({ current: changed });
+            await settle();
+
+            const after =
+                wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
+            const match = /min-height:\s*([\d.]+)px/.exec(after);
+            expect(match).not.toBeNull();
+            expect(Number(match![1])).toBeGreaterThan(24);
+        });
     });
 
     describe('highlighting', () => {

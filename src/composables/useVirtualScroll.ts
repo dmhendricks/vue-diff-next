@@ -156,19 +156,18 @@ export function useVirtualScroll(
         }
     }
 
-    // Window on the row count rather than on the inputs.
+    // Window whenever useRender publishes a new meta array — not on the inputs,
+    // and not only on length.
     //
     // Watching the inputs looks equivalent but is not: this composable's
     // immediate run would fire before useRender's debounced watcher had populated
     // `meta`, so it would window an empty array and nothing would ever become
-    // visible. Keying on the array's length instead means the first real pass
-    // happens as soon as there are rows to window, whatever order the watchers
-    // were registered in.
-    watch(
-        () => meta.value.length,
-        () => update(),
-        { immediate: true, flush: 'sync' },
-    );
+    // visible. useRender replaces the array (same Meta objects, new identity)
+    // after every rebuild, so the first real pass runs as soon as there are rows
+    // to window, and a same-length content edit still re-windows and recomputes
+    // tops. Length alone would miss that case: with virtual scroll on, build()
+    // mutates Meta in place and `meta.length` does not change.
+    watch(meta, () => update(), { immediate: true, flush: 'sync' });
 
     onMounted(() => {
         if (scrollOptions.value) attach();

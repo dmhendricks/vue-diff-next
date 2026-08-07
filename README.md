@@ -1,6 +1,6 @@
 # vue-diff-next
 
-A modern, lightweight diff viewer component for Vue 3 — a successor to
+A modern, lightweight diff viewer component for Vue 3. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
 Same props, same modes, same look. **16.3 kB gzip with 35 languages bundled**, versus roughly
@@ -8,8 +8,7 @@ Same props, same modes, same look. **16.3 kB gzip with 35 languages bundled**, v
 
 Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it in action.
 
-- **Drop-in replacement** — every `vue-diff` prop and default is preserved, verified against
-  the original's own output
+- **Drop-in replacement** — every `vue-diff` prop and default is preserved, verified against the original's own output
 - **35 languages**, all bundled; no per-language imports or registration
 - **Split and unified** modes, with word-level highlighting composed on top of syntax
   highlighting
@@ -269,14 +268,3 @@ final highlighted markup both — and the escaping boundary is a single small mo
 own test suite covering `<script>` tags, inline event handlers, and attribute-breaking quotes.
 
 Found a hole? Please report it privately — see [SECURITY.md](SECURITY.md).
-
-## Credit
-
-This is a from-scratch reimplementation of [`vue-diff`](https://github.com/hoiheart/vue-diff)
-by [hoiheart](https://github.com/hoiheart) (ISC), whose API and rendering behaviour it
-deliberately reproduces. The original was archived read-only in February 2025; this exists so
-that Vue 3 projects relying on it have a path forward.
-
-## License
-
-MIT

@@ -285,6 +285,31 @@ describe('Diff', () => {
             await nextTick();
             expect(wrapper.findAll('.vue-diff-row').length).toBeGreaterThan(1);
         });
+
+        it('picks up inputDelay changes after mount', async () => {
+            // Regression: delay used to be snapshotted once in useDebouncedWatch,
+            // so raising inputDelay later still re-rendered synchronously.
+            vi.useFakeTimers();
+            try {
+                const wrapper = mount(Diff, {
+                    props: { prev: 'a\n', current: 'a\n', inputDelay: 0 },
+                });
+                await nextTick();
+
+                await wrapper.setProps({ inputDelay: 100 });
+                await nextTick();
+
+                await wrapper.setProps({ current: 'a\nb\n' });
+                await nextTick();
+                expect(wrapper.findAll('.vue-diff-row')).toHaveLength(1);
+
+                vi.advanceTimersByTime(100);
+                await nextTick();
+                expect(wrapper.findAll('.vue-diff-row').length).toBeGreaterThan(1);
+            } finally {
+                vi.useRealTimers();
+            }
+        });
     });
 
     describe('virtualScroll', () => {

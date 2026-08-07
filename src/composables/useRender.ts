@@ -142,7 +142,7 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
     useDebouncedWatch(
         [() => props.mode, () => props.prev, () => props.current, () => props.folding],
         build,
-        { delay: props.inputDelay, immediate: true },
+        { delay: () => props.inputDelay, immediate: true },
     );
 
     return { rows, meta, visibleRows };

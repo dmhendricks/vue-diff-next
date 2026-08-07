@@ -30,8 +30,7 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
             <header class="masthead">
                 <h1>vue-diff-next</h1>
                 <p class="tagline">
-                    A modern, lightweight diff viewer for Vue 3 — a successor to
-                    <a href="https://github.com/hoiheart/vue-diff">vue-diff</a>.
+                    A modern, lightweight diff viewer for Vue 3.
                 </p>
                 <p class="links">
                     <a href="https://github.com/dmhendricks/vue-diff-next">GitHub</a>
@@ -136,9 +135,7 @@ import 'vue-diff-next/style.css';
 
             <footer class="footer">
                 <small>
-                    MIT licensed. A from-scratch reimplementation of
-                    <a href="https://github.com/hoiheart/vue-diff">vue-diff</a>, archived in
-                    February 2025.
+                    MIT licensed
                 </small>
             </footer>
         </div>

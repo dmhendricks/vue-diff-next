@@ -51,14 +51,19 @@ export function useHighlight(source: () => HighlightSource) {
             // Paint escaped text now so there is never a blank frame.
             html.value = escapeHtml(value);
 
-            void tokenizeSource(value, language).then((tokens) => {
-                if (token !== generation) return;
+            void tokenizeSource(value, language)
+                .then((tokens) => {
+                    if (token !== generation) return;
 
-                const segments =
-                    words && counterpart !== undefined ? diffWords(counterpart, value) : [];
+                    const segments =
+                        words && counterpart !== undefined ? diffWords(counterpart, value) : [];
 
-                html.value = spansToHtml(composeSpans(tokens, segments));
-            });
+                    html.value = spansToHtml(composeSpans(tokens, segments));
+                })
+                .catch(() => {
+                    if (token !== generation) return;
+                    html.value = escapeHtml(value);
+                });
         },
         { immediate: true, deep: true },
     );

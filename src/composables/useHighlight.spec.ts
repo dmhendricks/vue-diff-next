@@ -72,4 +72,23 @@ describe('useHighlight', () => {
 
         scope.stop();
     });
+
+    it('keeps escaped plaintext when tokenize rejects', async () => {
+        tokenizeSource.mockRejectedValueOnce(new Error('tokenizer failed'));
+
+        const scope = effectScope();
+        const { html } = scope.run(() =>
+            useHighlight(() => ({
+                value: '<bad>',
+                language: 'js',
+                words: false,
+            })),
+        )!;
+
+        await Promise.resolve();
+        await nextTick();
+        expect(html.value).toBe('&lt;bad&gt;');
+
+        scope.stop();
+    });
 });

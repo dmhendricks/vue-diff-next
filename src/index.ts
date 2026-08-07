@@ -40,6 +40,8 @@ export type {
     Line,
     Lines,
     Meta,
+    FoldRange,
+    FoldMarker,
     VirtualScroll,
     PluginOptions,
 } from './types';

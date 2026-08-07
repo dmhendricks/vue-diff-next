@@ -47,6 +47,18 @@ describe('README examples', () => {
         expect(app.component('VueDiff')).toBeDefined();
     });
 
+    it('exports folding types for consumers', async () => {
+        // Type-only re-exports are erased at runtime, so assert the entry's
+        // public `export type` list still names the folding surface.
+        const { readFileSync } = await import('node:fs');
+        const { dirname, join } = await import('node:path');
+        const { fileURLToPath } = await import('node:url');
+        const source = readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'index.ts'), 'utf8');
+        const exported = source.match(/export type \{([^}]+)\}/s)?.[1] ?? '';
+        expect(exported).toMatch(/\bFoldMarker\b/);
+        expect(exported).toMatch(/\bFoldRange\b/);
+    });
+
     it('documents every prop the component actually accepts', async () => {
         const { Diff } = await import('./index');
         const documented = [

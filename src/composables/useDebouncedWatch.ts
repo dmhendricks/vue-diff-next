@@ -4,19 +4,8 @@ import type { WatchSource } from 'vue';
 export type DebouncedWatchDelay = number | (() => number);
 
 /**
- * Watch sources, running the callback at most once per `delay` ms of quiet.
- *
- * Replaces `@vueuse/core`'s `debouncedWatch`, which was the original's only use
- * of that dependency worth keeping. A delay of 0 runs synchronously with the
- * watcher rather than deferring by a timer, so `inputDelay: 0` (the default)
- * behaves exactly like a plain watch.
- *
- * `delay` may be a getter so callers can react to prop changes (e.g.
- * `inputDelay`) without recreating the watcher. The value is read on each
- * source change, not once at setup.
- *
- * The timer is cleared when the owning scope is disposed, so a component
- * unmounted mid-debounce never fires into a dead instance.
+ * Debounced multi-source watch. `delay: 0` runs synchronously; a getter delay
+ * is re-read on each source change (so `inputDelay` can change after mount).
  */
 export function useDebouncedWatch(
     sources: WatchSource[],
@@ -43,9 +32,7 @@ export function useDebouncedWatch(
         () => {
             const delay = resolveDelay();
 
-            // The initial run is never debounced, so content paints straight
-            // away even with a large inputDelay. Matches @vueuse/core's
-            // debouncedWatch({ immediate: true }), which the original relied on.
+            // First immediate run is never debounced (vue-diff parity).
             const isFirstImmediateRun = first && (options.immediate ?? false);
             first = false;
 

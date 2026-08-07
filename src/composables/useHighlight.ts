@@ -5,32 +5,17 @@ import { composeSpans, spansToHtml } from '../core/highlight/compose';
 import { tokenizeSource } from '../core/highlight/tokenize';
 
 export interface HighlightSource {
-    /** The line's text. */
     value: string;
     language: unknown;
-    /** Counterpart text to word-diff against, when this line was modified. */
+    /** Other side of a modified split row, for word-diff. */
     counterpart?: string;
-    /** Whether to word-diff at all (the row's `chkWords`). */
+    /** Whether to word-diff (the row's `chkWords`). */
     words: boolean;
 }
 
-/**
- * Produce highlighted HTML for one line.
- *
- * Highlighting is asynchronous because the tokenizer resolves grammars lazily,
- * so this renders **escaped plain text immediately** and upgrades to highlighted
- * markup when tokenizing resolves. The original was synchronous internally but
- * rendered the same way in practice — its `Code.vue` starts from `ref('')` and
- * fills it from a watcher inside `onMounted`, so it also paints unhighlighted
- * first. The visible behaviour matches; ours is one microtask later.
- *
- * Escaping the interim value matters as much as escaping the final one: both
- * reach the DOM through `v-html`.
- */
+/** Async per-line highlight: escaped plaintext first, upgraded when tokenize resolves. */
 export function useHighlight(source: () => HighlightSource) {
     const html = ref('');
-
-    // Declared before the watcher: `immediate: true` runs it synchronously.
     let generation = 0;
 
     watch(
@@ -38,9 +23,7 @@ export function useHighlight(source: () => HighlightSource) {
         (current) => {
             const { value, language, counterpart, words } = current;
 
-            // Invalidate any in-flight tokenize, including when the line clears.
-            // Without bumping here, a slow tokenize for the previous value can
-            // still resolve and write highlighted HTML into an empty cell.
+            // Bump before empty return — stale tokenize must not repaint a cleared cell.
             const token = ++generation;
 
             if (value === '') {
@@ -48,7 +31,6 @@ export function useHighlight(source: () => HighlightSource) {
                 return;
             }
 
-            // Paint escaped text now so there is never a blank frame.
             html.value = escapeHtml(value);
 
             void tokenizeSource(value, language)

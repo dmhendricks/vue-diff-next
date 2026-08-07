@@ -11,25 +11,11 @@ export interface RenderProps {
     inputDelay: number;
 }
 
-/**
- * Build the diff rows and the per-row metadata array beside them.
- *
- * The metadata array is the structural decision the whole render path rests on.
- * The template iterates a *filtered* view of it, never the raw rows, so folding
- * (here) and virtual scrolling (phase 2) both work by flipping flags rather than
- * touching the rendered content. Skipping this layer would make phase 2 a
- * rewrite instead of an addition.
- */
+/** Build diff rows and parallel per-row metadata (folding + virtual scroll flags). */
 export function useRender(props: RenderProps, scrollOptions: () => false | VirtualScroll) {
-    // shallowRef: rows are replaced wholesale and never mutated in place, so
-    // deep reactivity would only cost traversal on every diff.
     const rows = shallowRef<Lines[]>([]);
     const meta = ref<Meta[]>([]);
 
-    /**
-     * What actually renders. With folding on, foldable rows drop out; `visible`
-     * is always true until virtual scroll starts managing it.
-     */
     const visibleRows = computed(() =>
         meta.value.filter((item) =>
             props.folding ? !item.foldable && item.visible : item.visible,
@@ -40,7 +26,6 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
         const next = renderLines(props.mode, props.prev, props.current);
         rows.value = next;
 
-        // Drop metadata for rows that no longer exist.
         meta.value.splice(next.length);
 
         const options = scrollOptions();
@@ -48,32 +33,14 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
         for (let index = 0; index < next.length; index++) {
             const previous = meta.value[index];
 
-            // Foldable only when this row *and* the one before it are unchanged,
-            // so the first equal row after a change survives as context. Matches
-            // the original's rule exactly.
+            // First equal after a change is not foldable — it survives as context.
             const foldable =
                 props.folding &&
                 next[index]?.[0]?.type === 'equal' &&
                 next[index - 1]?.[0]?.type === 'equal';
 
             if (options) {
-                // Mutate in place when the row already exists, rather than
-                // replacing the object.
-                //
-                // Identity matters here: DiffLine captures its own `meta` object at
-                // mount and reports measured heights against it. This watcher is
-                // debounced, so it runs *after* those mounts — replacing the object
-                // would discard the measurement and reseed the estimate, and since
-                // the row is already mounted nothing would ever measure it again.
-                // Wrapped rows stayed at lineMinHeight forever and overlapped.
-                //
-                // Start hidden and let useVirtualScroll decide: it runs
-                // immediately, so the first paint is already windowed rather
-                // than mounting every row and then removing most of them.
-                //
-                // An unmeasured row counts as lineMinHeight so the container's
-                // height starts approximately right and converges as the
-                // ResizeObserver reports real heights.
+                // Keep Meta object identity — DiffLine reports heights against it.
                 if (previous) {
                     previous.foldable = foldable;
                     previous.height ??= options.lineMinHeight;
@@ -92,28 +59,12 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
 
         annotateFolds(next);
 
-        // Publish a new array identity after every rebuild.
-        //
-        // When virtual scroll is on we mutate existing Meta objects in place so
-        // DiffLine's height measurements survive. That means a same-length edit
-        // leaves `meta.length` unchanged — useVirtualScroll keys on the array
-        // reference so it can still re-window and recompute tops.
+        // New array identity so useVirtualScroll re-windows on same-length edits.
         meta.value = meta.value.slice();
     }
 
-    /**
-     * Record what each surviving marker row stands in for.
-     *
-     * A row is foldable only when the row before it is also unchanged, so the
-     * first unchanged row after a change always survives filtering — that
-     * survivor becomes the marker when something follows it to collapse.
-     * Isolated equals keep no `fold` and render as normal context lines.
-     *
-     * Cleared on every rebuild first: under virtual scroll Meta objects are
-     * reused in place, so a stale `fold` would otherwise keep showing a marker
-     * after the collapse went away.
-     */
     function annotateFolds(next: Lines[]): void {
+        // Clear first: Meta is reused under virtual scroll, so stale fold would stick.
         for (const item of meta.value) {
             if (item) item.fold = undefined;
         }
@@ -128,7 +79,6 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
             let end = index + 1;
             while (meta.value[end]?.foldable) end++;
 
-            // A marker with nothing collapsed after it is just an unchanged line.
             if (end === index + 1) continue;
 
             const last = next[end - 1];
@@ -142,7 +92,6 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
         }
     }
 
-    /** The line number on one side of a row, if that side has one. */
     function numberOf(row: Lines | undefined, side: number): number | undefined {
         return row?.[side]?.lineNum;
     }

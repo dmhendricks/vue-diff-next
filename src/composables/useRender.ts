@@ -106,10 +106,18 @@ export function useRender(props: RenderProps, scrollOptions: () => false | Virtu
      *
      * A row is foldable only when the row before it is also unchanged, so the
      * first unchanged row after a change always survives filtering — that
-     * survivor is the marker, and the foldable rows immediately after it are what
-     * it hides.
+     * survivor becomes the marker when something follows it to collapse.
+     * Isolated equals keep no `fold` and render as normal context lines.
+     *
+     * Cleared on every rebuild first: under virtual scroll Meta objects are
+     * reused in place, so a stale `fold` would otherwise keep showing a marker
+     * after the collapse went away.
      */
     function annotateFolds(next: Lines[]): void {
+        for (const item of meta.value) {
+            if (item) item.fold = undefined;
+        }
+
         if (!props.folding) return;
 
         for (let index = 0; index < next.length; index++) {

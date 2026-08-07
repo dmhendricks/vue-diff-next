@@ -11,7 +11,6 @@
                     :key="item.index"
                     :row="rows[item.index]!"
                     :language="language"
-                    :folding="folding"
                     :fold-marker="foldMarker"
                     :fold="item.fold"
                     :meta="item"
@@ -23,8 +22,13 @@
     </div>
 </template>
 
+<script lang="ts">
+/** One warn per page load — multiple Diff instances should not spam the console. */
+let warnedMissingStyles = false;
+</script>
+
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import DiffLine from './DiffLine.vue';
 import { useRender } from '../composables/useRender';
 import { useVirtualScroll } from '../composables/useVirtualScroll';
@@ -114,4 +118,21 @@ const renderProps = {
 const { rows, meta, visibleRows } = useRender(renderProps, () => scrollOptions.value);
 
 const { minHeight, setHeight } = useVirtualScroll(viewer, scrollOptions, meta);
+
+onMounted(() => {
+    // Skip Vitest: component specs mount without the stylesheet on purpose.
+    if (!import.meta.env.DEV || import.meta.env.VITEST || warnedMissingStyles) return;
+
+    const root = viewer.value?.parentElement;
+    if (!root) return;
+
+    // Loaded CSS always defines `--vue-diff-bg` (theme color or the base
+    // `transparent`). An empty value means `style.css` was never imported.
+    if (getComputedStyle(root).getPropertyValue('--vue-diff-bg').trim()) return;
+
+    warnedMissingStyles = true;
+    console.warn(
+        '[vue-diff-next] Stylesheet not detected. Import "vue-diff-next/style.css" — the component ships unstyled without it.',
+    );
+});
 </script>

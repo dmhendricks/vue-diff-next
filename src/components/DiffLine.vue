@@ -45,7 +45,6 @@ const props = withDefaults(
     defineProps<{
         row: Lines;
         language?: string;
-        folding?: boolean;
         foldMarker?: FoldMarker;
         fold?: FoldRange;
         /** Positioning data; only supplied when virtual scroll is on. */
@@ -54,7 +53,6 @@ const props = withDefaults(
     }>(),
     {
         language: 'plaintext',
-        folding: false,
         foldMarker: 'dots',
         fold: undefined,
         meta: undefined,
@@ -202,11 +200,12 @@ const cells = computed(() => props.row);
 /**
  * Whether this row stands in for a collapsed run of unchanged lines.
  *
- * `useRender` filters out every foldable row, and a row is only foldable when the
- * one before it is also unchanged — so the first unchanged row after a change
- * always survives the filter. That survivor is what marks the gap.
+ * Keyed on `fold`, not merely "equal + folding": `useRender` only annotates a
+ * range when something was actually collapsed after this row. An isolated equal
+ * line (nothing to hide) keeps its content as context instead of becoming a
+ * hollow dots marker.
  */
-const isFold = computed(() => props.folding && props.row[0]?.type === 'equal');
+const isFold = computed(() => Boolean(props.fold));
 
 /**
  * The other side's text, for word-diffing a modified line.

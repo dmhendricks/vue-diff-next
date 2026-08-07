@@ -202,6 +202,22 @@ describe('Diff', () => {
             expect(wrapper.text()).toContain('OLD');
             expect(wrapper.text()).toContain('NEW');
         });
+
+        it('renders an isolated equal line as content, not a fold marker', async () => {
+            // One unchanged line between two changes: nothing to collapse, so the
+            // row must keep its text rather than becoming hollow dots.
+            const wrapper = mount(Diff, {
+                props: {
+                    prev: 'OLD\nsame\nTAIL\n',
+                    current: 'NEW\nsame\nTAIL2\n',
+                    folding: true,
+                },
+            });
+            await settle();
+
+            expect(wrapper.find('.vue-diff-line-fold').exists()).toBe(false);
+            expect(wrapper.text()).toContain('same');
+        });
     });
 
     describe('null-ish input', () => {

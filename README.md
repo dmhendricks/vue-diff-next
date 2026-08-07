@@ -223,8 +223,13 @@ Same behaviour, different internals:
 
 ## Large diffs
 
-A few thousand rows lay out and paint slowly — the cost is DOM size, not diffing. Pass
-`virtualScroll` to render only the rows near the viewport:
+A few thousand rows lay out and paint slowly — the cost is **DOM size and
+per-line highlighting**, not diffing. Each visible row tokenizes asynchronously;
+without windowing, a large file means thousands of DOM nodes and thousands of
+highlight passes.
+
+**Use `virtualScroll` for large diffs.** It renders only the rows near the
+viewport:
 
 ```vue
 <Diff :virtual-scroll="true" :prev="before" :current="after" />
@@ -251,7 +256,7 @@ height — so the container's scroll height converges on the truth as rows repor
 the scrollbar reflects the whole diff rather than only what is rendered.
 
 Measured on a 2000-line diff in a 500px viewer: **53 rows in the DOM instead of 2000**,
-with a 48,000px scroll range.
+with a 48,000px scroll range. Only those visible rows are highlighted.
 
 ## Not yet implemented
 

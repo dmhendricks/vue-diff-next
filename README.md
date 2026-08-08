@@ -2,7 +2,7 @@
 
 ![vue-diff-next screenshot, split mode](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/.github/assets/screenshot.png)
 
-A modern, lightweight diff viewer component for Vue 3.5+. Inspired by
+A lightweight diff viewer component for Vue 3.5+. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
 Same props, same modes, same look. **18.4 kB gzip with 35 languages bundled**, versus roughly
@@ -14,8 +14,6 @@ Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it 
 - **35 languages**, all bundled; no per-language imports or registration
 - **Split and unified** modes, with word-level highlighting composed on top of syntax
   highlighting
-- **ESM only**, zero configuration, two small runtime dependencies
-- **TypeScript** declarations included
 
 ## Install
 
@@ -67,14 +65,6 @@ createApp(App).use(VueDiff).mount('#app');
 | `inputDelay`    | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.            |
 | `virtualScroll` | `boolean \| { height, lineMinHeight, delay }` | `false`       | Render only the rows near the viewport. See [Large diffs](#large-diffs). |
 | `wrap`          | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead.        |
-
-Every default matches `vue-diff` — including `theme`, which defaults to **`dark`**.
-
-`wrap` and `foldMarker` are the only props the original lacked, and both default to reproducing
-its behaviour: it always wrapped, and it always marked folds with dots.
-
-Unlike the original, `prev` and `current` accept `null` and `undefined`, which are treated as
-empty strings.
 
 ## Migrating from `vue-diff`
 

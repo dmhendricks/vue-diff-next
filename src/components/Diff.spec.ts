@@ -1,14 +1,40 @@
 import { describe, it, expect, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { mount, type VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import Diff from './Diff.vue';
 import VueDiffPlugin, { Diff as NamedDiff } from '../index';
+import type { FoldMarker, Mode, Theme, VirtualScroll } from '../types';
 
 /** Let the async highlight settle so rendered markup is final. */
 async function settle() {
     await nextTick();
     await Promise.resolve();
     await nextTick();
+}
+
+/**
+ * Diff's public props.
+ *
+ * `wrapper.setProps` is typed from `$props`, and under Volar that often collapses
+ * to attrs-only for `<script setup>` SFCs — so a direct `setProps({ virtualScroll })`
+ * fails typecheck even though runtime and `mount({ props })` are fine. This helper
+ * keeps the callsites honest without casting at every use.
+ */
+type DiffProps = {
+    mode?: Mode;
+    theme?: Theme;
+    language?: string;
+    prev?: string | null;
+    current?: string | null;
+    folding?: boolean;
+    foldMarker?: FoldMarker;
+    inputDelay?: number;
+    virtualScroll?: boolean | Partial<VirtualScroll>;
+    wrap?: boolean;
+};
+
+function setDiffProps(wrapper: VueWrapper, props: Partial<DiffProps>) {
+    return wrapper.setProps(props as never);
 }
 
 const PREV = 'line one\nline two\nline three\n';
@@ -253,7 +279,7 @@ describe('Diff', () => {
             await settle();
             expect(wrapper.text()).toContain('a');
 
-            await wrapper.setProps({ prev: 'a\n', current: 'a\nb\nc\n' });
+            await setDiffProps(wrapper, { prev: 'a\n', current: 'a\nb\nc\n' });
             await settle();
 
             expect(wrapper.text()).toContain('b');
@@ -266,7 +292,7 @@ describe('Diff', () => {
             await settle();
             expect(wrapper.find('.vue-diff-row').findAll('.vue-diff-line')).toHaveLength(2);
 
-            await wrapper.setProps({ mode: 'unified' });
+            await setDiffProps(wrapper, { mode: 'unified' });
             await settle();
             expect(wrapper.find('.vue-diff-row').findAll('.vue-diff-line')).toHaveLength(1);
         });
@@ -281,7 +307,7 @@ describe('Diff', () => {
                 });
                 await nextTick();
 
-                await wrapper.setProps({ current: 'a\nb\n' });
+                await setDiffProps(wrapper, { current: 'a\nb\n' });
                 await nextTick();
                 // Still debounced: the new line must not be rendered yet.
                 expect(wrapper.findAll('.vue-diff-row')).toHaveLength(1);
@@ -297,7 +323,7 @@ describe('Diff', () => {
         it('renders synchronously when inputDelay is 0 (the default)', async () => {
             const wrapper = mount(Diff, { props: { prev: 'a\n', current: 'a\n' } });
             await nextTick();
-            await wrapper.setProps({ current: 'a\nb\n' });
+            await setDiffProps(wrapper, { current: 'a\nb\n' });
             await nextTick();
             expect(wrapper.findAll('.vue-diff-row').length).toBeGreaterThan(1);
         });
@@ -312,10 +338,10 @@ describe('Diff', () => {
                 });
                 await nextTick();
 
-                await wrapper.setProps({ inputDelay: 100 });
+                await setDiffProps(wrapper, { inputDelay: 100 });
                 await nextTick();
 
-                await wrapper.setProps({ current: 'a\nb\n' });
+                await setDiffProps(wrapper, { current: 'a\nb\n' });
                 await nextTick();
                 expect(wrapper.findAll('.vue-diff-row')).toHaveLength(1);
 
@@ -456,7 +482,7 @@ describe('Diff', () => {
             await settle();
             const windowed = wrapper.findAll('.vue-diff-row').length;
 
-            await wrapper.setProps({ virtualScroll: false });
+            await setDiffProps(wrapper, { virtualScroll: false });
             await settle();
 
             expect(wrapper.findAll('.vue-diff-row').length).toBeGreaterThan(windowed);
@@ -486,7 +512,7 @@ describe('Diff', () => {
             const before = wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
             expect(before).toContain('min-height: 24px');
 
-            await wrapper.setProps({ current: changed });
+            await setDiffProps(wrapper, { current: changed });
             await settle();
 
             const after = wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';

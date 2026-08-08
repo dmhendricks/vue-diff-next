@@ -138,26 +138,58 @@ export function findUser(users: readonly User[], id: string): Result<User> {
         title: 'HTML',
         group: 'Languages',
         language: 'html',
-        prev: `<div class="card">
-  <h2 class="title">Old heading</h2>
-  <p>Some text here.</p>
-  <ul>
-    <li>One</li>
-    <li>Two</li>
-  </ul>
-  <img src="a.png" alt="">
-</div>
+        prev: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Testing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href="https://example.com/" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+    <a href="#content" class="sr-only" accesskey="s">
+        Skip to main content
+    </a>
+
+    <main id="content" tabindex="-1">
+        <p>This is a test.</p>
+        <p id="status">The DOM is loaded!</p>
+    </main>
+
+    <footer>Copyright &copy;2026</footer>
+
+    <script src="https://unpkg.com/jquery/jquery.min.js"></script>
+</body>
+</html>
 `,
-        current: `<div class="card card--wide" data-id="7">
-  <h2 class="title">New heading</h2>
-  <p>Some other text here.</p>
-  <ul>
-    <li>One</li>
-    <li>Two</li>
-    <li>Three</li>
-  </ul>
-  <img src="b.webp" alt="A picture" loading="lazy">
-</div>
+        current: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Demo Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href="https://github.com" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://unpkg.com/basscss/basscss.min.css" />
+</head>
+<body>
+    <a href="#content" class="sr-only" accesskey="s">
+        Skip to main content
+    </a>
+
+    <h3>Welcome</h3>
+
+    <main id="content" tabindex="-1">
+        <div>This is a demo page.</div>
+        <p id="status">The DOM is loaded!</p>
+    </main>
+
+    <footer>Copyright &copy;2026</footer>
+
+    <script src="https://unpkg.com/jquery/jquery.min.js?ver=4.0.0"></script>
+</body>
+</html>
 `,
     },
     {

@@ -16,6 +16,61 @@ const sample = computed(() => samples.find((s) => s.key === sampleKey.value) ?? 
 // A sample that exists to demonstrate folding switches it on by itself, so the
 // preset isn't silently doing nothing when you pick it.
 const effectiveFolding = computed(() => folding.value || sample.value.folding === true);
+
+/**
+ * Usage snippet that tracks the live controls — not a static README excerpt.
+ *
+ * Defaults (folding off, wrap on, no virtual scroll) stay off the tag so the
+ * copy-paste stays short; toggles and sample-driven options appear when active.
+ */
+const usageSnippet = computed(() => {
+    const attrs = [
+        `mode="${mode.value}"`,
+        `theme="${theme.value}"`,
+        `language="${sample.value.language}"`,
+        ':prev="before"',
+        ':current="after"',
+    ];
+
+    if (effectiveFolding.value) {
+        attrs.push(':folding="true"');
+        if (foldMarker.value !== 'dots') {
+            attrs.push(`fold-marker="${foldMarker.value}"`);
+        }
+    }
+
+    // wrap defaults to true; only the opt-out is worth showing.
+    if (!wrap.value) {
+        attrs.push(':wrap="false"');
+    }
+
+    const scroll = sample.value.virtualScroll;
+    if (scroll) {
+        attrs.push(
+            scroll === true
+                ? ':virtual-scroll="true"'
+                : `:virtual-scroll='${JSON.stringify(scroll)}'`,
+        );
+    }
+
+    const delay = sample.value.inputDelay;
+    if (delay) {
+        attrs.push(`:input-delay="${delay}"`);
+    }
+
+    const indented = attrs.map((line) => `    ${line}`).join('\n');
+
+    return `<script setup>
+import { Diff } from 'vue-diff-next';
+import 'vue-diff-next/style.css';
+<\/script>
+
+<template>
+  <Diff
+${indented}
+  />
+</template>`;
+});
 </script>
 
 <template>
@@ -117,20 +172,7 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
             <section class="section">
                 <h2>Usage</h2>
                 <pre class="code"><code>npm install vue-diff-next</code></pre>
-                <pre class="code"><code>&lt;script setup&gt;
-import { Diff } from 'vue-diff-next';
-import 'vue-diff-next/style.css';
-&lt;/script&gt;
-
-&lt;template&gt;
-  &lt;Diff
-    mode="{{ mode }}"
-    theme="{{ theme }}"
-    language="{{ sample.language }}"
-    :prev="before"
-    :current="after"
-  /&gt;
-&lt;/template&gt;</code></pre>
+                <pre class="code"><code>{{ usageSnippet }}</code></pre>
             </section>
 
             <footer class="footer">

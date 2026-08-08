@@ -53,7 +53,10 @@ describe('README examples', () => {
         const { readFileSync } = await import('node:fs');
         const { dirname, join } = await import('node:path');
         const { fileURLToPath } = await import('node:url');
-        const source = readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'index.ts'), 'utf8');
+        const source = readFileSync(
+            join(dirname(fileURLToPath(import.meta.url)), 'index.ts'),
+            'utf8',
+        );
         const exported = source.match(/export type \{([^}]+)\}/s)?.[1] ?? '';
         expect(exported).toMatch(/\bFoldMarker\b/);
         expect(exported).toMatch(/\bFoldRange\b/);

@@ -84,9 +84,7 @@ ${indented}
         <div class="shell">
             <header class="masthead">
                 <h1>vue-diff-next</h1>
-                <p class="tagline">
-                    A modern, lightweight diff viewer for Vue 3.
-                </p>
+                <p class="tagline">A modern, lightweight diff viewer for Vue 3.</p>
                 <p class="links">
                     <a href="https://github.com/dmhendricks/vue-diff-next">GitHub</a>
                     <a href="https://www.npmjs.com/package/vue-diff-next">npm</a>
@@ -176,9 +174,7 @@ ${indented}
             </section>
 
             <footer class="footer">
-                <small>
-                    MIT licensed
-                </small>
+                <small> MIT licensed </small>
             </footer>
         </div>
     </div>

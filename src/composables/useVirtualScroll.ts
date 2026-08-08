@@ -17,9 +17,7 @@ export function useVirtualScroll(
     // and leaves wrapped rows overlapping.
     const totalHeight = ref(0);
 
-    const minHeight = computed(() =>
-        scrollOptions.value ? `${totalHeight.value}px` : undefined,
-    );
+    const minHeight = computed(() => (scrollOptions.value ? `${totalHeight.value}px` : undefined));
 
     function update(): void {
         const options = scrollOptions.value;

@@ -128,11 +128,9 @@ export function toUnifiedLines(pairs: ChunkPair[]): Lines[] {
     let lineNum = 0;
 
     for (const [prevChunk, currentChunk] of pairs) {
-        const modification =
-            prevChunk.type === 'removed' && currentChunk.type === 'added';
+        const modification = prevChunk.type === 'removed' && currentChunk.type === 'added';
         const prevLines = prevChunk.type === 'removed' ? toLines(prevChunk.value) : [];
-        const currentLines =
-            currentChunk.type !== 'disabled' ? toLines(currentChunk.value) : [];
+        const currentLines = currentChunk.type !== 'disabled' ? toLines(currentChunk.value) : [];
 
         if (prevChunk.type === 'removed') {
             for (let i = 0; i < prevLines.length; i++) {

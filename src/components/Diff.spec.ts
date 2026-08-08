@@ -483,15 +483,13 @@ describe('Diff', () => {
             });
             await settle();
 
-            const before =
-                wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
+            const before = wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
             expect(before).toContain('min-height: 24px');
 
             await wrapper.setProps({ current: changed });
             await settle();
 
-            const after =
-                wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
+            const after = wrapper.find('.vue-diff-viewer-inner').attributes('style') ?? '';
             const match = /min-height:\s*([\d.]+)px/.exec(after);
             expect(match).not.toBeNull();
             expect(Number(match![1])).toBeGreaterThan(24);

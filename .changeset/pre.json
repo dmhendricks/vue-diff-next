@@ -1,0 +1,8 @@
+{
+  "mode": "pre",
+  "tag": "rc",
+  "initialVersions": {
+    "vue-diff-next": "0.1.0"
+  },
+  "changesets": ["initial-release"]
+}

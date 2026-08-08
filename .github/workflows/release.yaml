@@ -1,8 +1,17 @@
 name: Release
 
+## The push trigger stays off until the first publish has happened by hand.
+#
+# Publishing authenticates purely via npm trusted publishing (OIDC) with no
+# NODE_AUTH_TOKEN fallback, and trusted publishing cannot be configured on a
+# package that does not yet exist on the registry. Enabling this before
+# `1.0.0-rc.0` is published manually gives a release run that fails to
+# authenticate on every push to main.
+#
+# Re-enable once the package exists on npm and OIDC is configured for it.
 on:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
   workflow_dispatch:
 
 # Two pushes releasing at once would race on the version-bump PR and the

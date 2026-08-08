@@ -5,7 +5,7 @@
 A modern, lightweight diff viewer component for Vue 3.5+. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
-Same props, same modes, same look. **16.3 kB gzip with 35 languages bundled**, versus roughly
+Same props, same modes, same look. **18.4 kB gzip with 35 languages bundled**, versus roughly
 75 kB for the original covering 7.
 
 Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it in action.
@@ -135,13 +135,13 @@ visible as context.
 Pass any of these to `language`. Aliases in the right column resolve to the same grammar, so
 highlight.js names and file extensions both work:
 
-| Group             | Languages                                        | Also accepted                                                             |
-| ----------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
-| **Web**           | `html` `css` `js` `ts` `json` `xml`              | `htm` `vue` · `scss` `sass` `less` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` |
-| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`  | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck` |
-| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md`             | `yml` · `conf` `cfg` · `markdown`                                         |
-| **Shell & ops**   | `bash` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `dockerfile` · `makefile` · `patch` · `url`     |
-| **Other**         | `regex` `todo` `plain`                           | `plaintext` `text`                                                        |
+| Group             | Languages                                              | Also accepted                                                                                    |
+| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| **Web**           | `html` `css` `js` `ts` `json` `xml`                    | `htm` `vue` · `scss` `sass` `less` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` |
+| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`        | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck`    |
+| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md`                   | `yml` · `conf` `cfg` · `markdown`                                                                |
+| **Shell & ops**   | `bash` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `dockerfile` · `makefile` · `patch` · `url`                                 |
+| **Other**         | `regex` `todo` `plain`                                 | `plaintext` `text`                                                                               |
 
 Plus three sub-grammars for narrower cases: `jsdoc`, `js_template_literals`, and
 `leanpub-md`.
@@ -193,10 +193,10 @@ Measured with `gzip -9` on the built output:
 
 |              | This library | Original `vue-diff`                          |
 | ------------ | ------------ | -------------------------------------------- |
-| Component JS | **15.1 kB**  | 29.8 kB                                      |
-| CSS          | **1.2 kB**   | 1.3 kB                                       |
+| Component JS | **17.0 kB**  | 29.8 kB                                      |
+| CSS          | **1.4 kB**   | 1.3 kB                                       |
 | Highlighter  | **bundled**  | + 44.5 kB (`highlight.js` core + 7 grammars) |
-| **Total**    | **16.3 kB**  | **~75.6 kB**                                 |
+| **Total**    | **18.4 kB**  | **~75.6 kB**                                 |
 | Languages    | **35**       | 7                                            |
 
 Vue is a peer dependency and is not bundled. The highlighter and diff engine are, so the total

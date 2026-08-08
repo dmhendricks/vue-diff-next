@@ -1,6 +1,6 @@
 # vue-diff-next
 
-![vue-diff-next screenshot, split mode](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/.github/assets/screenshot.png)
+![vue-diff-next screenshot, split mode](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/.github/assets/screenshot.jpg)
 
 A lightweight diff viewer component for Vue 3.5+. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.

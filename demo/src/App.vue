@@ -186,10 +186,9 @@ ${indented}
 
 <style>
 /*
-  Design vocabulary borrowed from the style-detective options page: dark-first
-  with coral and green accents, elevated translucent surfaces, and a fixed
-  gradient "atmosphere" behind the content. Full-width rather than that page's
-  narrow container, since a side-by-side diff wants the room.
+  Dark-first demo chrome: coral and green accents, elevated translucent
+  surfaces, and a fixed gradient atmosphere behind the content. Full width,
+  since a side-by-side diff wants the room.
 */
 
 .page {
@@ -213,8 +212,8 @@ ${indented}
     --vd-glow: color-mix(in srgb, var(--vd-coral) 28%, transparent);
     --vd-grid: color-mix(in srgb, #9aa6b8 7%, transparent);
 
-    /* system-ui rather than style-detective's Avenir Next lead: that is
-       macOS-only, so the page rendered differently per platform for no benefit. */
+    /* Cross-platform stack — avoid macOS-only faces that make the demo look
+       different per OS for no benefit. */
     --vd-font-sans:
         system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', ui-sans-serif, sans-serif;
     --vd-font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', ui-monospace, monospace;

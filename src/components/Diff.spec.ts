@@ -246,9 +246,9 @@ describe('Diff', () => {
     });
 
     describe('reactivity', () => {
-        it('re-renders when prev/current change, with no :key remount hack', async () => {
-            // The CMS wrapper had to force remounts via a content-hash :key to
-            // work around stale state. Ours must not need that.
+        it('re-renders when prev/current change without remounting', async () => {
+            // Prop updates must refresh the rows in place — consumers should not
+            // need a :key remount to clear stale state.
             const wrapper = mount(Diff, { props: { prev: 'a\n', current: 'a\n' } });
             await settle();
             expect(wrapper.text()).toContain('a');

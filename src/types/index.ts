@@ -27,6 +27,14 @@ export interface Line {
     value?: string;
     /** Whether this line should be word-diffed against its counterpart. */
     chkWords?: boolean;
+    /**
+     * Other side of a modification, for word-diffing.
+     *
+     * Split mode supplies this via the sibling cell on the same row. Unified
+     * mode stores it here so a one-cell removed/added row can still highlight
+     * intra-line changes.
+     */
+    counterpart?: string;
     [key: string]: unknown;
 }
 

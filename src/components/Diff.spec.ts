@@ -520,6 +520,20 @@ describe('Diff', () => {
             await settle();
             expect(wrapper.find('.vue-diff-modified').exists()).toBe(true);
         });
+
+        it('marks word-level changes in unified mode too', async () => {
+            const wrapper = mount(Diff, {
+                props: {
+                    mode: 'unified',
+                    prev: 'the quick fox\n',
+                    current: 'the slow fox\n',
+                },
+            });
+            await settle();
+            expect(wrapper.findAll('.vue-diff-modified').length).toBeGreaterThan(0);
+            expect(wrapper.find('.vue-diff-line-removed .vue-diff-modified').exists()).toBe(true);
+            expect(wrapper.find('.vue-diff-line-added .vue-diff-modified').exists()).toBe(true);
+        });
     });
 });
 

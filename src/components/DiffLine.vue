@@ -210,10 +210,12 @@ const isFold = computed(() => Boolean(props.fold));
 /**
  * The other side's text, for word-diffing a modified line.
  *
- * Only meaningful in split mode, where index 0 is prev and index 1 is current.
- * Unified rows hold a single cell and have no counterpart to compare against.
+ * Split: sibling cell on the same row. Unified: `counterpart` stamped on the
+ * cell when `toUnifiedLines` pairs a removal with its addition.
  */
 function counterpartFor(index: number): string | undefined {
+    const cell = props.row[index];
+    if (cell?.counterpart !== undefined) return cell.counterpart;
     if (props.row.length < 2) return undefined;
     const other = props.row[index === 0 ? 1 : 0];
     return other?.value;

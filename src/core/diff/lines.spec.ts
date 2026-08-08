@@ -104,6 +104,39 @@ describe('toUnifiedLines', () => {
         expect(removedValues).toEqual(['a', 'b']);
     });
 
+    it('word-diffs aligned lines of a modification', () => {
+        const rows = toUnifiedLines(pairChunks('a\nb\nc\n', 'a\nX\nc\n'));
+        const removed = rows.find((r) => r[0]!.type === 'removed')![0]!;
+        const added = rows.find((r) => r[0]!.type === 'added')![0]!;
+
+        expect(removed.chkWords).toBe(true);
+        expect(removed.counterpart).toBe('X');
+        expect(added.chkWords).toBe(true);
+        expect(added.counterpart).toBe('b');
+    });
+
+    it('does not word-diff a pure addition or removal', () => {
+        const added = toUnifiedLines(pairChunks('a\n', 'a\nb\n'));
+        expect(added.every((r) => !r[0]!.chkWords)).toBe(true);
+
+        const removed = toUnifiedLines(pairChunks('a\nb\n', 'a\n'));
+        expect(removed.every((r) => !r[0]!.chkWords)).toBe(true);
+    });
+
+    it('only word-diffs the overlapping prefix of unequal hunks', () => {
+        // Two removed lines, one added: only the first removed pairs with the add.
+        const rows = toUnifiedLines(pairChunks('a\nb\n', 'X\n'));
+        const removed = rows.filter((r) => r[0]!.type === 'removed').map((r) => r[0]!);
+        const added = rows.find((r) => r[0]!.type === 'added')![0]!;
+
+        expect(removed[0]!.chkWords).toBe(true);
+        expect(removed[0]!.counterpart).toBe('X');
+        expect(removed[1]!.chkWords).toBe(false);
+        expect(removed[1]!.counterpart).toBeUndefined();
+        expect(added.chkWords).toBe(true);
+        expect(added.counterpart).toBe('a');
+    });
+
     it('renders content when prev and current are identical', () => {
         const rows = toUnifiedLines(pairChunks('a\nb\n', 'a\nb\n'));
         expect(rows.map((r) => r[0]!.value)).toEqual(['a', 'b']);

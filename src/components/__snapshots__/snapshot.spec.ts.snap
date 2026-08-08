@@ -36,15 +36,15 @@ exports[`rendered output > split > identical input still renders every line 1`] 
 exports[`rendered output > split > markup in content is escaped, not rendered 1`] = `"[removed 1] {removed "<script>alert(1)</script>"} [added 1] {added "<script>alert(2)</script>"}"`;
 
 exports[`rendered output > unified > a modified line word-diffs against its counterpart 1`] = `
-"[removed] {removed "const greeting = \\"Hello\\";" <kwd oper str>}
-[added 1] {added "const greeting = \\"Goodbye\\";" <kwd oper str>}"
+"[removed] {removed "const greeting = \\"Hello\\";" <kwd oper str str.modified str>}
+[added 1] {added "const greeting = \\"Goodbye\\";" <kwd oper str str.modified str>}"
 `;
 
 exports[`rendered output > unified > a multi-line replacement expands to the longer side 1`] = `
-"[removed] {removed "one"}
+"[removed] {removed "one" <modified>}
 [removed] {removed "two"}
 [removed] {removed "three"}
-[added 1] {added "ONE"}"
+[added 1] {added "ONE" <modified>}"
 `;
 
 exports[`rendered output > unified > a removal pads the other side 1`] = `
@@ -59,14 +59,14 @@ exports[`rendered output > unified > an addition pads the other side 1`] = `
 
 exports[`rendered output > unified > collapsed runs are marked with a hunk header 1`] = `
 "[fold] {hunk @@ -1,9 +1,9 @@}
-[removed] {removed "OLD"}
-[added 10] {added "NEW"}"
+[removed] {removed "OLD" <modified>}
+[added 10] {added "NEW" <modified>}"
 `;
 
 exports[`rendered output > unified > collapsed runs are marked with dots 1`] = `
 "[fold] {fold —}
-[removed] {removed "OLD"}
-[added 10] {added "NEW"}"
+[removed] {removed "OLD" <modified>}
+[added 10] {added "NEW" <modified>}"
 `;
 
 exports[`rendered output > unified > identical input still renders every line 1`] = `

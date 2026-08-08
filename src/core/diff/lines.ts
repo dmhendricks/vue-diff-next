@@ -118,22 +118,50 @@ export function toSplitLines(pairs: ChunkPair[]): Lines[] {
  *
  * Only the current side is numbered — removed lines have no line number in the
  * result, matching the original.
+ *
+ * When a pair is a modification (removed + added), each aligned line gets
+ * `chkWords` and a `counterpart` so word-level highlighting works the same as
+ * split mode. Unequal hunk lengths only word-diff the overlapping prefix.
  */
 export function toUnifiedLines(pairs: ChunkPair[]): Lines[] {
     const rows: Lines[] = [];
     let lineNum = 0;
 
     for (const [prevChunk, currentChunk] of pairs) {
+        const modification =
+            prevChunk.type === 'removed' && currentChunk.type === 'added';
+        const prevLines = prevChunk.type === 'removed' ? toLines(prevChunk.value) : [];
+        const currentLines =
+            currentChunk.type !== 'disabled' ? toLines(currentChunk.value) : [];
+
         if (prevChunk.type === 'removed') {
-            for (const value of toLines(prevChunk.value)) {
-                rows.push([{ type: 'removed', lineNum: undefined, value }]);
+            for (let i = 0; i < prevLines.length; i++) {
+                const counterpart = modification ? currentLines[i] : undefined;
+                rows.push([
+                    {
+                        type: 'removed',
+                        lineNum: undefined,
+                        value: prevLines[i],
+                        chkWords: counterpart !== undefined,
+                        counterpart,
+                    },
+                ]);
             }
         }
 
         if (currentChunk.type !== 'disabled') {
-            for (const value of toLines(currentChunk.value)) {
+            for (let i = 0; i < currentLines.length; i++) {
                 lineNum += 1;
-                rows.push([{ type: currentChunk.type, lineNum, value }]);
+                const counterpart = modification ? prevLines[i] : undefined;
+                rows.push([
+                    {
+                        type: currentChunk.type,
+                        lineNum,
+                        value: currentLines[i],
+                        chkWords: counterpart !== undefined,
+                        counterpart,
+                    },
+                ]);
             }
         }
     }

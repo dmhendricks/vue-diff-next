@@ -132,22 +132,21 @@ visible as context.
 
 ## Languages
 
-Pass any of these to `language`:
+Pass any of these to `language`. Aliases in the right column resolve to the same grammar, so
+highlight.js names and file extensions both work:
 
-```
-asm   bash  bf    c     css   csv   diff  docker  git   go
-html  http  ini   java  js    json  log   lua     make  md
-pl    plain py    regex rs    sql   todo  toml    ts    uri
-xml   yaml
-```
+| Group             | Languages                                        | Also accepted                                                             |
+| ----------------- | ------------------------------------------------ | ------------------------------------------------------------------------- |
+| **Web**           | `html` `css` `js` `ts` `json` `xml`              | `htm` `vue` · `scss` `sass` `less` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` |
+| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`  | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck` |
+| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md`             | `yml` · `conf` `cfg` · `markdown`                                         |
+| **Shell & ops**   | `bash` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `dockerfile` · `makefile` · `patch` · `url`     |
+| **Other**         | `regex` `todo` `plain`                           | `plaintext` `text`                                                        |
 
 Plus three sub-grammars for narrower cases: `jsdoc`, `js_template_literals`, and
 `leanpub-md`.
 
-Common aliases resolve automatically, so highlight.js names and file extensions both work:
-`javascript` → `js`, `typescript` → `ts`, `plaintext` → `plain`, `markdown` → `md`,
-`python` → `py`, `rust` → `rs`, `shell` → `bash`, `yml` → `yaml`, `scss`/`sass`/`less` → `css`,
-`jsx` → `js`, `tsx` → `ts`, and others.
+Matching is case-insensitive and surrounding whitespace is ignored.
 
 **An unknown language renders as plain text rather than throwing**, so user-supplied language
 names are safe to pass straight through.

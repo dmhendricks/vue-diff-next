@@ -53,6 +53,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
+
       - name: package.json version must match tag
         run: |
           VERSION="${{ steps.tag.outputs.version }}"
@@ -112,6 +115,9 @@ jobs:
           package-manager-cache: false
 
       - run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install chromium --with-deps
 
       - name: package.json version must match tag
         run: |

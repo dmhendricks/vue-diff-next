@@ -138,26 +138,33 @@ export function findUser(users: readonly User[], id: string): Result<User> {
         title: 'HTML',
         group: 'Languages',
         language: 'html',
-        prev: `<div class="card">
-  <h2 class="title">Old heading</h2>
-  <p>Some text here.</p>
-  <ul>
-    <li>One</li>
-    <li>Two</li>
-  </ul>
-  <img src="a.png" alt="">
-</div>
+        prev: `<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Diff</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="/dev/main.ts"></script>
+</body>
+</html>
 `,
-        current: `<div class="card card--wide" data-id="7">
-  <h2 class="title">New heading</h2>
-  <p>Some other text here.</p>
-  <ul>
-    <li>One</li>
-    <li>Two</li>
-    <li>Three</li>
-  </ul>
-  <img src="b.webp" alt="A picture" loading="lazy">
-</div>
+        current: `<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Diff</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900">
+  <div id="app"></div>
+  <script type="module" src="/dev/main.ts"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>
 `,
     },
     {

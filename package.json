@@ -1,6 +1,6 @@
 {
   "name": "vue-diff-next",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0",
   "description": "A modern, lightweight diff viewer component for Vue 3.5+",
   "license": "MIT",
   "author": {

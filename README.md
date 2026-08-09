@@ -88,6 +88,25 @@ Three things to know:
 - **`virtualScroll` behaves as it did**, windowing the output to what is near the
   viewport. See [Large diffs](#large-diffs).
 
+### How it differs internally
+
+Same behaviour, different internals:
+
+- **`diff` (jsdiff)** instead of `diff-match-patch` for line and word diffing.
+- **[`@speed-highlight/core`](https://github.com/speed-highlight/core)** instead of
+  `highlight.js`. The reduced library size is mostly the highlighter: `highlight.js`'s engine
+  alone is 22.4 kB gzip, while `@speed-highlight/core`'s engine plus all 35 of its grammars
+  is 9.9 kB.
+- **No `@vueuse/core`.** Its debounce was the only part used; that is now a few lines.
+- **Word-diff and syntax highlighting are composed at the token level.** The original injected
+  `<vue-diff-modified>` marker strings into the source before highlighting and string-replaced
+  them afterwards, which breaks if the content contains the marker. Here the two overlapping
+  classifications are merged by splitting the token stream at word boundaries, so no string
+  injection happens and content cannot impersonate a marker.
+- **Highlighting is asynchronous**, because grammars resolve lazily. Unhighlighted text paints
+  first and upgrades when highlighting resolves — which is what the original did in practice
+  too, since it also filled an initially empty element from a watcher.
+
 ## Folding
 
 With `folding`, runs of unchanged lines collapse to a single marker row, so a small change in a
@@ -177,41 +196,6 @@ Available properties: `--vue-diff-{bg,fg,font-family,font-size,line-height,gutte
 `--vue-diff-fold-{bg,fg}`, `--vue-diff-fold-dot-{size,spacing,opacity}`, `--vue-diff-fold-hunk-opacity`, and
 `--vue-diff-syn-{kwd,str,num,bool,cmnt,func,class,var,type,oper,section,insert,deleted,err}`.
 
-## Size
-
-Measured with `gzip -9` on the built output:
-
-|              | This library | Original `vue-diff`                          |
-| ------------ | ------------ | -------------------------------------------- |
-| Component JS | **17.0 kB**  | 29.8 kB                                      |
-| CSS          | **1.4 kB**   | 1.3 kB                                       |
-| Highlighter  | **bundled**  | + 44.5 kB (`highlight.js` core + 7 grammars) |
-| **Total**    | **18.4 kB**  | **~75.6 kB**                                 |
-| Languages    | **35**       | 7                                            |
-
-Vue is a peer dependency and is not bundled. The highlighter and diff engine are, so the total
-above is what a consumer actually downloads.
-
-The difference is mostly the highlighter: `highlight.js`'s engine alone is 22.4 kB gzip, while
-[`@speed-highlight/core`](https://github.com/speed-highlight/core)'s engine plus all 35 of its
-grammars is 9.9 kB.
-
-## How it differs internally
-
-Same behaviour, different internals:
-
-- **`diff` (jsdiff)** instead of `diff-match-patch` for line and word diffing.
-- **`@speed-highlight/core`** instead of `highlight.js`, for the size reason above.
-- **No `@vueuse/core`.** Its debounce was the only part used; that is now a few lines.
-- **Word-diff and syntax highlighting are composed at the token level.** The original injected
-  `<vue-diff-modified>` marker strings into the source before highlighting and string-replaced
-  them afterwards, which breaks if the content contains the marker. Here the two overlapping
-  classifications are merged by splitting the token stream at word boundaries, so no string
-  injection happens and content cannot impersonate a marker.
-- **Highlighting is asynchronous**, because grammars resolve lazily. Unhighlighted text paints
-  first and upgrades when highlighting resolves — which is what the original did in practice
-  too, since it also filled an initially empty element from a watcher.
-
 ## Large diffs
 
 A few thousand rows lay out and paint slowly — the cost is **DOM size and
@@ -248,13 +232,6 @@ the scrollbar reflects the whole diff rather than only what is rendered.
 
 Measured on a 2000-line diff in a 500px viewer: **53 rows in the DOM instead of 2000**,
 with a 48,000px scroll range. Only those visible rows are highlighted.
-
-## Not yet implemented
-
-- **Bundled themes beyond `dark` and `light`.** `theme="custom*"` covers this without adding
-  weight for everyone.
-- **A dedicated `scss` grammar.** `scss`, `sass`, and `less` currently use the `css` grammar,
-  which is lossless but does not specially mark `//` comments or `$variables`.
 
 ## Security
 

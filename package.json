@@ -59,9 +59,6 @@
     "format:check": "prettier --check .",
     "size": "node scripts/check-size.js",
     "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --ignore-rules cjs-resolves-to-esm",
-    "changeset": "changeset",
-    "changeset:version": "changeset version && npm install --package-lock-only",
-    "changeset:publish": "changeset publish",
     "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
     "prepublishOnly": "npm run verify"
   },
@@ -74,8 +71,6 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "@changesets/changelog-github": "^0.7.0",
-    "@changesets/cli": "^2.31.1",
     "@eslint/js": "^10.0.1",
     "@microsoft/api-extractor": "^7.58.12",
     "@types/node": "^26.1.2",

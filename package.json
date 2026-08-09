@@ -1,7 +1,7 @@
 {
   "name": "vue-diff-next",
-  "version": "0.1.0",
-  "description": "A modern, lightweight diff viewer component for Vue.js",
+  "version": "1.0.0-rc.0",
+  "description": "A modern, lightweight diff viewer component for Vue 3.5+",
   "license": "MIT",
   "author": {
     "name": "Daniel M. Hendricks",
@@ -62,7 +62,7 @@
     "changeset": "changeset",
     "changeset:version": "changeset version && npm install --package-lock-only",
     "changeset:publish": "changeset publish",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
+    "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
     "prepublishOnly": "npm run verify"
   },
   "peerDependencies": {

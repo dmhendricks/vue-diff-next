@@ -14,7 +14,7 @@ import { gzipSync } from 'node:zlib';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-/** Total gzip budget in bytes for dist JS + CSS. See "Realistic budget" in the plan. */
+/** Total gzip budget in bytes for dist JS + CSS (under the original's ~75 kB). */
 const BUDGET_BYTES = 23 * 1024;
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
@@ -61,8 +61,7 @@ console.log(`\n  budget ${kb(BUDGET_BYTES)} — using ${pct}%`);
 if (total > BUDGET_BYTES) {
     console.error(
         `\n✗ Size budget exceeded by ${kb(total - BUDGET_BYTES)}.\n` +
-            '  Either reduce the bundle or raise BUDGET_BYTES deliberately, ' +
-            'updating the budget table in the plan to match.',
+            '  Either reduce the bundle or raise BUDGET_BYTES in this script deliberately.',
     );
     process.exit(1);
 }

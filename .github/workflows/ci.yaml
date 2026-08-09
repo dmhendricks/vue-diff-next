@@ -1,12 +1,9 @@
 name: CI
 
 on:
-  # Disabled while the project is still settling, to keep every commit to main
-  # from triggering a run. Re-enable once the shape of things is stable.
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
   pull_request:
-  # Runs the gates on demand: `gh workflow run ci.yaml`.
   workflow_dispatch:
 
 # A second push to the same branch makes the first run's result irrelevant.

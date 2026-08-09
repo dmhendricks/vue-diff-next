@@ -40,8 +40,39 @@ describe('parity with vue-diff@1.2.4', () => {
                 // Round-trip through JSON so `undefined` properties compare the
                 // same way they do in the fixture.
                 const actual = JSON.parse(JSON.stringify(renderLines(mode, p, c)));
-                expect(actual).toEqual(expected[mode]);
+                expect(project(actual, expected[mode])).toEqual(expected[mode]);
             });
         }
+    }
+
+    /**
+     * Unified rows carry `chkWords`/`counterpart`, which the original never
+     * emitted — it word-diffed only in split mode, where a row has two cells to
+     * compare. Those fields are additive, so comparing them against a fixture
+     * captured from vue-diff@1.2.4 would fail on a deliberate enhancement.
+     *
+     * Narrowing each row to the keys the original produced keeps the guard
+     * strict where it matters: every field the original emitted must still match
+     * exactly, and a missing or altered one still fails. Only fields the
+     * original never had are ignored.
+     */
+    function project(actual: unknown, reference: unknown): unknown {
+        if (Array.isArray(reference)) {
+            return Array.isArray(actual)
+                ? actual.map((row, i) => project(row, reference[i]))
+                : actual;
+        }
+        if (reference && typeof reference === 'object' && actual && typeof actual === 'object') {
+            return Object.fromEntries(
+                Object.keys(reference).map((key) => [
+                    key,
+                    project(
+                        (actual as Record<string, unknown>)[key],
+                        (reference as Record<string, unknown>)[key],
+                    ),
+                ]),
+            );
+        }
+        return actual;
     }
 });

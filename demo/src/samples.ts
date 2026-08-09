@@ -138,31 +138,56 @@ export function findUser(users: readonly User[], id: string): Result<User> {
         title: 'HTML',
         group: 'Languages',
         language: 'html',
-        prev: `<!doctype html>
-<html>
+        prev: `<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue Diff</title>
+    <meta charset="utf-8" />
+    <title>Testing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href="https://example.com/" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <div id="app"></div>
-  <script type="module" src="/dev/main.ts"></script>
+    <a href="#content" class="sr-only" accesskey="s">
+        Skip to main content
+    </a>
+
+    <main id="content" tabindex="-1">
+        <p>This is a test.</p>
+        <p id="status">The DOM is loaded!</p>
+    </main>
+
+    <footer>Copyright &copy;2026</footer>
+
+    <script src="https://unpkg.com/jquery/jquery.min.js"></script>
 </body>
 </html>
 `,
-        current: `<!doctype html>
-<html>
+        current: `<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue Diff</title>
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <title>Demo Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href="https://github.com" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://unpkg.com/basscss/basscss.min.css" />
 </head>
-<body class="bg-gray-900">
-  <div id="app"></div>
-  <script type="module" src="/dev/main.ts"></script>
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+<body>
+    <a href="#content" class="sr-only" accesskey="s">
+        Skip to main content
+    </a>
+
+    <h3>Welcome</h3>
+
+    <main id="content" tabindex="-1">
+        <div>This is a demo page.</div>
+        <p id="status">The DOM is loaded!</p>
+    </main>
+
+    <footer>Copyright &copy;2026</footer>
+
+    <script src="https://unpkg.com/jquery/jquery.min.js?ver=4.0.0"></script>
 </body>
 </html>
 `,

@@ -7,9 +7,13 @@ Please report security issues privately, not as a public issue.
 Use GitHub's [private vulnerability reporting](https://github.com/dmhendricks/vue-diff-next/security/advisories/new),
 which opens a draft advisory visible only to the maintainers.
 
-Expect an initial response within a week. If a fix is warranted, it ships as a
-patch release and the advisory is published with credit unless you'd rather stay
-anonymous.
+I aim to acknowledge reports when I can. This is a best-effort,
+single-maintainer project — there is no guaranteed response time,
+and support may stop if the project is archived or abandoned.
+
+If a fix is warranted and the project is still maintained, it ships
+as a patch release and the advisory is published with credit unless
+you'd rather stay anonymous.
 
 ## Scope
 

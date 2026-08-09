@@ -22,17 +22,13 @@
     </div>
 </template>
 
-<script lang="ts">
-/** One warn per page load — multiple Diff instances should not spam the console. */
-let warnedMissingStyles = false;
-</script>
-
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import DiffLine from './DiffLine.vue';
 import { useRender } from '../composables/useRender';
 import { useVirtualScroll } from '../composables/useVirtualScroll';
 import type { FoldMarker, Mode, Theme, VirtualScroll } from '../types';
+import { missingStylesWarn } from './missingStylesWarn';
 
 defineOptions({ name: 'Diff' });
 
@@ -121,7 +117,7 @@ const { minHeight, setHeight } = useVirtualScroll(viewer, scrollOptions, meta);
 
 onMounted(() => {
     // Skip Vitest: component specs mount without the stylesheet on purpose.
-    if (!import.meta.env.DEV || import.meta.env.VITEST || warnedMissingStyles) return;
+    if (!import.meta.env.DEV || import.meta.env.VITEST || missingStylesWarn.warned) return;
 
     const root = viewer.value?.parentElement;
     if (!root) return;
@@ -130,7 +126,7 @@ onMounted(() => {
     // `transparent`). An empty value means `style.css` was never imported.
     if (getComputedStyle(root).getPropertyValue('--vue-diff-bg').trim()) return;
 
-    warnedMissingStyles = true;
+    missingStylesWarn.warned = true;
     console.warn(
         '[vue-diff-next] Stylesheet not detected. Import "vue-diff-next/style.css" — the component ships unstyled without it.',
     );

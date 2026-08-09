@@ -44,8 +44,8 @@ export type Lines = Line[];
  * Per-line render metadata, kept in an array parallel to the line data.
  *
  * The renderer always iterates a list filtered from this — never the raw diff
- * array — which is what lets folding (phase 1) and virtual scroll (phase 2)
- * both work by flipping flags rather than rewriting the render path.
+ * array — which is what lets folding and virtual scroll both work by flipping
+ * flags rather than rewriting the render path.
  */
 export interface Meta {
     index: number;
@@ -59,7 +59,7 @@ export interface Meta {
      * than recovered from the DOM.
      */
     fold?: FoldRange;
-    /** Set by virtual scroll (phase 2) once heights are measured. */
+    /** Set by virtual scroll once heights are measured. */
     top?: number;
     height?: number;
 }
@@ -77,7 +77,7 @@ export interface FoldRange {
 /**
  * How a collapsed run is marked.
  *
- * - `dots` — a centred `⋯` marker, as the original renders it.
+ * - `dots` — a centred `•••••` marker, as the original renders it.
  * - `hunk` — a unified-diff header, `@@ -12,8 +12,8 @@`, which states how much
  *   was skipped instead of only that something was.
  */

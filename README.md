@@ -1,9 +1,11 @@
 # vue-diff-next
 
-A modern, lightweight diff viewer component for Vue 3. Inspired by
+![vue-diff-next screenshot, split mode](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/.github/assets/screenshot.jpg)
+
+A lightweight diff viewer component for Vue 3.5+. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
-Same props, same modes, same look. **16.3 kB gzip with 35 languages bundled**, versus roughly
+Same props, same modes, same look. **18.4 kB gzip with 35 languages bundled**, versus roughly
 75 kB for the original covering 7.
 
 Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it in action.
@@ -12,8 +14,6 @@ Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it 
 - **35 languages**, all bundled; no per-language imports or registration
 - **Split and unified** modes, with word-level highlighting composed on top of syntax
   highlighting
-- **ESM only**, zero configuration, two small runtime dependencies
-- **TypeScript** declarations included
 
 ## Install
 
@@ -65,14 +65,6 @@ createApp(App).use(VueDiff).mount('#app');
 | `inputDelay`    | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.            |
 | `virtualScroll` | `boolean \| { height, lineMinHeight, delay }` | `false`       | Render only the rows near the viewport. See [Large diffs](#large-diffs). |
 | `wrap`          | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead.        |
-
-Every default matches `vue-diff` — including `theme`, which defaults to **`dark`**.
-
-`wrap` and `foldMarker` are the only props the original lacked, and both default to reproducing
-its behaviour: it always wrapped, and it always marked folds with dots.
-
-Unlike the original, `prev` and `current` accept `null` and `undefined`, which are treated as
-empty strings.
 
 ## Migrating from `vue-diff`
 
@@ -130,22 +122,21 @@ visible as context.
 
 ## Languages
 
-Pass any of these to `language`:
+Pass any of these to `language`. Aliases in the right column resolve to the same grammar, so
+highlight.js names and file extensions both work:
 
-```
-asm   bash  bf    c     css   csv   diff  docker  git   go
-html  http  ini   java  js    json  log   lua     make  md
-pl    plain py    regex rs    sql   todo  toml    ts    uri
-xml   yaml
-```
+| Group             | Languages                                              | Also accepted                                                                                    |
+| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| **Web**           | `html` `css` `js` `ts` `json` `xml`                    | `htm` `vue` · `scss` `sass` `less` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` |
+| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`        | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck`    |
+| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md`                   | `yml` · `conf` `cfg` · `markdown`                                                                |
+| **Shell & ops**   | `bash` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `dockerfile` · `makefile` · `patch` · `url`                                 |
+| **Other**         | `regex` `todo` `plain`                                 | `plaintext` `text`                                                                               |
 
 Plus three sub-grammars for narrower cases: `jsdoc`, `js_template_literals`, and
 `leanpub-md`.
 
-Common aliases resolve automatically, so highlight.js names and file extensions both work:
-`javascript` → `js`, `typescript` → `ts`, `plaintext` → `plain`, `markdown` → `md`,
-`python` → `py`, `rust` → `rs`, `shell` → `bash`, `yml` → `yaml`, `scss`/`sass`/`less` → `css`,
-`jsx` → `js`, `tsx` → `ts`, and others.
+Matching is case-insensitive and surrounding whitespace is ignored.
 
 **An unknown language renders as plain text rather than throwing**, so user-supplied language
 names are safe to pass straight through.
@@ -192,10 +183,10 @@ Measured with `gzip -9` on the built output:
 
 |              | This library | Original `vue-diff`                          |
 | ------------ | ------------ | -------------------------------------------- |
-| Component JS | **15.1 kB**  | 29.8 kB                                      |
-| CSS          | **1.2 kB**   | 1.3 kB                                       |
+| Component JS | **17.0 kB**  | 29.8 kB                                      |
+| CSS          | **1.4 kB**   | 1.3 kB                                       |
 | Highlighter  | **bundled**  | + 44.5 kB (`highlight.js` core + 7 grammars) |
-| **Total**    | **16.3 kB**  | **~75.6 kB**                                 |
+| **Total**    | **18.4 kB**  | **~75.6 kB**                                 |
 | Languages    | **35**       | 7                                            |
 
 Vue is a peer dependency and is not bundled. The highlighter and diff engine are, so the total

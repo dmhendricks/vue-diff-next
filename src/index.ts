@@ -18,8 +18,8 @@ const DEFAULT_COMPONENT_NAME = 'Diff';
  *   app.use(VueDiff)                                // registers <Diff>
  *   app.use(VueDiff, { componentName: 'VueDiff' })  // registers <VueDiff>
  *
- * The component can also be imported directly, bypassing the plugin. Both paths
- * are parity surface — the original's own tests cover both.
+ * The component can also be imported directly, bypassing the plugin. Both
+ * install paths are supported and covered by this package's tests.
  *
  * The default export is the plugin, not the component, matching the original.
  */

@@ -1,13 +1,14 @@
 name: Release
 
-## NOT YET ACTIVE.
+## The push trigger stays off until the first publish has happened by hand.
 #
-# `0.1.0` has not been published, and npm trusted publishing cannot be configured
-# on a package that does not exist yet. Publish once by hand, set up OIDC, then
-# uncomment the `push` trigger — see RELEASING.md, "One-time setup".
+# Publishing authenticates purely via npm trusted publishing (OIDC) with no
+# NODE_AUTH_TOKEN fallback, and trusted publishing cannot be configured on a
+# package that does not yet exist on the registry. Enabling this before
+# `1.0.0-rc.0` is published manually gives a release run that fails to
+# authenticate on every push to main.
 #
-# Until then only `workflow_dispatch` is enabled, so pushes to main don't attempt
-# a publish that would fail to authenticate.
+# Re-enable once the package exists on npm and OIDC is configured for it.
 on:
   # push:
   #   branches: [main]
@@ -67,5 +68,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # No NODE_AUTH_TOKEN: publishing authenticates via OIDC trusted
-          # publishing, configured on the npm package (see RELEASING.md).
+          # publishing, configured on the npm package.
           NPM_CONFIG_PROVENANCE: true

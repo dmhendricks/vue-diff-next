@@ -1,21 +1,18 @@
 name: Deploy demo
 
-## Requires Pages source set to "GitHub Actions" — see RELEASING.md.
-#
-# The push trigger is commented out along with CI's while the project settles.
-# Deploys run on demand until then: `gh workflow run deploy-demo.yaml`.
+## Requires Pages source set to "GitHub Actions" (Settings → Pages).
 on:
-  # push:
-  #   branches: [main]
-  #   # The demo only changes when the library, the demo source, or the build
-  #   # config does. Skips redeploying for a README typo.
-  #   paths:
-  #     - src/**
-  #     - demo/**
-  #     - vite.config.demo.ts
-  #     - package.json
-  #     - package-lock.json
-  #     - .github/workflows/deploy-demo.yaml
+  push:
+    branches: [main]
+    # The demo only changes when the library, the demo source, or the build
+    # config does. Skips redeploying for a README typo.
+    paths:
+      - src/**
+      - demo/**
+      - vite.config.demo.ts
+      - package.json
+      - package-lock.json
+      - .github/workflows/deploy-demo.yaml
   workflow_dispatch:
 
 # A newer commit's demo supersedes an in-flight deploy of an older one.

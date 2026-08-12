@@ -24,5 +24,13 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.d.ts", "demo/**/*.ts", "demo/**/*.vue", "tests/**/*.ts", "*.config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.d.ts",
+    "demo/**/*.ts",
+    "demo/**/*.vue",
+    "tests/**/*.ts",
+    "*.config.ts"
+  ]
 }

@@ -1,10 +1,10 @@
-# vue-diff-next
-
 [![Release](https://img.shields.io/github/release/dmhendricks/vue-diff-next.svg)](https://github.com/dmhendricks/vue-diff-next/releases)
 [![GitHub License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/dmhendricks/vue-diff-next/ci.yaml?label=CI)](https://github.com/dmhendricks/vue-diff-next/actions/workflows/ci.yaml)
 [![NPM Downloads](https://img.shields.io/npm/dt/vue-diff-next.svg?label=npm%20downloads)](https://www.npmjs.com/package/vue-diff-next)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/danielhendricks)
+
+# vue-diff-next
 
 ![vue-diff-next screenshot, split mode](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/.github/assets/screenshot.jpg)
 

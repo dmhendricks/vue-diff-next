@@ -1,0 +1,46 @@
+// highlight.js `vs`, as shipped by vue-diff's `theme="light"`.
+//
+// Token roles differ by language (see remap.ts). Language classes on the
+// wrapper retarget the same --vue-diff-syn-* buckets.
+.vue-diff-theme-classic-light {
+    --vue-diff-bg: #fff;
+    --vue-diff-fg: #000;
+    --vue-diff-gutter-bg: #fff;
+    --vue-diff-gutter-fg: #999;
+
+    --vue-diff-added-bg: #eefef3;
+    --vue-diff-removed-bg: #fff1f0;
+    --vue-diff-disabled-bg: rgba(128, 128, 128, 0.1);
+    --vue-diff-fold-bg: rgba(128, 128, 128, 0.1);
+    --vue-diff-fold-fg: var(--vue-diff-fg);
+    --vue-diff-added-gutter-bg: #d6ffde;
+    --vue-diff-removed-gutter-bg: #ffdfdd;
+
+    --vue-diff-added-word-bg: #c4f0cd;
+    --vue-diff-removed-word-bg: #ffd0cd;
+
+    --vue-diff-syn-kwd: #00f;
+    --vue-diff-syn-str: #a31515;
+    --vue-diff-syn-num: #008000;
+    --vue-diff-syn-bool: #a31515;
+    --vue-diff-syn-cmnt: #767676;
+    --vue-diff-syn-func: #a31515;
+    --vue-diff-syn-class: #f00;
+    --vue-diff-syn-var: #2b91af;
+    --vue-diff-syn-type: #a31515;
+    --vue-diff-syn-oper: #000;
+    --vue-diff-syn-section: #00f;
+    --vue-diff-syn-insert: #a31515;
+    --vue-diff-syn-deleted: #2b91af;
+    --vue-diff-syn-err: #f00;
+}
+
+.vue-diff-theme-classic-light.vue-diff-lang-html,
+.vue-diff-theme-classic-light.vue-diff-lang-xml {
+    --vue-diff-syn-var: #00f;
+    --vue-diff-syn-class: #f00;
+}
+
+.vue-diff-theme-classic-light.vue-diff-lang-json {
+    --vue-diff-syn-var: #f00;
+}

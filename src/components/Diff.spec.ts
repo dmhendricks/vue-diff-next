@@ -79,11 +79,14 @@ describe('Diff', () => {
     });
 
     describe('theme', () => {
-        it.each(['dark', 'light'] as const)('applies the %s theme class', async (theme) => {
-            const wrapper = mount(Diff, { props: { theme, prev: PREV, current: CURRENT } });
-            await settle();
-            expect(wrapper.find(`.vue-diff-theme-${theme}`).exists()).toBe(true);
-        });
+        it.each(['dark', 'light', 'classic-dark', 'classic-light'] as const)(
+            'applies the %s theme class',
+            async (theme) => {
+                const wrapper = mount(Diff, { props: { theme, prev: PREV, current: CURRENT } });
+                await settle();
+                expect(wrapper.find(`.vue-diff-theme-${theme}`).exists()).toBe(true);
+            },
+        );
 
         it('passes through arbitrary custom* themes and ships no styles for them', async () => {
             // The escape hatch: the class lands on the wrapper, the consumer styles it.
@@ -92,6 +95,14 @@ describe('Diff', () => {
             });
             await settle();
             expect(wrapper.find('.vue-diff-theme-custom-solarized').exists()).toBe(true);
+        });
+
+        it('tags the wrapper with the resolved language class', async () => {
+            const wrapper = mount(Diff, {
+                props: { language: 'javascript', prev: PREV, current: CURRENT },
+            });
+            await settle();
+            expect(wrapper.find('.vue-diff-lang-js').exists()).toBe(true);
         });
     });
 

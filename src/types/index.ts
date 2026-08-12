@@ -7,11 +7,12 @@
 export type Mode = 'split' | 'unified';
 
 /**
- * Theme name. `dark` and `light` ship styles; any `custom*` value is an escape
- * hatch — it lands on the wrapper as `vue-diff-theme-<value>` and ships no CSS,
- * so the consumer supplies it. Matches the original's typing exactly.
+ * Theme name. `dark` and `light` ship the default palettes; `classic-dark` and
+ * `classic-light` ship the highlight.js monokai / vs palettes from vue-diff.
+ * Any `custom*` value is an escape hatch — it lands on the wrapper as
+ * `vue-diff-theme-<value>` and ships no CSS, so the consumer supplies it.
  */
-export type Theme = 'dark' | 'light' | `custom${string}`;
+export type Theme = 'dark' | 'light' | 'classic-dark' | 'classic-light' | `custom${string}`;
 
 /** Which side of a split view a line belongs to. */
 export type Role = 'prev' | 'current' | 'unified';

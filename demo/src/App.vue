@@ -4,9 +4,10 @@ import { Diff } from '../../src';
 import type { FoldMarker, Mode, Theme } from '../../src/types';
 import { MODES, THEMES, groups, samples } from './samples';
 
-const sampleKey = ref(samples[0]!.key);
+const sampleKey = ref('javascript');
 const mode = ref<Mode>('split');
 const theme = ref<Theme>('dark');
+const pageTheme = computed(() => (theme.value.includes('light') ? 'light' : 'dark'));
 const folding = ref(false);
 const foldMarker = ref<FoldMarker>('dots');
 const wrap = ref(true);
@@ -78,7 +79,7 @@ ${indented}
       The theme control drives the page as well as the viewer, so a dark diff is
       never framed by light chrome.
     -->
-    <div class="page" :data-theme="theme">
+    <div class="page" :data-theme="pageTheme">
         <div class="atmosphere" aria-hidden="true"></div>
 
         <div class="shell">

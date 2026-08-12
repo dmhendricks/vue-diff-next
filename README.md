@@ -1,5 +1,11 @@
 # vue-diff-next
 
+[![Release](https://img.shields.io/github/release/dmhendricks/vue-diff-next.svg)](https://github.com/dmhendricks/vue-diff-next/releases)
+[![GitHub License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/dmhendricks/vue-diff-next/ci.yaml?label=CI)](https://github.com/dmhendricks/vue-diff-next/actions/workflows/ci.yaml)
+[![NPM Downloads](https://img.shields.io/npm/dt/vue-diff-next.svg?label=npm%20downloads)](https://www.npmjs.com/package/vue-diff-next)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/danielhendricks)
+
 ![vue-diff-next screenshot, split mode](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/.github/assets/screenshot.jpg)
 
 A lightweight diff viewer component for Vue 3.5+. Inspired by
@@ -56,7 +62,7 @@ createApp(App).use(VueDiff).mount('#app');
 | Prop            | Type                                          | Default       | Description                                                              |
 | --------------- | --------------------------------------------- | ------------- | ------------------------------------------------------------------------ |
 | `mode`          | `'split' \| 'unified'`                        | `'split'`     | Side-by-side or interleaved.                                             |
-| `theme`         | `'dark' \| 'light' \| \`custom${string}\``    | `'dark'`      | See [Theming](#theming).                                                 |
+| `theme`         | `'dark' \| 'light' \| custom* \| ...`         | `'dark'`      | See [Theming](#theming).                                                 |
 | `language`      | `string`                                      | `'plaintext'` | See [Languages](#languages).                                             |
 | `prev`          | `string \| null`                              | `''`          | The "before" text.                                                       |
 | `current`       | `string \| null`                              | `''`          | The "after" text.                                                        |
@@ -79,10 +85,12 @@ Change the import and the stylesheet path:
 
 That is the whole migration. Props, defaults, modes, and both install paths are unchanged.
 
-Three things to know:
+A few things to know:
 
 - **`theme="custom*"` still works**, but the CSS custom properties you override are named
   differently. See [Theming](#theming).
+- **`theme="light"` / `"dark"` are a different palette** than vue-diff's highlight.js
+  `vs` / `monokai`. Use `classic-light` / `classic-dark` for those colors.
 - **Language names still work**, and more are accepted. `javascript`, `plaintext`,
   `markdown`, and `typescript` all resolve as before.
 - **`virtualScroll` behaves as it did**, windowing the output to what is near the
@@ -162,8 +170,16 @@ names are safe to pass straight through.
 
 ## Theming
 
-`dark` and `light` ship styled. Everything is driven by CSS custom properties, so you can
-override any part without forking the stylesheet:
+| `theme`          | Palette                           |
+| ---------------- | --------------------------------- |
+| `dark` (default) | VS Code-ish dark                  |
+| `light`          | VS Code-ish light                 |
+| `classic-dark`   | vue-diff highlight.js **monokai** |
+| `classic-light`  | vue-diff highlight.js **vs**      |
+| `custom*`        | Unstyled; you supply the CSS      |
+
+Everything is driven by CSS custom properties, so you can override any part without
+forking the stylesheet:
 
 ```css
 .vue-diff-theme-dark {

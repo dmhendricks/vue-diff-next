@@ -28,13 +28,15 @@ import DiffLine from './DiffLine.vue';
 import { useRender } from '../composables/useRender';
 import { useVirtualScroll } from '../composables/useVirtualScroll';
 import type { FoldMarker, Mode, Theme, VirtualScroll } from '../types';
+import { resolveLanguage } from '../core/highlight/languages';
 import { missingStylesWarn } from './missingStylesWarn';
 
 defineOptions({ name: 'Diff' });
 
 /**
- * Props and defaults are vue-diff@1.2.4's, verbatim — including `theme`
- * defaulting to 'dark'. `wrap` is the one addition.
+ * Props and defaults match vue-diff@1.2.4 — including `theme` defaulting to
+ * 'dark'. `wrap` is additive. `classic-dark` / `classic-light` are extra
+ * built-in theme names.
  *
  * `prev`/`current` accept null so callers need not normalize; the original typed
  * them as string, but tolerating null costs nothing and prevents a crash.
@@ -87,6 +89,7 @@ const scrollOptions = computed<false | VirtualScroll>(() => {
 const wrapperClass = computed(() => [
     `vue-diff-mode-${props.mode}`,
     `vue-diff-theme-${props.theme}`,
+    `vue-diff-lang-${resolveLanguage(props.language)}`,
     // Wrapping is the default (and the original's only behaviour), so the class
     // marks the opt-out rather than the opt-in.
     { 'vue-diff-nowrap': !props.wrap },

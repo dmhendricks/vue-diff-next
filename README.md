@@ -90,7 +90,8 @@ A few things to know:
 - **`theme="custom*"` still works**, but the CSS custom properties you override are named
   differently. See [Theming](#theming).
 - **`theme="light"` / `"dark"` are a different palette** than vue-diff's highlight.js
-  `vs` / `monokai`. Use `classic-light` / `classic-dark` for those colors.
+  `vs` / `monokai`. Use `classic-light` / `classic-dark` for those colors, and import
+  the matching extra stylesheet (see [Theming](#theming)).
 - **Language names still work**, and more are accepted. `javascript`, `plaintext`,
   `markdown`, and `typescript` all resolve as before.
 - **`virtualScroll` behaves as it did**, windowing the output to what is near the
@@ -170,13 +171,28 @@ names are safe to pass straight through.
 
 ## Theming
 
-| `theme`          | Palette                           |
-| ---------------- | --------------------------------- |
-| `dark` (default) | VS Code-ish dark                  |
-| `light`          | VS Code-ish light                 |
-| `classic-dark`   | vue-diff highlight.js **monokai** |
-| `classic-light`  | vue-diff highlight.js **vs**      |
-| `custom*`        | Unstyled; you supply the CSS      |
+| `theme`          | Palette                           | Stylesheet                                        |
+| ---------------- | --------------------------------- | ------------------------------------------------- |
+| `dark` (default) | VS Code-ish dark                  | `vue-diff-next/style.css`                         |
+| `light`          | VS Code-ish light                 | `vue-diff-next/style.css`                         |
+| `classic-dark`   | vue-diff highlight.js **monokai** | `vue-diff-next/themes/classic-dark.css` (opt-in)  |
+| `classic-light`  | vue-diff highlight.js **vs**      | `vue-diff-next/themes/classic-light.css` (opt-in) |
+| `custom*`        | Unstyled; you supply the CSS      | none                                              |
+
+`dark` and `light` ship in the default stylesheet. Extra palettes are a second import —
+the wrapper class is always applied; without the extra CSS they look like an unstyled
+`custom*` theme:
+
+```js
+import 'vue-diff-next/style.css';
+import 'vue-diff-next/themes/classic-light.css';
+```
+
+```vue
+<Diff theme="classic-light" ... />
+```
+
+If you bind `theme` dynamically, import every extra file you might select.
 
 Everything is driven by CSS custom properties, so you can override any part without
 forking the stylesheet:

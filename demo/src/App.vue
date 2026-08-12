@@ -61,9 +61,14 @@ const usageSnippet = computed(() => {
 
     const indented = attrs.map((line) => `    ${line}`).join('\n');
 
+    const cssImports = ["import 'vue-diff-next/style.css';"];
+    if (theme.value.startsWith('classic-')) {
+        cssImports.push(`import 'vue-diff-next/themes/${theme.value}.css';`);
+    }
+
     return `<script setup>
 import { Diff } from 'vue-diff-next';
-import 'vue-diff-next/style.css';
+${cssImports.join('\n')}
 <\/script>
 
 <template>

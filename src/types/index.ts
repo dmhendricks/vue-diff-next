@@ -7,10 +7,11 @@
 export type Mode = 'split' | 'unified';
 
 /**
- * Theme name. `dark` and `light` ship the default palettes; `classic-dark` and
- * `classic-light` ship the highlight.js monokai / vs palettes from vue-diff.
- * Any `custom*` value is an escape hatch — it lands on the wrapper as
- * `vue-diff-theme-<value>` and ships no CSS, so the consumer supplies it.
+ * Theme name. `dark` and `light` ship in the default stylesheet; `classic-dark`
+ * and `classic-light` are first-class names whose CSS is opt-in
+ * (`vue-diff-next/themes/classic-light.css`). Any `custom*` value is an escape
+ * hatch — it lands on the wrapper as `vue-diff-theme-<value>` and ships no CSS,
+ * so the consumer supplies it.
  */
 export type Theme = 'dark' | 'light' | 'classic-dark' | 'classic-light' | `custom${string}`;
 

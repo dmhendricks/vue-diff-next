@@ -1,5 +1,6 @@
 // Entry point. Order matters: variables declare the surface, base consumes it,
-// themes supply values.
+// themes supply values. Extra palettes (`classic-*`) are compiled separately
+// to `dist/themes/` — they must not be `@use`'d here or they land in style.css.
 //
 // There is deliberately no _custom.scss. `theme="custom*"` lands on the wrapper
 // as `vue-diff-theme-<value>` and ships zero bytes of CSS — the consumer styles
@@ -8,5 +9,3 @@
 @use 'base';
 @use 'themes/dark';
 @use 'themes/light';
-@use 'themes/classic-dark';
-@use 'themes/classic-light';

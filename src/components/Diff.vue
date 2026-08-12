@@ -36,7 +36,7 @@ defineOptions({ name: 'Diff' });
 /**
  * Props and defaults match vue-diff@1.2.4 — including `theme` defaulting to
  * 'dark'. `wrap` is additive. `classic-dark` / `classic-light` are extra
- * built-in theme names.
+ * built-in theme names; their CSS is a separate import, not `style.css`.
  *
  * `prev`/`current` accept null so callers need not normalize; the original typed
  * them as string, but tolerating null costs nothing and prevents a crash.

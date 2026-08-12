@@ -34,6 +34,8 @@
       "import": "./dist/index.js"
     },
     "./style.css": "./dist/style.css",
+    "./themes/classic-light.css": "./dist/themes/classic-light.css",
+    "./themes/classic-dark.css": "./dist/themes/classic-dark.css",
     "./package.json": "./package.json"
   },
   "module": "./dist/index.js",
@@ -46,7 +48,7 @@
   },
   "scripts": {
     "dev": "vite -c vite.config.demo.ts",
-    "build": "vue-tsc -p tsconfig.build.json --noEmit && vite build",
+    "build": "vue-tsc -p tsconfig.build.json --noEmit && vite build && node scripts/build-themes.js",
     "build:demo": "vite build -c vite.config.demo.ts",
     "test": "vitest --run",
     "test:watch": "vitest",
@@ -58,7 +60,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "size": "node scripts/check-size.js",
-    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --ignore-rules cjs-resolves-to-esm",
+    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --exclude-entrypoints themes/classic-light.css --exclude-entrypoints themes/classic-dark.css --ignore-rules cjs-resolves-to-esm",
     "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
     "prepublishOnly": "npm run verify"
   },

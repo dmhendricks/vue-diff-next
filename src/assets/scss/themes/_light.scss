@@ -23,9 +23,10 @@
     --vue-diff-syn-bool: #0000ff;
     --vue-diff-syn-cmnt: #008000;
     --vue-diff-syn-func: #795e26;
+    // Keys / HTML attrs (hljs-attr). Not class names — those remap to `type`.
     --vue-diff-syn-class: #267f99;
     --vue-diff-syn-var: #001080;
-    --vue-diff-syn-type: #267f99;
+    --vue-diff-syn-type: #ad7c19;
     --vue-diff-syn-oper: #24292f;
     --vue-diff-syn-section: #0000ff;
     --vue-diff-syn-insert: #098658;

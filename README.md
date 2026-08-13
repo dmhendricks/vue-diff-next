@@ -91,7 +91,7 @@ A few things to know:
 - **`theme="custom*"` still works**, but the CSS custom properties you override are named
   differently. See [Theming](#theming).
 - **`theme="light"` / `"dark"` are a different palette** than vue-diff's highlight.js
-  `vs` / `monokai`. Use `classic-light` / `classic-dark` for those colors, and import
+  `vs` / `monokai`. For those colors use `visual-studio-light` / `monokai-dark` and import
   the matching extra stylesheet (see [Theming](#theming)).
 - **Language names still work**, and more are accepted. `javascript`, `plaintext`,
   `markdown`, and `typescript` all resolve as before.
@@ -172,14 +172,14 @@ names are safe to pass straight through.
 
 ## Theming
 
-| `theme`          | Palette                           | Stylesheet                                        |
-| ---------------- | --------------------------------- | ------------------------------------------------- |
-| `dark` (default) | VS Code-ish dark                  | `vue-diff-next/style.css`                         |
-| `light`          | VS Code-ish light                 | `vue-diff-next/style.css`                         |
-| `classic-dark`   | vue-diff highlight.js **monokai** | `vue-diff-next/themes/classic-dark.css`  |
-| `classic-light`  | vue-diff highlight.js **vs**      | `vue-diff-next/themes/classic-light.css` |
-| `atom-dark`      | Atom One Dark tokens              | `vue-diff-next/themes/atom-dark.css`     |
-| `custom*`        | Unstyled; you supply the CSS      | none                                              |
+| `theme`                 | Palette                                      | Stylesheet                                           |
+| ----------------------- | -------------------------------------------- | ---------------------------------------------------- |
+| `dark` (default)        | VS Code-ish dark                             | `vue-diff-next/style.css`                            |
+| `light`                 | VS Code-ish light                            | `vue-diff-next/style.css`                            |
+| `atom-dark`             | Atom One Dark tokens                         | `vue-diff-next/themes/atom-dark.css`                 |
+| `monokai-dark`          | highlight.js **monokai** (vue-diff `dark`)   | `vue-diff-next/themes/monokai-dark.css`              |
+| `visual-studio-light`   | highlight.js **vs** (vue-diff `light`)       | `vue-diff-next/themes/visual-studio-light.css`       |
+| `custom*`               | Unstyled; you supply the CSS                 | none                                                 |
 
 `dark` and `light` ship in the default stylesheet. Extra palettes are a second import —
 the wrapper class is always applied; without the extra CSS they look like an unstyled
@@ -187,11 +187,11 @@ the wrapper class is always applied; without the extra CSS they look like an uns
 
 ```js
 import 'vue-diff-next/style.css';
-import 'vue-diff-next/themes/classic-light.css';
+import 'vue-diff-next/themes/visual-studio-light.css';
 ```
 
 ```vue
-<Diff theme="classic-light" ... />
+<Diff theme="visual-studio-light" ... />
 ```
 
 If you bind `theme` dynamically, import every extra file you might select.

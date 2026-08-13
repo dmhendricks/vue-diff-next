@@ -1,10 +1,10 @@
-// highlight.js `vs`, as shipped by vue-diff's `theme="light"`.
+// highlight.js `vs` (Visual Studio), as shipped by vue-diff's `theme="light"`.
 //
 // Token roles differ by language (see remap.ts). Language classes on the
 // wrapper retarget the same --vue-diff-syn-* buckets.
 @use 'chrome-light';
 
-.vue-diff-theme-classic-light {
+.vue-diff-theme-visual-studio-light {
     @include chrome-light.vars;
 
     --vue-diff-syn-kwd: #00f;
@@ -23,12 +23,12 @@
     --vue-diff-syn-err: #f00;
 }
 
-.vue-diff-theme-classic-light.vue-diff-lang-html,
-.vue-diff-theme-classic-light.vue-diff-lang-xml {
+.vue-diff-theme-visual-studio-light.vue-diff-lang-html,
+.vue-diff-theme-visual-studio-light.vue-diff-lang-xml {
     --vue-diff-syn-var: #00f;
     --vue-diff-syn-class: #f00;
 }
 
-.vue-diff-theme-classic-light.vue-diff-lang-json {
+.vue-diff-theme-visual-studio-light.vue-diff-lang-json {
     --vue-diff-syn-var: #f00;
 }

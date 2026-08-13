@@ -1,5 +1,5 @@
 // Entry point. Order matters: variables declare the surface, base consumes it,
-// themes supply values. Extra palettes (`classic-*`) are compiled separately
+// themes supply values. Extra palettes are compiled separately
 // to `dist/themes/` — they must not be `@use`'d here or they land in style.css.
 //
 // There is deliberately no _custom.scss. `theme="custom*"` lands on the wrapper

@@ -79,7 +79,7 @@ describe('Diff', () => {
     });
 
     describe('theme', () => {
-        it.each(['dark', 'light', 'classic-dark', 'classic-light', 'atom-dark'] as const)(
+        it.each(['dark', 'light', 'monokai-dark', 'visual-studio-light', 'atom-dark'] as const)(
             'applies the %s theme class',
             async (theme) => {
                 const wrapper = mount(Diff, { props: { theme, prev: PREV, current: CURRENT } });

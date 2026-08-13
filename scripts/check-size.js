@@ -18,7 +18,7 @@ import { join } from 'node:path';
 
 /** Total gzip budget in bytes for the default sheet (under the original's ~75 kB). */
 const BUDGET_BYTES = 23 * 1024;
-const OPT_IN_THEMES = ['classic-light.css', 'classic-dark.css', 'atom-dark.css'];
+const OPT_IN_THEMES = ['visual-studio-light.css', 'monokai-dark.css', 'atom-dark.css'];
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
 
@@ -55,9 +55,12 @@ if (!styleCss) {
     console.error('✗ dist/style.css is missing.');
     process.exit(1);
 }
-if (readFileSync(styleCss, 'utf8').includes('vue-diff-theme-classic')) {
+const styleSheet = readFileSync(styleCss, 'utf8');
+if (
+    /vue-diff-theme-(monokai|visual-studio|atom)/.test(styleSheet)
+) {
     console.error(
-        '✗ dist/style.css contains classic theme rules. Extra palettes must be compiled to dist/themes/ only.',
+        '✗ dist/style.css contains extra theme rules. Extra palettes must be compiled to dist/themes/ only.',
     );
     process.exit(1);
 }

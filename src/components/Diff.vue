@@ -35,7 +35,7 @@ defineOptions({ name: 'Diff' });
 
 /**
  * Props and defaults match vue-diff@1.2.4 — including `theme` defaulting to
- * 'dark'. `wrap` is additive. Extra palettes (`classic-dark`, `classic-light`,
+ * 'dark'. `wrap` is additive. Extra palettes (`monokai-dark`, `visual-studio-light`,
  * `atom-dark`) are first-class theme names; their CSS is a separate import, not `style.css`.
  *
  * `prev`/`current` accept null so callers need not normalize; the original typed

@@ -1,7 +1,7 @@
 // highlight.js `monokai`, as shipped by vue-diff's `theme="dark"`.
 @use 'chrome-dark';
 
-.vue-diff-theme-classic-dark {
+.vue-diff-theme-monokai-dark {
     @include chrome-dark.vars;
 
     --vue-diff-syn-kwd: #f92672;
@@ -20,12 +20,12 @@
     --vue-diff-syn-err: #f92672;
 }
 
-.vue-diff-theme-classic-dark.vue-diff-lang-html,
-.vue-diff-theme-classic-dark.vue-diff-lang-xml {
+.vue-diff-theme-monokai-dark.vue-diff-lang-html,
+.vue-diff-theme-monokai-dark.vue-diff-lang-xml {
     --vue-diff-syn-var: #f92672;
     --vue-diff-syn-class: #bf79db;
 }
 
-.vue-diff-theme-classic-dark.vue-diff-lang-json {
+.vue-diff-theme-monokai-dark.vue-diff-lang-json {
     --vue-diff-syn-var: #bf79db;
 }

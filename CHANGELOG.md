@@ -4,13 +4,13 @@
 
 ### Added
 
-- Light themes: `classic-light` (highlight.js **vs**)
-- Dark themes: `classic-dark` (highlight.js **monokai**), `atom-dark` (Atom One Dark tokens)
+- Light themes: `visual-studio-light`
+- Dark themes: `monokai-dark`, `atom-dark`
 
 ### Changed
 
-- Syntax tokens from `@speed-highlight/core` are remapped so classic (and default) palettes colour the same roles vue-diff did — object keys, constants, types, and JSON `null`.
-- Add/remove line, gutter, and word washes on `light` and `classic-light` are slightly softer than the original GitHub-style greens and reds.
+- Syntax tokens from `@speed-highlight/core` are remapped so opt-in (and default) palettes colour the same roles vue-diff did — object keys, constants, types, and JSON `null`.
+- Add/remove line, gutter, and word washes on `light` and `visual-studio-light` are slightly softer than the original GitHub-style greens and reds.
 
 ## 1.0.0
 

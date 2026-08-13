@@ -957,4 +957,11 @@ export const groups: Array<{ name: string; samples: Sample[] }> = samples
     );
 
 export const MODES: Mode[] = ['split', 'unified'];
-export const THEMES: Theme[] = ['dark', 'light', 'classic-dark', 'classic-light', 'atom-dark'];
+
+const EXTRA_THEMES = ['monokai-dark', 'visual-studio-light', 'atom-dark'] as const;
+
+export const THEMES: Theme[] = [
+    'dark',
+    'light',
+    ...[...EXTRA_THEMES].sort((a, b) => a.localeCompare(b)),
+];

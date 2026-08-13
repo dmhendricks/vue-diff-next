@@ -172,14 +172,14 @@ names are safe to pass straight through.
 
 ## Theming
 
-| `theme`                 | Palette                                      | Stylesheet                                           |
-| ----------------------- | -------------------------------------------- | ---------------------------------------------------- |
-| `dark` (default)        | VS Code-ish dark                             | `vue-diff-next/style.css`                            |
-| `light`                 | VS Code-ish light                            | `vue-diff-next/style.css`                            |
-| `atom-dark`             | Atom One Dark tokens                         | `vue-diff-next/themes/atom-dark.css`                 |
-| `monokai-dark`          | highlight.js **monokai** (vue-diff `dark`)   | `vue-diff-next/themes/monokai-dark.css`              |
-| `visual-studio-light`   | highlight.js **vs** (vue-diff `light`)       | `vue-diff-next/themes/visual-studio-light.css`       |
-| `custom*`               | Unstyled; you supply the CSS                 | none                                                 |
+| `theme`               | Palette                                    | Stylesheet                                     |
+| --------------------- | ------------------------------------------ | ---------------------------------------------- |
+| `dark` (default)      | VS Code-ish dark                           | `vue-diff-next/style.css`                      |
+| `light`               | VS Code-ish light                          | `vue-diff-next/style.css`                      |
+| `atom-dark`           | Atom One Dark tokens                       | `vue-diff-next/themes/atom-dark.css`           |
+| `monokai-dark`        | highlight.js **monokai** (vue-diff `dark`) | `vue-diff-next/themes/monokai-dark.css`        |
+| `visual-studio-light` | highlight.js **vs** (vue-diff `light`)     | `vue-diff-next/themes/visual-studio-light.css` |
+| `custom*`             | Unstyled; you supply the CSS               | none                                           |
 
 `dark` and `light` ship in the default stylesheet. Extra palettes are a second import —
 the wrapper class is always applied; without the extra CSS they look like an unstyled

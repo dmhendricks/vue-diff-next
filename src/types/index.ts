@@ -14,12 +14,7 @@ export type Mode = 'split' | 'unified';
  * so the consumer supplies it.
  */
 export type Theme =
-    | 'dark'
-    | 'light'
-    | 'monokai-dark'
-    | 'visual-studio-light'
-    | 'atom-dark'
-    | `custom${string}`;
+    'dark' | 'light' | 'monokai-dark' | 'visual-studio-light' | 'atom-dark' | `custom${string}`;
 
 /** Which side of a split view a line belongs to. */
 export type Role = 'prev' | 'current' | 'unified';

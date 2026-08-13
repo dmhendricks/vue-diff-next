@@ -56,9 +56,7 @@ if (!styleCss) {
     process.exit(1);
 }
 const styleSheet = readFileSync(styleCss, 'utf8');
-if (
-    /vue-diff-theme-(monokai|visual-studio|atom)/.test(styleSheet)
-) {
+if (/vue-diff-theme-(monokai|visual-studio|atom)/.test(styleSheet)) {
     console.error(
         '✗ dist/style.css contains extra theme rules. Extra palettes must be compiled to dist/themes/ only.',
     );

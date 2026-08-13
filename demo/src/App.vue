@@ -62,7 +62,7 @@ const usageSnippet = computed(() => {
     const indented = attrs.map((line) => `    ${line}`).join('\n');
 
     const cssImports = ["import 'vue-diff-next/style.css';"];
-    if (theme.value.startsWith('classic-')) {
+    if (theme.value !== 'dark' && theme.value !== 'light') {
         cssImports.push(`import 'vue-diff-next/themes/${theme.value}.css';`);
     }
 

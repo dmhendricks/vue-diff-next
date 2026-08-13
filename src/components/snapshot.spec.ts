@@ -187,11 +187,13 @@ describe('rendered output', () => {
         const light = await render('split', testCase, 'light');
         const classicDark = await render('split', testCase, 'classic-dark');
         const classicLight = await render('split', testCase, 'classic-light');
+        const atomDark = await render('split', testCase, 'atom-dark');
         const custom = await render('split', testCase, 'custom-solarized');
 
         expect(light).toBe(dark);
         expect(classicDark).toBe(dark);
         expect(classicLight).toBe(dark);
+        expect(atomDark).toBe(dark);
         expect(custom).toBe(dark);
     });
 });

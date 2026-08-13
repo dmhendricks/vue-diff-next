@@ -2,22 +2,10 @@
 //
 // Token roles differ by language (see remap.ts). Language classes on the
 // wrapper retarget the same --vue-diff-syn-* buckets.
+@use 'chrome-light';
+
 .vue-diff-theme-classic-light {
-    --vue-diff-bg: #fff;
-    --vue-diff-fg: #000;
-    --vue-diff-gutter-bg: #fff;
-    --vue-diff-gutter-fg: #999;
-
-    --vue-diff-added-bg: #eaffef;
-    --vue-diff-removed-bg: #ffeeec;
-    --vue-diff-disabled-bg: rgba(128, 128, 128, 0.1);
-    --vue-diff-fold-bg: rgba(128, 128, 128, 0.1);
-    --vue-diff-fold-fg: var(--vue-diff-fg);
-    --vue-diff-added-gutter-bg: #d1ffdb;
-    --vue-diff-removed-gutter-bg: #ffdbd9;
-
-    --vue-diff-added-word-bg: #b0ecba;
-    --vue-diff-removed-word-bg: #ffc2be;
+    @include chrome-light.vars;
 
     --vue-diff-syn-kwd: #00f;
     --vue-diff-syn-str: #a31515;

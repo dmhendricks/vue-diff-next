@@ -4,14 +4,8 @@
 
 ### Added
 
-- `classic-light` and `classic-dark` themes, matching vue-diff's highlight.js **vs** / **monokai** palettes. These are opt-in stylesheets:
-
-  ```js
-  import 'vue-diff-next/style.css';
-  import 'vue-diff-next/themes/classic-light.css';
-  ```
-
-  `theme="classic-light"` without the extra import is an unstyled wrapper class.
+- Light themes: `classic-light` (highlight.js **vs**)
+- Dark themes: `classic-dark` (highlight.js **monokai**), `atom-dark` (Atom One Dark tokens)
 
 ### Changed
 

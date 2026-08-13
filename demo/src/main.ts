@@ -4,5 +4,6 @@ import App from './App.vue';
 import '../../src/assets/scss/index.scss';
 import '../../src/assets/scss/themes/classic-dark.scss';
 import '../../src/assets/scss/themes/classic-light.scss';
+import '../../src/assets/scss/themes/atom-dark.scss';
 
 createApp(App).mount('#app');

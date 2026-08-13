@@ -1,0 +1,32 @@
+// Atom One Dark token colors from @speed-highlight/core `atom-dark`.
+// Chrome matches classic-dark; only syntax tokens differ.
+@use 'chrome-dark';
+
+.vue-diff-theme-atom-dark {
+    @include chrome-dark.vars;
+
+    --vue-diff-syn-kwd: #c678dd;
+    --vue-diff-syn-str: #98c379;
+    --vue-diff-syn-num: #d19a66;
+    --vue-diff-syn-bool: #d19a66;
+    --vue-diff-syn-cmnt: #5c6370;
+    --vue-diff-syn-func: #61afef;
+    --vue-diff-syn-class: #e5c07b;
+    --vue-diff-syn-var: #e06c75;
+    --vue-diff-syn-type: #56b6c2;
+    --vue-diff-syn-oper: #ddd;
+    --vue-diff-syn-section: #c678dd;
+    --vue-diff-syn-insert: #98c379;
+    --vue-diff-syn-deleted: #e06c75;
+    --vue-diff-syn-err: #e06c75;
+}
+
+.vue-diff-theme-atom-dark.vue-diff-lang-html,
+.vue-diff-theme-atom-dark.vue-diff-lang-xml {
+    --vue-diff-syn-var: #e06c75;
+    --vue-diff-syn-class: #d19a66;
+}
+
+.vue-diff-theme-atom-dark.vue-diff-lang-json {
+    --vue-diff-syn-var: #e06c75;
+}

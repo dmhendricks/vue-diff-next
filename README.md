@@ -3,6 +3,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/dmhendricks/vue-diff-next/ci.yaml?label=CI)](https://github.com/dmhendricks/vue-diff-next/actions/workflows/ci.yaml)
 [![NPM Downloads](https://img.shields.io/npm/dt/vue-diff-next.svg?label=npm%20downloads)](https://www.npmjs.com/package/vue-diff-next)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/danielhendricks)
+[![Donate](https://img.shields.io/badge/Donate-Ko--fi-green.svg)](https://ko-fi.com/danielhendricks)
 
 # vue-diff-next
 
@@ -175,8 +176,9 @@ names are safe to pass straight through.
 | ---------------- | --------------------------------- | ------------------------------------------------- |
 | `dark` (default) | VS Code-ish dark                  | `vue-diff-next/style.css`                         |
 | `light`          | VS Code-ish light                 | `vue-diff-next/style.css`                         |
-| `classic-dark`   | vue-diff highlight.js **monokai** | `vue-diff-next/themes/classic-dark.css` (opt-in)  |
-| `classic-light`  | vue-diff highlight.js **vs**      | `vue-diff-next/themes/classic-light.css` (opt-in) |
+| `classic-dark`   | vue-diff highlight.js **monokai** | `vue-diff-next/themes/classic-dark.css`  |
+| `classic-light`  | vue-diff highlight.js **vs**      | `vue-diff-next/themes/classic-light.css` |
+| `atom-dark`      | Atom One Dark tokens              | `vue-diff-next/themes/atom-dark.css`     |
 | `custom*`        | Unstyled; you supply the CSS      | none                                              |
 
 `dark` and `light` ship in the default stylesheet. Extra palettes are a second import —

@@ -36,6 +36,7 @@
     "./style.css": "./dist/style.css",
     "./themes/classic-light.css": "./dist/themes/classic-light.css",
     "./themes/classic-dark.css": "./dist/themes/classic-dark.css",
+    "./themes/atom-dark.css": "./dist/themes/atom-dark.css",
     "./package.json": "./package.json"
   },
   "module": "./dist/index.js",
@@ -60,7 +61,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "size": "node scripts/check-size.js",
-    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --exclude-entrypoints themes/classic-light.css --exclude-entrypoints themes/classic-dark.css --ignore-rules cjs-resolves-to-esm",
+    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --exclude-entrypoints themes/classic-light.css --exclude-entrypoints themes/classic-dark.css --exclude-entrypoints themes/atom-dark.css --ignore-rules cjs-resolves-to-esm",
     "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
     "prepublishOnly": "npm run verify"
   },

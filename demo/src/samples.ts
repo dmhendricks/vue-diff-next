@@ -957,4 +957,4 @@ export const groups: Array<{ name: string; samples: Sample[] }> = samples
     );
 
 export const MODES: Mode[] = ['split', 'unified'];
-export const THEMES: Theme[] = ['dark', 'light', 'classic-dark', 'classic-light'];
+export const THEMES: Theme[] = ['dark', 'light', 'classic-dark', 'classic-light', 'atom-dark'];

@@ -1,20 +1,8 @@
 // highlight.js `monokai`, as shipped by vue-diff's `theme="dark"`.
+@use 'chrome-dark';
+
 .vue-diff-theme-classic-dark {
-    --vue-diff-bg: #1e1e1e;
-    --vue-diff-fg: #ddd;
-    --vue-diff-gutter-bg: #1e1e1e;
-    --vue-diff-gutter-fg: #999;
-
-    --vue-diff-added-bg: #1b4332;
-    --vue-diff-removed-bg: #4a1c1c;
-    --vue-diff-disabled-bg: rgba(128, 128, 128, 0.1);
-    --vue-diff-fold-bg: var(--vue-diff-bg);
-    --vue-diff-fold-fg: var(--vue-diff-fg);
-    --vue-diff-added-gutter-bg: #22503b;
-    --vue-diff-removed-gutter-bg: #552121;
-
-    --vue-diff-added-word-bg: #2f5f45;
-    --vue-diff-removed-word-bg: #6b2e2e;
+    @include chrome-dark.vars;
 
     --vue-diff-syn-kwd: #f92672;
     --vue-diff-syn-str: #a6e22e;

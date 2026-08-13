@@ -7,14 +7,19 @@
 export type Mode = 'split' | 'unified';
 
 /**
- * Theme name. `dark` and `light` ship in the default stylesheet; `monokai-dark`,
- * `visual-studio-light`, and `atom-dark` are first-class names whose CSS is opt-in
- * (`vue-diff-next/themes/monokai-dark.css`). Any `custom*` value is an escape
- * hatch — it lands on the wrapper as `vue-diff-theme-<value>` and ships no CSS,
- * so the consumer supplies it.
+ * Theme name. `dark` and `light` ship in the default stylesheet. Other named
+ * values are opt-in palettes (`vue-diff-next/themes/<name>.css`). Any `custom*`
+ * value is an escape hatch — it lands on the wrapper as `vue-diff-theme-<value>`
+ * and ships no CSS, so the consumer supplies it.
  */
 export type Theme =
-    'dark' | 'light' | 'monokai-dark' | 'visual-studio-light' | 'atom-dark' | `custom${string}`;
+    | 'dark'
+    | 'light'
+    | 'monokai-dark'
+    | 'visual-studio-light'
+    | 'atom-dark'
+    | 'atom-light'
+    | `custom${string}`;
 
 /** Which side of a split view a line belongs to. */
 export type Role = 'prev' | 'current' | 'unified';

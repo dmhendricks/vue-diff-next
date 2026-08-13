@@ -177,6 +177,7 @@ names are safe to pass straight through.
 | `dark` (default)      | VS Code-ish dark                           | `vue-diff-next/style.css`                      |
 | `light`               | VS Code-ish light                          | `vue-diff-next/style.css`                      |
 | `atom-dark`           | Atom One Dark tokens                       | `vue-diff-next/themes/atom-dark.css`           |
+| `atom-light`          | Atom One Light tokens                      | `vue-diff-next/themes/atom-light.css`          |
 | `monokai-dark`        | highlight.js **monokai** (vue-diff `dark`) | `vue-diff-next/themes/monokai-dark.css`        |
 | `visual-studio-light` | highlight.js **vs** (vue-diff `light`)     | `vue-diff-next/themes/visual-studio-light.css` |
 | `custom*`             | Unstyled; you supply the CSS               | none                                           |

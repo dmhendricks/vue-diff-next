@@ -12,7 +12,7 @@ import { compile } from 'sass-embedded';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = join(ROOT, 'dist', 'themes');
-const THEMES = ['visual-studio-light', 'monokai-dark', 'atom-dark'];
+const THEMES = ['visual-studio-light', 'monokai-dark', 'atom-dark', 'atom-light'];
 
 mkdirSync(OUT_DIR, { recursive: true });
 

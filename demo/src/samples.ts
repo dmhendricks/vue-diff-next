@@ -958,7 +958,7 @@ export const groups: Array<{ name: string; samples: Sample[] }> = samples
 
 export const MODES: Mode[] = ['split', 'unified'];
 
-const EXTRA_THEMES = ['monokai-dark', 'visual-studio-light', 'atom-dark'] as const;
+const EXTRA_THEMES = ['monokai-dark', 'visual-studio-light', 'atom-dark', 'atom-light'] as const;
 
 export const THEMES: Theme[] = [
     'dark',

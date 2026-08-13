@@ -18,7 +18,12 @@ import { join } from 'node:path';
 
 /** Total gzip budget in bytes for the default sheet (under the original's ~75 kB). */
 const BUDGET_BYTES = 23 * 1024;
-const OPT_IN_THEMES = ['visual-studio-light.css', 'monokai-dark.css', 'atom-dark.css'];
+const OPT_IN_THEMES = [
+    'visual-studio-light.css',
+    'monokai-dark.css',
+    'atom-dark.css',
+    'atom-light.css',
+];
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
 

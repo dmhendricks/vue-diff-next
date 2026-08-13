@@ -188,12 +188,14 @@ describe('rendered output', () => {
         const monokaiDark = await render('split', testCase, 'monokai-dark');
         const visualStudioLight = await render('split', testCase, 'visual-studio-light');
         const atomDark = await render('split', testCase, 'atom-dark');
+        const atomLight = await render('split', testCase, 'atom-light');
         const custom = await render('split', testCase, 'custom-solarized');
 
         expect(light).toBe(dark);
         expect(monokaiDark).toBe(dark);
         expect(visualStudioLight).toBe(dark);
         expect(atomDark).toBe(dark);
+        expect(atomLight).toBe(dark);
         expect(custom).toBe(dark);
     });
 });

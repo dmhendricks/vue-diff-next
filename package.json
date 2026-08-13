@@ -63,7 +63,8 @@
     "size": "node scripts/check-size.js",
     "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --exclude-entrypoints themes/visual-studio-light.css --exclude-entrypoints themes/monokai-dark.css --exclude-entrypoints themes/atom-dark.css --ignore-rules cjs-resolves-to-esm",
     "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
-    "prepublishOnly": "npm run verify"
+    "prepublishOnly": "npm run verify",
+    "prepare": "simple-git-hooks"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
@@ -87,10 +88,12 @@
     "eslint-plugin-vue": "^10.10.0",
     "globals": "^17.11.0",
     "jsdom": "^30.0.1",
+    "lint-staged": "^17.3.0",
     "playwright": "^1.62.1",
     "prettier": "^3.9.6",
     "publint": "^0.3.23",
     "sass-embedded": "^1.102.0",
+    "simple-git-hooks": "^2.13.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.67.0",
     "vite": "^8.2.1",
@@ -101,6 +104,13 @@
   },
   "allowScripts": {
     "@parcel/watcher": true,
-    "fsevents": true
+    "fsevents": true,
+    "simple-git-hooks": true
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
   }
 }

@@ -1,0 +1,32 @@
+// GitHub Dark token colors from @speed-highlight/core `github-dark`.
+// Chrome matches the shared dark extras; GitHub's `#161b22` canvas is not used.
+@use 'chrome-dark';
+
+.vue-diff-theme-github-dark {
+    @include chrome-dark.vars;
+
+    --vue-diff-syn-kwd: #ff7b72;
+    --vue-diff-syn-str: #a5d6ff;
+    --vue-diff-syn-num: #79c0ff;
+    --vue-diff-syn-bool: #79c0ff;
+    --vue-diff-syn-cmnt: #8b949e;
+    --vue-diff-syn-func: #d2a8ff;
+    --vue-diff-syn-class: #ffa657;
+    --vue-diff-syn-var: #79c0ff;
+    --vue-diff-syn-type: #79c0ff;
+    --vue-diff-syn-oper: #79c0ff;
+    --vue-diff-syn-section: #79c0ff;
+    --vue-diff-syn-insert: #98c379;
+    --vue-diff-syn-deleted: #ff7b72;
+    --vue-diff-syn-err: #ff7b72;
+}
+
+.vue-diff-theme-github-dark.vue-diff-lang-html,
+.vue-diff-theme-github-dark.vue-diff-lang-xml {
+    --vue-diff-syn-var: #79c0ff;
+    --vue-diff-syn-class: #ffa657;
+}
+
+.vue-diff-theme-github-dark.vue-diff-lang-json {
+    --vue-diff-syn-var: #ffa657;
+}

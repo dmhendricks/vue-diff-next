@@ -20,6 +20,8 @@ export type Theme =
     | 'visual-studio-light'
     | 'atom-dark'
     | 'atom-light'
+    | 'github-dark'
+    | 'github-light'
     | `custom${string}`;
 
 /** Which side of a split view a line belongs to. */

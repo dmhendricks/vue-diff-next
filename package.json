@@ -39,6 +39,8 @@
     "./themes/monokai-dark.css": "./dist/themes/monokai-dark.css",
     "./themes/atom-dark.css": "./dist/themes/atom-dark.css",
     "./themes/atom-light.css": "./dist/themes/atom-light.css",
+    "./themes/github-dark.css": "./dist/themes/github-dark.css",
+    "./themes/github-light.css": "./dist/themes/github-light.css",
     "./package.json": "./package.json"
   },
   "module": "./dist/index.js",
@@ -63,7 +65,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "size": "node scripts/check-size.js",
-    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --exclude-entrypoints themes/visual-studio-light.css --exclude-entrypoints themes/visual-studio-dark.css --exclude-entrypoints themes/monokai-dark.css --exclude-entrypoints themes/atom-dark.css --exclude-entrypoints themes/atom-light.css --ignore-rules cjs-resolves-to-esm",
+    "check:exports": "publint && attw --pack . --profile node16 --exclude-entrypoints style.css --exclude-entrypoints themes/visual-studio-light.css --exclude-entrypoints themes/visual-studio-dark.css --exclude-entrypoints themes/monokai-dark.css --exclude-entrypoints themes/atom-dark.css --exclude-entrypoints themes/atom-light.css --exclude-entrypoints themes/github-dark.css --exclude-entrypoints themes/github-light.css --ignore-rules cjs-resolves-to-esm",
     "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test && npm run test:browser && npm run build && npm run size && npm run check:exports",
     "prepublishOnly": "npm run verify",
     "prepare": "simple-git-hooks"

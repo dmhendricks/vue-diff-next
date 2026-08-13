@@ -87,6 +87,8 @@ describe('Diff', () => {
             'visual-studio-light',
             'atom-dark',
             'atom-light',
+            'github-dark',
+            'github-light',
         ] as const)('applies the %s theme class', async (theme) => {
             const wrapper = mount(Diff, { props: { theme, prev: PREV, current: CURRENT } });
             await settle();

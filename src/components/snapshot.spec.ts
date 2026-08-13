@@ -191,6 +191,8 @@ describe('rendered output', () => {
             'visual-studio-light',
             'atom-dark',
             'atom-light',
+            'github-dark',
+            'github-light',
             'custom-solarized',
         ] as const;
 

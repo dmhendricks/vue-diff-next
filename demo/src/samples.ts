@@ -964,6 +964,8 @@ const EXTRA_THEMES = [
     'visual-studio-dark',
     'atom-dark',
     'atom-light',
+    'github-dark',
+    'github-light',
 ] as const;
 
 export const THEMES: Theme[] = [

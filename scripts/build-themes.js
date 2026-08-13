@@ -18,6 +18,8 @@ const THEMES = [
     'monokai-dark',
     'atom-dark',
     'atom-light',
+    'github-dark',
+    'github-light',
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });

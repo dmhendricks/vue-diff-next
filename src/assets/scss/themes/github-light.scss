@@ -1,0 +1,32 @@
+// GitHub Light token colors from @speed-highlight/core `github-light`.
+// Chrome matches the shared light extras; only syntax tokens differ.
+@use 'chrome-light';
+
+.vue-diff-theme-github-light {
+    @include chrome-light.vars;
+
+    --vue-diff-syn-kwd: #cf222e;
+    --vue-diff-syn-str: #0a3069;
+    --vue-diff-syn-num: #0550ae;
+    --vue-diff-syn-bool: #0550ae;
+    --vue-diff-syn-cmnt: #6e7781;
+    --vue-diff-syn-func: #8250df;
+    --vue-diff-syn-class: #953800;
+    --vue-diff-syn-var: #0550ae;
+    --vue-diff-syn-type: #0550ae;
+    --vue-diff-syn-oper: #0550ae;
+    --vue-diff-syn-section: #0550ae;
+    --vue-diff-syn-insert: #116329;
+    --vue-diff-syn-deleted: #cf222e;
+    --vue-diff-syn-err: #cf222e;
+}
+
+.vue-diff-theme-github-light.vue-diff-lang-html,
+.vue-diff-theme-github-light.vue-diff-lang-xml {
+    --vue-diff-syn-var: #0550ae;
+    --vue-diff-syn-class: #953800;
+}
+
+.vue-diff-theme-github-light.vue-diff-lang-json {
+    --vue-diff-syn-var: #953800;
+}

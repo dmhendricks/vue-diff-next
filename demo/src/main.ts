@@ -7,5 +7,7 @@ import '../../src/assets/scss/themes/visual-studio-light.scss';
 import '../../src/assets/scss/themes/visual-studio-dark.scss';
 import '../../src/assets/scss/themes/atom-dark.scss';
 import '../../src/assets/scss/themes/atom-light.scss';
+import '../../src/assets/scss/themes/github-dark.scss';
+import '../../src/assets/scss/themes/github-light.scss';
 
 createApp(App).mount('#app');

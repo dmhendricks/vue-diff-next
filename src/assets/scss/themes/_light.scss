@@ -1,19 +1,16 @@
+@use 'chrome-light';
+
 .vue-diff-theme-light {
     --vue-diff-bg: #fff;
     --vue-diff-fg: #24292f;
     --vue-diff-gutter-bg: #f6f8fa;
     --vue-diff-gutter-fg: #57606a;
 
-    --vue-diff-added-bg: #eaffef;
-    --vue-diff-removed-bg: #ffeeec;
     --vue-diff-disabled-bg: #f6f8fa;
     --vue-diff-fold-bg: #f0f3f6;
     --vue-diff-fold-fg: var(--vue-diff-fg);
-    --vue-diff-added-gutter-bg: #d1ffdb;
-    --vue-diff-removed-gutter-bg: #ffdbd9;
 
-    --vue-diff-added-word-bg: #b0ecba;
-    --vue-diff-removed-word-bg: #ffc2be;
+    @include chrome-light.washes;
 
     // Syntax tokens, tuned to read against the diff row backgrounds above
     // rather than against a plain editor background.

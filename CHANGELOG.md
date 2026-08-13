@@ -10,7 +10,7 @@
 ### Changed
 
 - Syntax tokens from `@speed-highlight/core` are remapped so opt-in (and default) palettes colour the same roles vue-diff did — object keys, constants, types, and JSON `null`.
-- Add/remove line, gutter, and word washes on `light` and `visual-studio-light` are slightly softer than the original GitHub-style greens and reds.
+- Add/remove washes are shared: every light theme uses the same red/green as `visual-studio-light`, every dark theme the same as `dark`.
 
 ## 1.0.0
 

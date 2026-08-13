@@ -1,23 +1,16 @@
+@use 'chrome-dark';
+
 .vue-diff-theme-dark {
     --vue-diff-bg: #1e1e1e;
     --vue-diff-fg: #d4d4d4;
     --vue-diff-gutter-bg: #252526;
     --vue-diff-gutter-fg: #858585;
 
-    --vue-diff-added-bg: #1b4332;
-    --vue-diff-removed-bg: #4a1c1c;
     --vue-diff-disabled-bg: #232323;
-    // A step above the row background, not a saturated block. These were
-    // originally 2.4x and 1.9x their row's luminance, which read as solid
-    // red/green bars rather than a tinted gutter.
-    --vue-diff-added-gutter-bg: #22503b;
-    --vue-diff-removed-gutter-bg: #552121;
-
     --vue-diff-fold-bg: #262626;
     --vue-diff-fold-fg: var(--vue-diff-fg);
 
-    --vue-diff-added-word-bg: #2f5f45;
-    --vue-diff-removed-word-bg: #6b2e2e;
+    @include chrome-dark.washes;
 
     // Syntax tokens, tuned to read against the diff row backgrounds above
     // rather than against a plain editor background.

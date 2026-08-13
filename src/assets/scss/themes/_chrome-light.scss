@@ -1,18 +1,23 @@
 // Shared chrome for extra light palettes (and visual-studio-light).
+// Add/remove washes are a mixin so `light` can reuse them without copying.
+@mixin washes {
+    --vue-diff-added-bg: #dafbe1;
+    --vue-diff-removed-bg: #ffd6d1;
+    --vue-diff-added-gutter-bg: #c0f0cc;
+    --vue-diff-removed-gutter-bg: #ffc2bb;
+    --vue-diff-added-word-bg: #aceebb;
+    --vue-diff-removed-word-bg: #ffb0a8;
+}
+
 @mixin vars {
     --vue-diff-bg: #fff;
     --vue-diff-fg: #000;
     --vue-diff-gutter-bg: #fff;
     --vue-diff-gutter-fg: #999;
 
-    --vue-diff-added-bg: #eaffef;
-    --vue-diff-removed-bg: #ffeeec;
     --vue-diff-disabled-bg: rgba(128, 128, 128, 0.1);
     --vue-diff-fold-bg: rgba(128, 128, 128, 0.1);
     --vue-diff-fold-fg: var(--vue-diff-fg);
-    --vue-diff-added-gutter-bg: #d1ffdb;
-    --vue-diff-removed-gutter-bg: #ffdbd9;
 
-    --vue-diff-added-word-bg: #b0ecba;
-    --vue-diff-removed-word-bg: #ffc2be;
+    @include washes;
 }

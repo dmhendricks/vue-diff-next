@@ -1,0 +1,32 @@
+// highlight.js `vs2015` (Visual Studio 2015 Dark).
+// Pair for visual-studio-light (`vs`). Not VS Code Dark+ (`theme="dark"`).
+@use 'chrome-dark';
+
+.vue-diff-theme-visual-studio-dark {
+    @include chrome-dark.vars;
+
+    --vue-diff-syn-kwd: #569cd6;
+    --vue-diff-syn-str: #d69d85;
+    --vue-diff-syn-num: #b8d7a3;
+    --vue-diff-syn-bool: #569cd6;
+    --vue-diff-syn-cmnt: #57a64a;
+    --vue-diff-syn-func: #dcdcdc;
+    --vue-diff-syn-class: #9cdcfe;
+    --vue-diff-syn-var: #bd63c5;
+    --vue-diff-syn-type: #4ec9b0;
+    --vue-diff-syn-oper: #dcdcdc;
+    --vue-diff-syn-section: #ffd700;
+    --vue-diff-syn-insert: #b8d7a3;
+    --vue-diff-syn-deleted: #d69d85;
+    --vue-diff-syn-err: #f44747;
+}
+
+.vue-diff-theme-visual-studio-dark.vue-diff-lang-html,
+.vue-diff-theme-visual-studio-dark.vue-diff-lang-xml {
+    --vue-diff-syn-var: #569cd6;
+    --vue-diff-syn-class: #9cdcfe;
+}
+
+.vue-diff-theme-visual-studio-dark.vue-diff-lang-json {
+    --vue-diff-syn-var: #9cdcfe;
+}

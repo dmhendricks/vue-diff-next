@@ -5,7 +5,7 @@
 ### Added
 
 - Light themes: `visual-studio-light`, `atom-light`
-- Dark themes: `monokai-dark`, `atom-dark`
+- Dark themes: `monokai-dark`, `atom-dark`, `visual-studio-dark`
 
 ### Changed
 

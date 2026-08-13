@@ -4,6 +4,7 @@ import App from './App.vue';
 import '../../src/assets/scss/index.scss';
 import '../../src/assets/scss/themes/monokai-dark.scss';
 import '../../src/assets/scss/themes/visual-studio-light.scss';
+import '../../src/assets/scss/themes/visual-studio-dark.scss';
 import '../../src/assets/scss/themes/atom-dark.scss';
 import '../../src/assets/scss/themes/atom-light.scss';
 

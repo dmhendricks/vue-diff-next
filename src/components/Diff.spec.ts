@@ -83,6 +83,7 @@ describe('Diff', () => {
             'dark',
             'light',
             'monokai-dark',
+            'visual-studio-dark',
             'visual-studio-light',
             'atom-dark',
             'atom-light',

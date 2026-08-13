@@ -179,6 +179,7 @@ names are safe to pass straight through.
 | `atom-dark`           | Atom One Dark tokens                       | `vue-diff-next/themes/atom-dark.css`           |
 | `atom-light`          | Atom One Light tokens                      | `vue-diff-next/themes/atom-light.css`          |
 | `monokai-dark`        | highlight.js **monokai** (vue-diff `dark`) | `vue-diff-next/themes/monokai-dark.css`        |
+| `visual-studio-dark`  | highlight.js **vs2015**                    | `vue-diff-next/themes/visual-studio-dark.css`  |
 | `visual-studio-light` | highlight.js **vs** (vue-diff `light`)     | `vue-diff-next/themes/visual-studio-light.css` |
 | `custom*`             | Unstyled; you supply the CSS               | none                                           |
 

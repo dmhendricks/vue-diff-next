@@ -184,18 +184,18 @@ describe('rendered output', () => {
     it('renders identical structure in every theme', async () => {
         const testCase = CASES[0]!;
         const dark = await render('split', testCase, 'dark');
-        const light = await render('split', testCase, 'light');
-        const monokaiDark = await render('split', testCase, 'monokai-dark');
-        const visualStudioLight = await render('split', testCase, 'visual-studio-light');
-        const atomDark = await render('split', testCase, 'atom-dark');
-        const atomLight = await render('split', testCase, 'atom-light');
-        const custom = await render('split', testCase, 'custom-solarized');
+        const others = [
+            'light',
+            'monokai-dark',
+            'visual-studio-dark',
+            'visual-studio-light',
+            'atom-dark',
+            'atom-light',
+            'custom-solarized',
+        ] as const;
 
-        expect(light).toBe(dark);
-        expect(monokaiDark).toBe(dark);
-        expect(visualStudioLight).toBe(dark);
-        expect(atomDark).toBe(dark);
-        expect(atomLight).toBe(dark);
-        expect(custom).toBe(dark);
+        for (const theme of others) {
+            expect(await render('split', testCase, theme)).toBe(dark);
+        }
     });
 });

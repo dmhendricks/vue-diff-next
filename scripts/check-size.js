@@ -20,6 +20,7 @@ import { join } from 'node:path';
 const BUDGET_BYTES = 23 * 1024;
 const OPT_IN_THEMES = [
     'visual-studio-light.css',
+    'visual-studio-dark.css',
     'monokai-dark.css',
     'atom-dark.css',
     'atom-light.css',

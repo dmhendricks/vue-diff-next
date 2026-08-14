@@ -20,6 +20,8 @@ const THEMES = [
     'atom-light',
     'github-dark',
     'github-light',
+    'coral-dark',
+    'coral-light',
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });

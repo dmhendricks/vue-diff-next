@@ -26,6 +26,8 @@ const OPT_IN_THEMES = [
     'atom-light.css',
     'github-dark.css',
     'github-light.css',
+    'coral-dark.css',
+    'coral-light.css',
 ];
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
@@ -64,7 +66,7 @@ if (!styleCss) {
     process.exit(1);
 }
 const styleSheet = readFileSync(styleCss, 'utf8');
-if (/vue-diff-theme-(monokai|visual-studio|atom|github)/.test(styleSheet)) {
+if (/vue-diff-theme-(monokai|visual-studio|atom|github|coral)/.test(styleSheet)) {
     console.error(
         '✗ dist/style.css contains extra theme rules. Extra palettes must be compiled to dist/themes/ only.',
     );

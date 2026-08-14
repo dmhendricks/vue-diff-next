@@ -193,6 +193,8 @@ describe('rendered output', () => {
             'atom-light',
             'github-dark',
             'github-light',
+            'coral-dark',
+            'coral-light',
             'custom-solarized',
         ] as const;
 

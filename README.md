@@ -178,6 +178,8 @@ names are safe to pass straight through.
 | `light`               | VS Code-ish light                          | `vue-diff-next/style.css`                      |
 | `atom-dark`           | Atom One Dark tokens                       | `vue-diff-next/themes/atom-dark.css`           |
 | `atom-light`          | Atom One Light tokens                      | `vue-diff-next/themes/atom-light.css`          |
+| `coral-dark`          | Coral dark tokens                          | `vue-diff-next/themes/coral-dark.css`          |
+| `coral-light`         | Coral light tokens                         | `vue-diff-next/themes/coral-light.css`         |
 | `github-dark`         | GitHub Dark tokens                         | `vue-diff-next/themes/github-dark.css`         |
 | `github-light`        | GitHub Light tokens                        | `vue-diff-next/themes/github-light.css`        |
 | `monokai-dark`        | highlight.js **monokai** (vue-diff `dark`) | `vue-diff-next/themes/monokai-dark.css`        |

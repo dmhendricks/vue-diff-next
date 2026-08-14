@@ -1,0 +1,31 @@
+// Coral dark tokens. Chrome is shared; only syntax colors differ.
+@use 'chrome-dark';
+
+.vue-diff-theme-coral-dark {
+    @include chrome-dark.vars;
+
+    --vue-diff-syn-kwd: #ffada8;
+    --vue-diff-syn-str: #88bbb6;
+    --vue-diff-syn-num: #d4d4d4;
+    --vue-diff-syn-bool: #d4d4d4;
+    --vue-diff-syn-cmnt: #8b8b8b;
+    --vue-diff-syn-func: #d2a8ff;
+    --vue-diff-syn-class: #79c0ff;
+    --vue-diff-syn-var: #d4d4d4;
+    --vue-diff-syn-type: #7eb5ff;
+    --vue-diff-syn-oper: #8b949e;
+    --vue-diff-syn-section: #ffada8;
+    --vue-diff-syn-insert: #88bbb6;
+    --vue-diff-syn-deleted: #ffada8;
+    --vue-diff-syn-err: #ffada8;
+}
+
+.vue-diff-theme-coral-dark.vue-diff-lang-html,
+.vue-diff-theme-coral-dark.vue-diff-lang-xml {
+    --vue-diff-syn-var: #56d4dd;
+    --vue-diff-syn-class: #79c0ff;
+}
+
+.vue-diff-theme-coral-dark.vue-diff-lang-json {
+    --vue-diff-syn-var: #79c0ff;
+}

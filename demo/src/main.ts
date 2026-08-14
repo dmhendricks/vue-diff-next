@@ -9,5 +9,7 @@ import '../../src/assets/scss/themes/atom-dark.scss';
 import '../../src/assets/scss/themes/atom-light.scss';
 import '../../src/assets/scss/themes/github-dark.scss';
 import '../../src/assets/scss/themes/github-light.scss';
+import '../../src/assets/scss/themes/coral-dark.scss';
+import '../../src/assets/scss/themes/coral-light.scss';
 
 createApp(App).mount('#app');

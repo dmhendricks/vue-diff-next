@@ -4,8 +4,8 @@
 
 ### Added
 
-- Light themes: `visual-studio-light`, `atom-light`, `github-light`
-- Dark themes: `monokai-dark`, `atom-dark`, `visual-studio-dark`, `github-dark`
+- Light themes: `visual-studio-light`, `atom-light`, `github-light`, `coral-light`
+- Dark themes: `monokai-dark`, `atom-dark`, `visual-studio-dark`, `github-dark`, `coral-dark`
 
 ### Changed
 

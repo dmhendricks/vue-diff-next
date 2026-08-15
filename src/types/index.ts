@@ -24,6 +24,7 @@ export type Theme =
     | 'github-light'
     | 'coral-dark'
     | 'coral-light'
+    | 'twilight-dark'
     | `custom${string}`;
 
 /** Which side of a split view a line belongs to. */

@@ -179,6 +179,7 @@ names are safe to pass straight through.
 | `github-dark`         | GitHub Dark                                | `vue-diff-next/themes/github-dark.css`         |
 | `github-light`        | GitHub Light                               | `vue-diff-next/themes/github-light.css`        |
 | `monokai-dark`        | highlight.js **monokai** (vue-diff `dark`) | `vue-diff-next/themes/monokai-dark.css`        |
+| `twilight-dark`       | highlight.js **base16-twilight**           | `vue-diff-next/themes/twilight-dark.css`       |
 | `visual-studio-dark`  | highlight.js **vs2015**                    | `vue-diff-next/themes/visual-studio-dark.css`  |
 | `visual-studio-light` | highlight.js **vs** (vue-diff `light`)     | `vue-diff-next/themes/visual-studio-light.css` |
 | `custom*`             | Unstyled; you supply the CSS               | none                                           |

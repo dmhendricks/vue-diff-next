@@ -968,6 +968,7 @@ const EXTRA_THEMES = [
     'github-light',
     'coral-dark',
     'coral-light',
+    'twilight-dark',
 ] as const;
 
 export const THEMES: Theme[] = [

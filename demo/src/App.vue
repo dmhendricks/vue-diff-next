@@ -14,7 +14,7 @@ const fromQuery = parseDemoQuery(location.search, {
 const sampleKey = ref(fromQuery.sample);
 const mode = ref<Mode>(fromQuery.mode);
 const theme = ref<Theme>(fromQuery.theme);
-const pageTheme = computed(() => (theme.value.includes('light') ? 'light' : 'dark'));
+const pageTheme = computed(() => (theme.value.endsWith('light') ? 'light' : 'dark'));
 const folding = ref(fromQuery.folding);
 const foldMarker = ref<FoldMarker>(fromQuery.foldMarker);
 const wrap = ref(fromQuery.wrap);

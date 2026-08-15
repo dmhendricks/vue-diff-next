@@ -1,0 +1,33 @@
+// highlight.js `base16/twilight` (David Hart).
+// Canvas already matches shared extra-dark chrome (`#1e1e1e` = base00).
+@use 'chrome-dark';
+
+.vue-diff-theme-twilight-dark {
+    @include chrome-dark.vars;
+
+    --vue-diff-syn-kwd: #9b859d;
+    --vue-diff-syn-str: #8f9d6a;
+    --vue-diff-syn-num: #cda869;
+    --vue-diff-syn-bool: #cda869;
+    --vue-diff-syn-cmnt: #5f5a60;
+    --vue-diff-syn-func: #7587a6;
+    // JS object keys (`hljs-attr`). HTML attrs override below.
+    --vue-diff-syn-class: #cda869;
+    --vue-diff-syn-var: #cf6a4c;
+    --vue-diff-syn-type: #d16565;
+    --vue-diff-syn-oper: #a7a7a7;
+    --vue-diff-syn-section: #7587a6;
+    --vue-diff-syn-insert: #8f9d6a;
+    --vue-diff-syn-deleted: #cf6a4c;
+    --vue-diff-syn-err: #cf6a4c;
+}
+
+.vue-diff-theme-twilight-dark.vue-diff-lang-html,
+.vue-diff-theme-twilight-dark.vue-diff-lang-xml {
+    --vue-diff-syn-var: #cf6a4c;
+    --vue-diff-syn-class: #cda869;
+}
+
+.vue-diff-theme-twilight-dark.vue-diff-lang-json {
+    --vue-diff-syn-var: #cda869;
+}

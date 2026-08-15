@@ -11,5 +11,6 @@ import '../../src/assets/scss/themes/github-dark.scss';
 import '../../src/assets/scss/themes/github-light.scss';
 import '../../src/assets/scss/themes/coral-dark.scss';
 import '../../src/assets/scss/themes/coral-light.scss';
+import '../../src/assets/scss/themes/twilight-dark.scss';
 
 createApp(App).mount('#app');

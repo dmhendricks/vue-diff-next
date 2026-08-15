@@ -90,6 +90,7 @@ describe('Diff', () => {
             'github-light',
             'coral-dark',
             'coral-light',
+            'twilight-dark',
         ] as const)('applies the %s theme class', async (theme) => {
             const wrapper = mount(Diff, { props: { theme, prev: PREV, current: CURRENT } });
             await settle();

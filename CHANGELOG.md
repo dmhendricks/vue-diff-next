@@ -5,6 +5,7 @@
 ### Added
 
 - `showLineNumbers` (default `true`) hides the diff line-number gutter when set to `false`.
+- Optional `twilight-dark` theme (highlight.js base16-twilight). Import `vue-diff-next/themes/twilight-dark.css`.
 
 ### Changed
 

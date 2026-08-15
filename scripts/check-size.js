@@ -29,6 +29,7 @@ const OPT_IN_THEMES = [
     'github-light.css',
     'coral-dark.css',
     'coral-light.css',
+    'twilight-dark.css',
 ];
 
 const DIST = new URL('../dist/', import.meta.url).pathname;

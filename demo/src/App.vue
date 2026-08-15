@@ -1,16 +1,36 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Diff } from '../../src';
 import type { FoldMarker, Mode, Theme } from '../../src/types';
+import { parseDemoQuery, syncDemoQuery, type DemoQuery } from './query';
 import { MODES, THEMES, groups, samples } from './samples';
 
-const sampleKey = ref('javascript');
-const mode = ref<Mode>('split');
-const theme = ref<Theme>('dark');
+const fromQuery = parseDemoQuery(location.search, {
+    samples: samples.map((s) => s.key),
+    modes: MODES,
+    themes: THEMES,
+});
+
+const sampleKey = ref(fromQuery.sample);
+const mode = ref<Mode>(fromQuery.mode);
+const theme = ref<Theme>(fromQuery.theme);
 const pageTheme = computed(() => (theme.value.includes('light') ? 'light' : 'dark'));
-const folding = ref(false);
-const foldMarker = ref<FoldMarker>('dots');
-const wrap = ref(true);
+const folding = ref(fromQuery.folding);
+const foldMarker = ref<FoldMarker>(fromQuery.foldMarker);
+const wrap = ref(fromQuery.wrap);
+
+function formQuery(): DemoQuery {
+    return {
+        sample: sampleKey.value,
+        mode: mode.value,
+        theme: theme.value,
+        folding: folding.value,
+        foldMarker: foldMarker.value,
+        wrap: wrap.value,
+    };
+}
+
+watch(formQuery, (state) => syncDemoQuery(state), { immediate: true });
 
 const sample = computed(() => samples.find((s) => s.key === sampleKey.value) ?? samples[0]!);
 

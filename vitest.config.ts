@@ -7,7 +7,7 @@ export default defineConfig({
         // Component specs need a DOM; core/ specs do not, but a single
         // environment keeps config simple and jsdom startup is cheap.
         environment: 'jsdom',
-        include: ['src/**/*.spec.ts'],
+        include: ['src/**/*.spec.ts', 'demo/**/*.spec.ts'],
         coverage: {
             provider: 'v8',
             include: ['src/**/*.{ts,vue}'],

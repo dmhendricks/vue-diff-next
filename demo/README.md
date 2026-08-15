@@ -25,12 +25,12 @@ npx vite preview -c vite.config.demo.ts
 
 ## Layout
 
-| Path             | Purpose                                                    |
-| ---------------- | ---------------------------------------------------------- |
-| `index.html`     | Vite entry template.                                       |
-| `src/main.ts`    | Mounts the app and imports the library stylesheet.         |
-| `src/App.vue`    | The page: controls, viewer, usage snippet.                 |
-| `src/samples.ts` | Diff inputs. The first four mirror the original's presets. |
+| Path             | Purpose                                                       |
+| ---------------- | ------------------------------------------------------------- |
+| `index.html`     | Vite entry template.                                          |
+| `src/main.ts`    | Mounts the app; imports the default sheet and extra palettes. |
+| `src/App.vue`    | The page: controls, viewer, usage snippet.                    |
+| `src/samples.ts` | Diff inputs. The first four mirror the original's presets.    |
 
 `base` is `/vue-diff-next/` because project Pages serve from a subpath — a
 root-relative base would 404 every asset. Override with `DEMO_BASE` for a

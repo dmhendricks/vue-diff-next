@@ -2,7 +2,6 @@
 [![GitHub License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/dmhendricks/vue-diff-next/ci.yaml?label=CI)](https://github.com/dmhendricks/vue-diff-next/actions/workflows/ci.yaml)
 [![NPM Downloads](https://img.shields.io/npm/dt/vue-diff-next.svg?label=npm%20downloads)](https://www.npmjs.com/package/vue-diff-next)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/danielhendricks)
 [![Donate](https://img.shields.io/badge/Donate-Ko--fi-green.svg)](https://ko-fi.com/danielhendricks)
 
 # vue-diff-next
@@ -12,8 +11,8 @@
 A lightweight diff viewer component for Vue 3.5+. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
-Same props, same modes, same look. **18.4 kB gzip with 35 languages bundled**, versus roughly
-75 kB for the original covering 7.
+Same props, same modes, same look. **~18.8 kB gzip for the default bundle (style.css + component JS)
+with 35 languages bundled**, versus roughly 75 kB for the original covering 7.
 
 Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it in action.
 
@@ -176,12 +175,12 @@ names are safe to pass straight through.
 | --------------------- | ------------------------------------------ | ---------------------------------------------- |
 | `dark` (default)      | VS Code-ish dark                           | `vue-diff-next/style.css`                      |
 | `light`               | VS Code-ish light                          | `vue-diff-next/style.css`                      |
-| `atom-dark`           | Atom One Dark tokens                       | `vue-diff-next/themes/atom-dark.css`           |
-| `atom-light`          | Atom One Light tokens                      | `vue-diff-next/themes/atom-light.css`          |
-| `coral-dark`          | Coral dark tokens                          | `vue-diff-next/themes/coral-dark.css`          |
-| `coral-light`         | Coral light tokens                         | `vue-diff-next/themes/coral-light.css`         |
-| `github-dark`         | GitHub Dark tokens                         | `vue-diff-next/themes/github-dark.css`         |
-| `github-light`        | GitHub Light tokens                        | `vue-diff-next/themes/github-light.css`        |
+| `atom-dark`           | Atom One Dark                              | `vue-diff-next/themes/atom-dark.css`           |
+| `atom-light`          | Atom One Light                             | `vue-diff-next/themes/atom-light.css`          |
+| `coral-dark`          | Coral keywords, teal strings               | `vue-diff-next/themes/coral-dark.css`          |
+| `coral-light`         | Same tokens, darkened for a white canvas   | `vue-diff-next/themes/coral-light.css`         |
+| `github-dark`         | GitHub Dark                                | `vue-diff-next/themes/github-dark.css`         |
+| `github-light`        | GitHub Light                               | `vue-diff-next/themes/github-light.css`        |
 | `monokai-dark`        | highlight.js **monokai** (vue-diff `dark`) | `vue-diff-next/themes/monokai-dark.css`        |
 | `visual-studio-dark`  | highlight.js **vs2015**                    | `vue-diff-next/themes/visual-studio-dark.css`  |
 | `visual-studio-light` | highlight.js **vs** (vue-diff `light`)     | `vue-diff-next/themes/visual-studio-light.css` |

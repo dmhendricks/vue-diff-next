@@ -4,13 +4,15 @@
 
 ### Added
 
-- Light themes: `visual-studio-light`, `atom-light`, `github-light`, `coral-light`
-- Dark themes: `monokai-dark`, `atom-dark`, `visual-studio-dark`, `github-dark`, `coral-dark`
+- Opt-in palettes as a second CSS import (`vue-diff-next/themes/<name>.css`). They are not in `style.css`.
+  - Light: `visual-studio-light`, `atom-light`, `github-light`, `coral-light`
+  - Dark: `monokai-dark`, `atom-dark`, `visual-studio-dark`, `github-dark`, `coral-dark`
+- `visual-studio-light` and `monokai-dark` match vue-diff's highlight.js `vs` / `monokai` palettes.
 
 ### Changed
 
-- Syntax tokens from `@speed-highlight/core` are remapped so opt-in (and default) palettes colour the same roles vue-diff did — object keys, constants, types, and JSON `null`.
-- Add/remove washes are shared: every light theme uses the same red/green as `visual-studio-light`, every dark theme the same as `dark`.
+- Syntax tokens from `@speed-highlight/core` are remapped so palettes colour the same roles vue-diff did — object keys, constants, types, and JSON `null`.
+- Add/remove washes are shared across extras: every light theme uses the same red/green, every dark theme the same. Default `light` / `dark` washes are stronger so added/removed rows read more clearly.
 
 ## 1.0.0
 

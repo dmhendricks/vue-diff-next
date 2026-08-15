@@ -13,8 +13,9 @@
  * consumers who never import them do not pay for them.
  */
 import { gzipSync } from 'node:zlib';
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { createRequire } from 'node:module';
 
 /** Total gzip budget in bytes for the default sheet (under the original's ~75 kB). */
 const BUDGET_BYTES = 23 * 1024;
@@ -79,6 +80,60 @@ const missingThemes = OPT_IN_THEMES.filter(
 if (missingThemes.length > 0) {
     console.error(`✗ Missing opt-in theme CSS: ${missingThemes.join(', ')}. Run the full build.`);
     process.exit(1);
+}
+
+const unexpectedThemes = files
+    .filter(isOptInTheme)
+    .map(posixName)
+    .filter((name) => !OPT_IN_THEMES.includes(name.slice('themes/'.length)));
+if (unexpectedThemes.length > 0) {
+    console.error(`✗ Unexpected files under dist/themes/: ${unexpectedThemes.join(', ')}.`);
+    process.exit(1);
+}
+
+const pkg = createRequire(import.meta.url)('../package.json');
+const missingExports = OPT_IN_THEMES.filter((name) => !pkg.exports[`./themes/${name}`]);
+if (missingExports.length > 0) {
+    console.error(
+        `✗ package.json exports missing: ${missingExports.map((n) => `./themes/${n}`).join(', ')}.`,
+    );
+    process.exit(1);
+}
+
+const THEME_VARS = [
+    '--vue-diff-bg',
+    '--vue-diff-fg',
+    '--vue-diff-added-bg',
+    '--vue-diff-removed-bg',
+    '--vue-diff-syn-kwd',
+    '--vue-diff-syn-str',
+    '--vue-diff-syn-num',
+    '--vue-diff-syn-bool',
+    '--vue-diff-syn-cmnt',
+    '--vue-diff-syn-func',
+    '--vue-diff-syn-class',
+    '--vue-diff-syn-var',
+    '--vue-diff-syn-type',
+    '--vue-diff-syn-oper',
+    '--vue-diff-syn-section',
+    '--vue-diff-syn-insert',
+    '--vue-diff-syn-deleted',
+    '--vue-diff-syn-err',
+];
+
+for (const name of OPT_IN_THEMES) {
+    const file = files.find((f) => posixName(f) === `themes/${name}`);
+    const css = readFileSync(file, 'utf8');
+    const className = `.vue-diff-theme-${name.replace(/\.css$/, '')}`;
+    if (!css.includes(className)) {
+        console.error(`✗ ${name} does not define ${className}.`);
+        process.exit(1);
+    }
+    const missingVars = THEME_VARS.filter((v) => !css.includes(v));
+    if (missingVars.length > 0) {
+        console.error(`✗ ${name} is missing ${missingVars.join(', ')}.`);
+        process.exit(1);
+    }
 }
 
 const kb = (n) => `${(n / 1024).toFixed(2)} kB`;

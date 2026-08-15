@@ -5,10 +5,10 @@
 .vue-diff-theme-twilight-dark {
     @include chrome-dark.vars;
 
-    --vue-diff-syn-kwd: #9b859d;
+    --vue-diff-syn-kwd: #b37a94;
     --vue-diff-syn-str: #8f9d6a;
-    --vue-diff-syn-num: #cda869;
-    --vue-diff-syn-bool: #cda869;
+    --vue-diff-syn-num: #9b859d;
+    --vue-diff-syn-bool: #9b859d;
     --vue-diff-syn-cmnt: #5f5a60;
     --vue-diff-syn-func: #7587a6;
     // JS object keys (`hljs-attr`). HTML attrs override below.

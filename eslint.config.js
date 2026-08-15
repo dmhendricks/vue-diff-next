@@ -42,13 +42,17 @@ export default ts.config(
             'vue/one-component-per-file': 'off',
         },
     },
-    // The demo builds a copy-pasteable SFC snippet inside a template literal. That
-    // string contains a closing script tag, which must stay escaped as `<\/script>`
-    // — unescaped, it would terminate the demo's own <script setup> block when the
-    // SFC is parsed. The rule reads the escape as redundant; it is load-bearing.
+    // Demo runs in the browser (Vite dev server + GitHub Pages).
     {
-        files: ['demo/**/*.vue'],
+        files: ['demo/**/*.{ts,vue}'],
+        languageOptions: {
+            globals: globals.browser,
+        },
         rules: {
+            // The demo builds a copy-pasteable SFC snippet inside a template literal. That
+            // string contains a closing script tag, which must stay escaped as `<\/script>`
+            // — unescaped, it would terminate the demo's own <script setup> block when the
+            // SFC is parsed. The rule reads the escape as redundant; it is load-bearing.
             'no-useless-escape': 'off',
         },
     },

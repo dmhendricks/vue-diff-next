@@ -5,10 +5,8 @@ import Diff from './Diff.vue';
 import VueDiffPlugin, { Diff as NamedDiff } from '../index';
 import type { FoldMarker, Mode, Theme, VirtualScroll } from '../types';
 
-/** Let the async highlight settle so rendered markup is final. */
+/** Flush Vue so the viewer has painted. Highlighting is synchronous. */
 async function settle() {
-    await nextTick();
-    await Promise.resolve();
     await nextTick();
 }
 

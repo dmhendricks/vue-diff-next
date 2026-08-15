@@ -16,15 +16,14 @@ export interface Token {
 /**
  * Tokenize `source` for syntax highlighting.
  *
- * Grammars are bundled and `tokenizeWith` is synchronous. This still returns a
- * Promise so `useHighlight` can keep its async upgrade path until that
- * composable is rewritten.
+ * Synchronous: grammars are bundled and `tokenizeWith` does not load anything.
+ * Unknown languages fall back to plain text.
  *
  * **Invariant: the concatenated token values equal `source` byte for byte.**
  * Everything downstream (word-diff composition, escaping, line splitting)
  * depends on it, so it is asserted directly in the specs.
  */
-export async function tokenizeSource(source: string, language: unknown): Promise<Token[]> {
+export function tokenizeSource(source: string, language: unknown): Token[] {
     if (source === '') return [];
 
     const grammar = resolveLanguage(language);

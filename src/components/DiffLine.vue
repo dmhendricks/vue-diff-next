@@ -127,10 +127,9 @@ function observe(): void {
         });
     }
 
-    // Height changes on wrap, which happens on resize and when async highlighting
-    // replaces the interim plain text. Guarded because jsdom has no
-    // ResizeObserver: without it the initial `report` above still runs, so
-    // heights are simply never revised.
+    // Height changes on wrap, which happens on resize. Guarded because jsdom
+    // has no ResizeObserver: without it the initial `report` above still runs,
+    // so heights are simply never revised.
     if (observer || typeof ResizeObserver === 'undefined') return;
 
     observer = new ResizeObserver(report);
@@ -139,11 +138,10 @@ function observe(): void {
     // Observe each code cell as well, not just the row.
     //
     // In split mode a row's height is driven by the taller of its two cells, and
-    // the row itself carries `min-height: lineMinHeight`. While the content is
-    // still one line tall that floor means the row's own box does not change size
-    // as the highlighter swaps markup in and the text starts wrapping, so an
-    // observer on the row alone can stay silent while the row keeps its one-line
-    // measurement. The cells have no floor, so they do report the reflow.
+    // the row itself carries `min-height: lineMinHeight`. A wrap that stays
+    // within that floor means the row's own box does not change size, so an
+    // observer on the row alone can stay silent. The cells have no floor, so
+    // they do report the reflow.
     for (const cell of element.value.querySelectorAll('.vue-diff-line')) {
         observer.observe(cell);
     }

@@ -18,10 +18,8 @@ import type { FoldMarker, Mode, Theme } from '../types';
  * result changed, and the diff has to be read before `--update` is run.
  */
 
-/** Let the async highlight settle so the captured markup is final. */
+/** Flush Vue so the viewer has painted. Highlighting is synchronous. */
 async function settle(): Promise<void> {
-    await nextTick();
-    await Promise.resolve();
     await nextTick();
 }
 

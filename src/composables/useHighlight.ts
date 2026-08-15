@@ -13,39 +13,28 @@ export interface HighlightSource {
     words: boolean;
 }
 
-/** Async per-line highlight: escaped plaintext first, upgraded when tokenize resolves. */
+/** Per-line highlight in the same tick as the source change. */
 export function useHighlight(source: () => HighlightSource) {
     const html = ref('');
-    let generation = 0;
 
     watch(
         source,
         (current) => {
             const { value, language, counterpart, words } = current;
 
-            // Bump before empty return — stale tokenize must not repaint a cleared cell.
-            const token = ++generation;
-
             if (value === '') {
                 html.value = '';
                 return;
             }
 
-            html.value = escapeHtml(value);
-
-            void tokenizeSource(value, language)
-                .then((tokens) => {
-                    if (token !== generation) return;
-
-                    const segments =
-                        words && counterpart !== undefined ? diffWords(counterpart, value) : [];
-
-                    html.value = spansToHtml(composeSpans(tokens, segments));
-                })
-                .catch(() => {
-                    if (token !== generation) return;
-                    html.value = escapeHtml(value);
-                });
+            try {
+                const tokens = tokenizeSource(value, language);
+                const segments =
+                    words && counterpart !== undefined ? diffWords(counterpart, value) : [];
+                html.value = spansToHtml(composeSpans(tokens, segments));
+            } catch {
+                html.value = escapeHtml(value);
+            }
         },
         { immediate: true, deep: true },
     );

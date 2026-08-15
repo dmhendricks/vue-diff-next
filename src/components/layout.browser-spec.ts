@@ -68,8 +68,8 @@ async function mountDiff(options: {
     });
     app.mount(host);
 
-    // Two frames plus a tick: the first paint mounts rows, the highlighter resolves
-    // asynchronously, and ResizeObserver reports the resulting reflow after that.
+    // Two frames plus a tick: the first paint mounts rows, and ResizeObserver
+    // reports wrap-driven reflow after that.
     await new Promise((resolve) => setTimeout(resolve, 600));
 }
 

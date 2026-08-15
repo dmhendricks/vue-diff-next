@@ -12,37 +12,37 @@ function read(dir: string, file: string): string {
 
 describe('tokenizeSource', () => {
     it('returns no tokens for empty input', async () => {
-        expect(await tokenizeSource('', 'js')).toEqual([]);
+        expect(tokenizeSource('', 'js')).toEqual([]);
     });
 
     it('emits no zero-length tokens', async () => {
         // speed-highlight emits many empty tokens; they would become empty spans.
-        const tokens = await tokenizeSource('<div class="a">hi</div>', 'html');
+        const tokens = tokenizeSource('<div class="a">hi</div>', 'html');
         expect(tokens.every((t) => t.value.length > 0)).toBe(true);
     });
 
     it('merges adjacent tokens of the same class', async () => {
-        const tokens = await tokenizeSource('const a = 1;\nconst b = 2;\n', 'js');
+        const tokens = tokenizeSource('const a = 1;\nconst b = 2;\n', 'js');
         for (let i = 1; i < tokens.length; i++) {
             expect(tokens[i]!.type).not.toBe(tokens[i - 1]!.type);
         }
     });
 
     it('classifies at least some tokens for a known language', async () => {
-        const tokens = await tokenizeSource('const x = "s";', 'js');
+        const tokens = tokenizeSource('const x = "s";', 'js');
         expect(tokens.some((t) => t.type !== null)).toBe(true);
     });
 
     it('falls back to plain text for an unknown language', async () => {
         const source = 'some text';
-        const tokens = await tokenizeSource(source, 'not-a-real-language');
+        const tokens = tokenizeSource(source, 'not-a-real-language');
         expect(isLossless(tokens, source)).toBe(true);
     });
 
     it('resolves highlight.js language names, for vue-diff parity', async () => {
         // `javascript` and `plaintext` are what the original's API accepts.
-        const viaAlias = await tokenizeSource('const x = 1;', 'javascript');
-        const viaName = await tokenizeSource('const x = 1;', 'js');
+        const viaAlias = tokenizeSource('const x = 1;', 'javascript');
+        const viaName = tokenizeSource('const x = 1;', 'js');
         expect(viaAlias).toEqual(viaName);
     });
 });
@@ -67,7 +67,7 @@ describe('losslessness invariant', () => {
             const language = file.replace(/\.txt$/, '');
             it(`${language} round-trips exactly`, async () => {
                 const source = read(LANGUAGES_DIR, file);
-                const tokens = await tokenizeSource(source, language);
+                const tokens = tokenizeSource(source, language);
                 expect(tokens.map((t) => t.value).join('')).toBe(source);
             });
         }
@@ -83,7 +83,7 @@ describe('losslessness invariant', () => {
 
             it(`${file} round-trips exactly`, async () => {
                 const source = read(HOSTILE_DIR, file);
-                const tokens = await tokenizeSource(source, ext);
+                const tokens = tokenizeSource(source, ext);
                 expect(isLossless(tokens, source)).toBe(true);
             });
         }
@@ -113,7 +113,7 @@ describe('losslessness invariant', () => {
 
         for (const [name, source, language] of cases) {
             it(name, async () => {
-                const tokens = await tokenizeSource(source, language);
+                const tokens = tokenizeSource(source, language);
                 expect(isLossless(tokens, source)).toBe(true);
             });
         }

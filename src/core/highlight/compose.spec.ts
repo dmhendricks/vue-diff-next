@@ -79,7 +79,7 @@ describe('composeSpans', () => {
         it('across a realistic highlight + word-diff pairing', async () => {
             const prev = '<div class="old">value</div>';
             const current = '<div class="new">value</div>';
-            const tokens = await tokenizeSource(current, 'html');
+            const tokens = tokenizeSource(current, 'html');
             const spans = composeSpans(tokens, diffWords(prev, current));
             expect(text(spans)).toBe(current);
             expect(spans.some((x) => x.modified)).toBe(true);
@@ -135,7 +135,7 @@ describe('spansToHtml', () => {
             // not contiguous — assert on tags instead, and that stripping our
             // spans leaves fully escaped text.
             const source = '<script>alert("xss")</script>';
-            const tokens = await tokenizeSource(source, 'html');
+            const tokens = tokenizeSource(source, 'html');
             const html = spansToHtml(composeSpans(tokens, []));
 
             expect(html).not.toContain('<script');

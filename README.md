@@ -11,13 +11,13 @@
 A lightweight diff viewer component for Vue 3.5+. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
-Same props, same modes, same look. **~18.8 kB gzip for the default bundle (style.css + component JS)
-with 35 languages bundled**, versus roughly 75 kB for the original covering 7.
+Same props, same modes, same look. **~18 kB gzip for the default bundle (style.css + component JS)
+with 30 languages bundled**, versus roughly 75 kB for the original covering 7.
 
 Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it in action.
 
 - **Drop-in replacement** — every `vue-diff` prop and default is preserved, verified against the original's own output
-- **35 languages**, all bundled; no per-language imports or registration
+- **30 languages**, all bundled; no per-language imports or registration
 - **Split and unified** modes, with word-level highlighting composed on top of syntax
   highlighting
 
@@ -66,12 +66,12 @@ createApp(App).use(VueDiff).mount('#app');
 | `language`        | `string`                                      | `'plaintext'` | See [Languages](#languages).                                             |
 | `prev`            | `string \| null`                              | `''`          | The "before" text.                                                       |
 | `current`         | `string \| null`                              | `''`          | The "after" text.                                                        |
+| `showLineNumbers` | `boolean`                                     | `true`        | Diff line-number gutter. Set `false` to hide it.                         |
 | `folding`         | `boolean`                                     | `false`       | Collapse long runs of unchanged lines. See [Folding](#folding).          |
 | `foldMarker`      | `'dots' \| 'hunk'`                            | `'dots'`      | How a collapsed run is marked. See [Folding](#folding).                  |
 | `inputDelay`      | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.            |
 | `virtualScroll`   | `boolean \| { height, lineMinHeight, delay }` | `false`       | Render only the rows near the viewport. See [Large diffs](#large-diffs). |
 | `wrap`            | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead.        |
-| `showLineNumbers` | `boolean`                                     | `true`        | Diff line-number gutter. Set `false` to hide it.                         |
 
 ## Migrating from `vue-diff`
 
@@ -105,17 +105,16 @@ Same behaviour, different internals:
 - **`diff` (jsdiff)** instead of `diff-match-patch` for line and word diffing.
 - **[`@speed-highlight/core`](https://github.com/speed-highlight/core)** instead of
   `highlight.js`. The reduced library size is mostly the highlighter: `highlight.js`'s engine
-  alone is 22.4 kB gzip, while `@speed-highlight/core`'s engine plus all 35 of its grammars
-  is 9.9 kB.
+  alone is 22.4 kB gzip, while `@speed-highlight/core`'s engine plus all bundled grammars
+  is about 9 kB.
 - **No `@vueuse/core`.** Its debounce was the only part used; that is now a few lines.
 - **Word-diff and syntax highlighting are composed at the token level.** The original injected
   `<vue-diff-modified>` marker strings into the source before highlighting and string-replaced
   them afterwards, which breaks if the content contains the marker. Here the two overlapping
   classifications are merged by splitting the token stream at word boundaries, so no string
   injection happens and content cannot impersonate a marker.
-- **Highlighting is asynchronous**, because grammars resolve lazily. Unhighlighted text paints
-  first and upgrades when highlighting resolves — which is what the original did in practice
-  too, since it also filled an initially empty element from a watcher.
+- **Highlighting is synchronous.** Grammars ship in the bundle, so each visible row
+  tokenizes in the same tick as the source change.
 
 ## Folding
 
@@ -154,16 +153,13 @@ visible as context.
 Pass any of these to `language`. Aliases in the right column resolve to the same grammar, so
 highlight.js names and file extensions both work:
 
-| Group             | Languages                                              | Also accepted                                                                                    |
-| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| **Web**           | `html` `css` `js` `ts` `json` `xml`                    | `htm` `vue` · `scss` `sass` `less` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` |
-| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`        | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck`    |
-| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md`                   | `yml` · `conf` `cfg` · `markdown`                                                                |
-| **Shell & ops**   | `bash` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `dockerfile` · `makefile` · `patch` · `url`                                 |
-| **Other**         | `regex` `todo` `plain`                                 | `plaintext` `text`                                                                               |
-
-Plus three sub-grammars for narrower cases: `jsdoc`, `js_template_literals`, and
-`leanpub-md`.
+| Group             | Languages                                              | Also accepted                                                                                              |
+| ----------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| **Web**           | `html` `css` `js` `ts` `json` `xml`                    | `htm` `vue` · `scss` `sass` `less` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` · `jsdoc` |
+| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`        | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck`              |
+| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md` `leanpub-md`      | `yml` · `conf` `cfg` · `markdown`                                                                          |
+| **Shell & ops**   | `bash` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `dockerfile` · `makefile` · `patch` · `url`                                           |
+| **Other**         | `regex` `todo` `plain`                                 | `plaintext` `text`                                                                                         |
 
 Matching is case-insensitive and surrounding whitespace is ignored.
 
@@ -239,7 +235,7 @@ Available properties: `--vue-diff-{bg,fg,font-family,font-size,line-height,gutte
 ## Large diffs
 
 A few thousand rows lay out and paint slowly — the cost is **DOM size and
-per-line highlighting**, not diffing. Each visible row tokenizes asynchronously;
+per-line highlighting**, not diffing. Each visible row tokenizes in the same tick;
 without windowing, a large file means thousands of DOM nodes and thousands of
 highlight passes.
 
@@ -276,8 +272,8 @@ with a 48,000px scroll range. Only those visible rows are highlighted.
 ## Security
 
 The component renders untrusted text as HTML, so escaping is a correctness requirement rather
-than a detail. All text is escaped before insertion — the interim plain-text render and the
-final highlighted markup both — and the escaping boundary is a single small module with its
-own test suite covering `<script>` tags, inline event handlers, and attribute-breaking quotes.
+than a detail. All text is escaped before insertion, and the escaping boundary is a single
+small module with its own test suite covering `<script>` tags, inline event handlers, and
+attribute-breaking quotes.
 
 Found a hole? Please report it privately — see [SECURITY.md](SECURITY.md).

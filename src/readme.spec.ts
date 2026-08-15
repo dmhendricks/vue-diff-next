@@ -11,8 +11,6 @@ import { createApp, nextTick } from 'vue';
  */
 async function settle() {
     await nextTick();
-    await Promise.resolve();
-    await nextTick();
 }
 
 describe('README examples', () => {

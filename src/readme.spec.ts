@@ -75,6 +75,7 @@ describe('README examples', () => {
             'inputDelay',
             'virtualScroll',
             'wrap',
+            'showLineNumbers',
         ].sort();
 
         const actual = Object.keys(
@@ -96,5 +97,6 @@ describe('README examples', () => {
         expect(props.virtualScroll?.default).toBe(false);
         // Differs from the original, which had no such prop and always wrapped.
         expect(props.wrap?.default).toBe(true);
+        expect(props.showLineNumbers?.default).toBe(true);
     });
 });

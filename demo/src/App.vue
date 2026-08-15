@@ -18,6 +18,7 @@ const pageTheme = computed(() => (theme.value.includes('light') ? 'light' : 'dar
 const folding = ref(fromQuery.folding);
 const foldMarker = ref<FoldMarker>(fromQuery.foldMarker);
 const wrap = ref(fromQuery.wrap);
+const showLineNumbers = ref(fromQuery.showLineNumbers);
 
 function formQuery(): DemoQuery {
     return {
@@ -27,6 +28,7 @@ function formQuery(): DemoQuery {
         folding: folding.value,
         foldMarker: foldMarker.value,
         wrap: wrap.value,
+        showLineNumbers: showLineNumbers.value,
     };
 }
 
@@ -41,8 +43,9 @@ const effectiveFolding = computed(() => folding.value || sample.value.folding ==
 /**
  * Usage snippet that tracks the live controls — not a static README excerpt.
  *
- * Defaults (folding off, wrap on, no virtual scroll) stay off the tag so the
- * copy-paste stays short; toggles and sample-driven options appear when active.
+ * Defaults (folding off, wrap on, line numbers on, no virtual scroll) stay off
+ * the tag so the copy-paste stays short; toggles and sample-driven options
+ * appear when active.
  */
 const usageSnippet = computed(() => {
     const attrs = [
@@ -63,6 +66,10 @@ const usageSnippet = computed(() => {
     // wrap defaults to true; only the opt-out is worth showing.
     if (!wrap.value) {
         attrs.push(':wrap="false"');
+    }
+
+    if (!showLineNumbers.value) {
+        attrs.push(':show-line-numbers="false"');
     }
 
     const scroll = sample.value.virtualScroll;
@@ -170,6 +177,14 @@ ${indented}
                             </span>
                             <span class="switch__label">Wrap</span>
                         </label>
+
+                        <label class="switch">
+                            <input v-model="showLineNumbers" type="checkbox" />
+                            <span class="switch__track">
+                                <span class="switch__thumb"></span>
+                            </span>
+                            <span class="switch__label">Line numbers</span>
+                        </label>
                     </div>
                 </div>
             </section>
@@ -187,6 +202,7 @@ ${indented}
                         :folding="effectiveFolding"
                         :fold-marker="foldMarker"
                         :wrap="wrap"
+                        :show-line-numbers="showLineNumbers"
                         :input-delay="sample.inputDelay ?? 0"
                         :virtual-scroll="sample.virtualScroll ?? false"
                     />

@@ -24,6 +24,11 @@ describe('resolveLanguage', () => {
         expect(resolveLanguage('plaintext')).toBe('plain');
     });
 
+    it('maps the v1 js_template_literals grammar onto js', () => {
+        expect(resolveLanguage('js_template_literals')).toBe('js');
+        expect(GRAMMARS).not.toContain('js_template_literals');
+    });
+
     it('maps CSS supersets to css', () => {
         expect(resolveLanguage('scss')).toBe('css');
         expect(resolveLanguage('sass')).toBe('css');
@@ -63,6 +68,7 @@ describe('isSupportedLanguage', () => {
         expect(isSupportedLanguage('js')).toBe(true);
         expect(isSupportedLanguage('javascript')).toBe(true);
         expect(isSupportedLanguage('scss')).toBe(true);
+        expect(isSupportedLanguage('js_template_literals')).toBe(true);
     });
 
     it('is false for unknown or non-string input', () => {

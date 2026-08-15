@@ -31,6 +31,7 @@ type DiffProps = {
     inputDelay?: number;
     virtualScroll?: boolean | Partial<VirtualScroll>;
     wrap?: boolean;
+    showLineNumbers?: boolean;
 };
 
 function setDiffProps(wrapper: VueWrapper, props: Partial<DiffProps>) {
@@ -115,7 +116,7 @@ describe('Diff', () => {
         });
     });
 
-    describe('wrap (the one additive prop)', () => {
+    describe('wrap (additive)', () => {
         it('wraps by default, matching the original which always wrapped', async () => {
             const wrapper = mount(Diff, { props: { prev: PREV, current: CURRENT } });
             await settle();
@@ -126,6 +127,40 @@ describe('Diff', () => {
             const wrapper = mount(Diff, { props: { wrap: false, prev: PREV, current: CURRENT } });
             await settle();
             expect(wrapper.find('.vue-diff-nowrap').exists()).toBe(true);
+        });
+    });
+
+    describe('showLineNumbers (additive)', () => {
+        it('renders the gutter by default, matching the original', async () => {
+            const wrapper = mount(Diff, { props: { prev: PREV, current: CURRENT } });
+            await settle();
+            expect(wrapper.find('.vue-diff-line-num').exists()).toBe(true);
+            expect(wrapper.find('.vue-diff-no-line-numbers').exists()).toBe(false);
+            expect(wrapper.find('.vue-diff-line-num').text()).toMatch(/\d/);
+        });
+
+        it('hides the gutter when showLineNumbers is false', async () => {
+            const wrapper = mount(Diff, {
+                props: { showLineNumbers: false, prev: PREV, current: CURRENT },
+            });
+            await settle();
+            expect(wrapper.find('.vue-diff-line-num').exists()).toBe(false);
+            expect(wrapper.find('.vue-diff-no-line-numbers').exists()).toBe(true);
+            expect(wrapper.findAll('.vue-diff-line').length).toBeGreaterThan(0);
+        });
+
+        it('hides the gutter in unified mode too', async () => {
+            const wrapper = mount(Diff, {
+                props: {
+                    mode: 'unified',
+                    showLineNumbers: false,
+                    prev: PREV,
+                    current: CURRENT,
+                },
+            });
+            await settle();
+            expect(wrapper.find('.vue-diff-line-num').exists()).toBe(false);
+            expect(wrapper.find('.vue-diff-row').findAll('.vue-diff-line')).toHaveLength(1);
         });
     });
 

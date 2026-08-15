@@ -30,14 +30,18 @@ describe('parseDemoQuery', () => {
         );
     });
 
-    it('reads folding and wrap as 1/0 or true/false', () => {
-        expect(parseDemoQuery('?folding=1&wrap=0', allow)).toMatchObject({
+    it('reads folding, wrap, and showLineNumbers as 1/0 or true/false', () => {
+        expect(parseDemoQuery('?folding=1&wrap=0&showLineNumbers=0', allow)).toMatchObject({
             folding: true,
             wrap: false,
+            showLineNumbers: false,
         });
-        expect(parseDemoQuery('?folding=true&wrap=false', allow)).toMatchObject({
+        expect(
+            parseDemoQuery('?folding=true&wrap=false&showLineNumbers=false', allow),
+        ).toMatchObject({
             folding: true,
             wrap: false,
+            showLineNumbers: false,
         });
     });
 });
@@ -56,7 +60,10 @@ describe('serializeDemoQuery', () => {
                 folding: true,
                 foldMarker: 'hunk',
                 wrap: false,
+                showLineNumbers: false,
             }),
-        ).toBe('?sample=html&mode=unified&theme=coral-light&folding=1&foldMarker=hunk&wrap=0');
+        ).toBe(
+            '?sample=html&mode=unified&theme=coral-light&folding=1&foldMarker=hunk&wrap=0&showLineNumbers=0',
+        );
     });
 });

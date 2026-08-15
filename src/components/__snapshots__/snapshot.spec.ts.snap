@@ -33,7 +33,7 @@ exports[`rendered output > split > identical input still renders every line 1`] 
 [equal 2] {equal "b"} [equal 2] {equal "b"}"
 `;
 
-exports[`rendered output > split > markup in content is escaped, not rendered 1`] = `"[removed 1] {removed "<script>alert(1)</script>"} [added 1] {added "<script>alert(2)</script>"}"`;
+exports[`rendered output > split > markup in content is escaped, not rendered 1`] = `"[removed 1] {removed "<script>alert(1)</script>" <oper var oper func num.modified oper var oper>} [added 1] {added "<script>alert(2)</script>" <oper var oper func num.modified oper var oper>}"`;
 
 exports[`rendered output > unified > a modified line word-diffs against its counterpart 1`] = `
 "[removed] {removed "const greeting = \\"Hello\\";" <kwd oper str str.modified str>}
@@ -75,6 +75,6 @@ exports[`rendered output > unified > identical input still renders every line 1`
 `;
 
 exports[`rendered output > unified > markup in content is escaped, not rendered 1`] = `
-"[removed] {removed "<script>alert(1)</script>"}
-[added 1] {added "<script>alert(2)</script>"}"
+"[removed] {removed "<script>alert(1)</script>" <oper var oper func num.modified oper var oper>}
+[added 1] {added "<script>alert(2)</script>" <oper var oper func num.modified oper var oper>}"
 `;

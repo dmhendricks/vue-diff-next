@@ -1,15 +1,6 @@
-import { tokenize as shTokenize } from '@speed-highlight/core';
-import { resolveLanguage } from './languages';
-import type { Grammar } from './languages';
+import { tokenizeWith } from '@speed-highlight/core/tokenize';
+import { GRAMMAR_DATA, resolveLanguage } from './languages';
 import { remapHighlightTokens } from './remap';
-
-/**
- * speed-highlight's own `ShjLanguage` union omits `js_template_literals`, even
- * though the grammar ships and works (verified at runtime). Casting at this one
- * boundary keeps `Grammar` honest about what is actually bundled.
- */
-type ShjLanguageArg = Parameters<typeof shTokenize>[1];
-const asShjLanguage = (grammar: Grammar) => grammar as unknown as ShjLanguageArg;
 
 /**
  * A classified run of source text.
@@ -25,10 +16,9 @@ export interface Token {
 /**
  * Tokenize `source` for syntax highlighting.
  *
- * Async because @speed-highlight/core resolves grammars lazily. It is fast
- * (~8ms for 200 lines of HTML) and does no I/O — grammars are bundled — but the
- * promise is real, so callers must render unhighlighted text first and upgrade
- * when this resolves. Unknown languages fall back to plain text.
+ * Grammars are bundled and `tokenizeWith` is synchronous. This still returns a
+ * Promise so `useHighlight` can keep its async upgrade path until that
+ * composable is rewritten.
  *
  * **Invariant: the concatenated token values equal `source` byte for byte.**
  * Everything downstream (word-diff composition, escaping, line splitting)
@@ -40,22 +30,27 @@ export async function tokenizeSource(source: string, language: unknown): Promise
     const grammar = resolveLanguage(language);
     const tokens: Token[] = [];
 
-    await shTokenize(source, asShjLanguage(grammar), (value: string, type?: string) => {
-        // speed-highlight emits many zero-length tokens; they carry no text and
-        // would only produce empty spans.
-        if (value === '') return;
+    tokenizeWith(
+        source,
+        GRAMMAR_DATA[grammar],
+        (value: string, type?: string) => {
+            // speed-highlight emits many zero-length tokens; they carry no text and
+            // would only produce empty spans.
+            if (value === '') return;
 
-        const normalized = type ?? null;
-        const last = tokens[tokens.length - 1];
+            const normalized = type ?? null;
+            const last = tokens[tokens.length - 1];
 
-        // Merge runs sharing a class to keep the stream (and the DOM) small.
-        if (last && last.type === normalized) {
-            last.value += value;
-            return;
-        }
+            // Merge runs sharing a class to keep the stream (and the DOM) small.
+            if (last && last.type === normalized) {
+                last.value += value;
+                return;
+            }
 
-        tokens.push({ value, type: normalized });
-    });
+            tokens.push({ value, type: normalized });
+        },
+        { languages: GRAMMAR_DATA },
+    );
 
     return mergeAdjacent(remapHighlightTokens(tokens, grammar));
 }

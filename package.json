@@ -76,7 +76,7 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@speed-highlight/core": "^1.2.24",
+    "@speed-highlight/core": "^2.0.0",
     "diff": "^9.0.0"
   },
   "devDependencies": {

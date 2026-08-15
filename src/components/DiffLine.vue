@@ -7,7 +7,7 @@
               highlighter could act on.
             -->
             <template v-if="isFold">
-                <div class="vue-diff-line-num vue-diff-line-fold"></div>
+                <div v-if="showLineNumbers" class="vue-diff-line-num vue-diff-line-fold"></div>
                 <div class="vue-diff-line vue-diff-line-fold">
                     <!--
                       The hunk header is real text because it carries the line
@@ -19,7 +19,11 @@
                 </div>
             </template>
             <template v-else>
-                <div class="vue-diff-line-num" :class="`vue-diff-line-${cell.type ?? 'disabled'}`">
+                <div
+                    v-if="showLineNumbers"
+                    class="vue-diff-line-num"
+                    :class="`vue-diff-line-${cell.type ?? 'disabled'}`"
+                >
                     {{ cell.lineNum ?? '' }}
                 </div>
                 <div class="vue-diff-line" :class="`vue-diff-line-${cell.type ?? 'disabled'}`">
@@ -46,6 +50,7 @@ const props = withDefaults(
         row: Lines;
         language?: string;
         foldMarker?: FoldMarker;
+        showLineNumbers?: boolean;
         fold?: FoldRange;
         /** Positioning data; only supplied when virtual scroll is on. */
         meta?: Meta;
@@ -54,6 +59,7 @@ const props = withDefaults(
     {
         language: 'plaintext',
         foldMarker: 'dots',
+        showLineNumbers: true,
         fold: undefined,
         meta: undefined,
         scrollOptions: false,

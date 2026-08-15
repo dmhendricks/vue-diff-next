@@ -8,46 +8,58 @@
  * consumer, so both spellings resolve here.
  */
 
-/** Grammars bundled by @speed-highlight/core@1.2.23. */
-export const GRAMMARS = [
-    'asm',
-    'bash',
-    'bf',
-    'c',
-    'css',
-    'csv',
-    'diff',
-    'docker',
-    'git',
-    'go',
-    'html',
-    'http',
-    'ini',
-    'java',
-    'js',
-    'js_template_literals',
-    'jsdoc',
-    'json',
-    'leanpub-md',
-    'log',
-    'lua',
-    'make',
-    'md',
-    'pl',
-    'plain',
-    'py',
-    'regex',
-    'rs',
-    'sql',
-    'todo',
-    'toml',
-    'ts',
-    'uri',
-    'xml',
-    'yaml',
-] as const;
+import * as sh from '@speed-highlight/core/languages';
+import type { ShjLanguageData } from '@speed-highlight/core/tokenize';
 
-export type Grammar = (typeof GRAMMARS)[number];
+/** Upstream grammar types are narrower than `ShjLanguageData`; the runtime objects match. */
+const data = (grammar: unknown): ShjLanguageData => grammar as ShjLanguageData;
+
+/**
+ * Bundled grammars, keyed by the public `language` name.
+ *
+ * The barrel exports `leanpubMd`; the name consumers pass is still `leanpub-md`.
+ * Nested `sub` rules look up these same keys (`css`, `js`, `todo`, …).
+ */
+export const GRAMMAR_DATA = {
+    asm: data(sh.asm),
+    bash: data(sh.bash),
+    bf: data(sh.bf),
+    c: data(sh.c),
+    css: data(sh.css),
+    csv: data(sh.csv),
+    diff: data(sh.diff),
+    docker: data(sh.docker),
+    git: data(sh.git),
+    go: data(sh.go),
+    html: data(sh.html),
+    http: data(sh.http),
+    ini: data(sh.ini),
+    java: data(sh.java),
+    js: data(sh.js),
+    jsdoc: data(sh.jsdoc),
+    json: data(sh.json),
+    'leanpub-md': data(sh.leanpubMd),
+    log: data(sh.log),
+    lua: data(sh.lua),
+    make: data(sh.make),
+    md: data(sh.md),
+    pl: data(sh.pl),
+    plain: data(sh.plain),
+    py: data(sh.py),
+    regex: data(sh.regex),
+    rs: data(sh.rs),
+    sql: data(sh.sql),
+    todo: data(sh.todo),
+    toml: data(sh.toml),
+    ts: data(sh.ts),
+    uri: data(sh.uri),
+    xml: data(sh.xml),
+    yaml: data(sh.yaml),
+};
+
+export type Grammar = keyof typeof GRAMMAR_DATA;
+
+export const GRAMMARS = Object.keys(GRAMMAR_DATA) as Grammar[];
 
 /** Fallback when a language is unknown: plain text, never an error. */
 export const FALLBACK: Grammar = 'plain';
@@ -61,6 +73,9 @@ const GRAMMAR_SET: ReadonlySet<string> = new Set(GRAMMARS);
  * languages with no grammar of their own that a related one renders acceptably.
  * `scss`/`less` map to `css`: verified lossless, with only cosmetic differences
  * (`//` comments and `$vars` are not specially tagged).
+ *
+ * `js_template_literals` was a standalone grammar in @speed-highlight/core 1.x;
+ * v2 folded it into `js`.
  */
 const ALIASES: Readonly<Record<string, Grammar>> = {
     // highlight.js names used by vue-diff
@@ -77,6 +92,9 @@ const ALIASES: Readonly<Record<string, Grammar>> = {
     makefile: 'make',
     assembly: 'asm',
     brainfuck: 'bf',
+
+    // removed as a standalone grammar in speed-highlight 2.0
+    js_template_literals: 'js',
 
     // CSS supersets: no dedicated grammar, css degrades cleanly
     scss: 'css',

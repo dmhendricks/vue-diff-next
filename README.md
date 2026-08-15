@@ -59,18 +59,19 @@ createApp(App).use(VueDiff).mount('#app');
 
 ## Props
 
-| Prop            | Type                                          | Default       | Description                                                              |
-| --------------- | --------------------------------------------- | ------------- | ------------------------------------------------------------------------ |
-| `mode`          | `'split' \| 'unified'`                        | `'split'`     | Side-by-side or interleaved.                                             |
-| `theme`         | `'dark' \| 'light' \| custom* \| ...`         | `'dark'`      | See [Theming](#theming).                                                 |
-| `language`      | `string`                                      | `'plaintext'` | See [Languages](#languages).                                             |
-| `prev`          | `string \| null`                              | `''`          | The "before" text.                                                       |
-| `current`       | `string \| null`                              | `''`          | The "after" text.                                                        |
-| `folding`       | `boolean`                                     | `false`       | Collapse long runs of unchanged lines. See [Folding](#folding).          |
-| `foldMarker`    | `'dots' \| 'hunk'`                            | `'dots'`      | How a collapsed run is marked. See [Folding](#folding).                  |
-| `inputDelay`    | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.            |
-| `virtualScroll` | `boolean \| { height, lineMinHeight, delay }` | `false`       | Render only the rows near the viewport. See [Large diffs](#large-diffs). |
-| `wrap`          | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead.        |
+| Prop              | Type                                          | Default       | Description                                                              |
+| ----------------- | --------------------------------------------- | ------------- | ------------------------------------------------------------------------ |
+| `mode`            | `'split' \| 'unified'`                        | `'split'`     | Side-by-side or interleaved.                                             |
+| `theme`           | `'dark' \| 'light' \| custom* \| ...`         | `'dark'`      | See [Theming](#theming).                                                 |
+| `language`        | `string`                                      | `'plaintext'` | See [Languages](#languages).                                             |
+| `prev`            | `string \| null`                              | `''`          | The "before" text.                                                       |
+| `current`         | `string \| null`                              | `''`          | The "after" text.                                                        |
+| `folding`         | `boolean`                                     | `false`       | Collapse long runs of unchanged lines. See [Folding](#folding).          |
+| `foldMarker`      | `'dots' \| 'hunk'`                            | `'dots'`      | How a collapsed run is marked. See [Folding](#folding).                  |
+| `inputDelay`      | `number`                                      | `0`           | Debounce re-rendering, in ms. Useful for editor-driven input.            |
+| `virtualScroll`   | `boolean \| { height, lineMinHeight, delay }` | `false`       | Render only the rows near the viewport. See [Large diffs](#large-diffs). |
+| `wrap`            | `boolean`                                     | `true`        | Soft-wrap long lines. Set `false` to scroll horizontally instead.        |
+| `showLineNumbers` | `boolean`                                     | `true`        | Diff line-number gutter. Set `false` to hide it.                         |
 
 ## Migrating from `vue-diff`
 

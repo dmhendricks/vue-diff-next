@@ -12,6 +12,7 @@
                     :row="rows[item.index]!"
                     :language="language"
                     :fold-marker="foldMarker"
+                    :show-line-numbers="showLineNumbers"
                     :fold="item.fold"
                     :meta="item"
                     :scroll-options="scrollOptions"
@@ -35,8 +36,9 @@ defineOptions({ name: 'Diff' });
 
 /**
  * Props and defaults match vue-diff@1.2.4 — including `theme` defaulting to
- * 'dark'. `wrap` is additive. Named extra palettes are first-class `theme`
- * values; their CSS is a separate import, not `style.css`. See `Theme`.
+ * 'dark'. `wrap` and `showLineNumbers` are additive. Named extra palettes are
+ * first-class `theme` values; their CSS is a separate import, not `style.css`.
+ * See `Theme`.
  *
  * `prev`/`current` accept null so callers need not normalize; the original typed
  * them as string, but tolerating null costs nothing and prevents a crash.
@@ -59,6 +61,12 @@ const props = withDefaults(
          * horizontally instead.
          */
         wrap?: boolean;
+        /**
+         * Diff line-number gutter. Not in the original, which always showed
+         * numbers — hence the default of `true`. Setting `false` hides the
+         * gutter so the code columns use the full row width.
+         */
+        showLineNumbers?: boolean;
     }>(),
     {
         mode: 'split',
@@ -71,6 +79,7 @@ const props = withDefaults(
         inputDelay: 0,
         virtualScroll: false,
         wrap: true,
+        showLineNumbers: true,
     },
 );
 
@@ -93,6 +102,7 @@ const wrapperClass = computed(() => [
     // Wrapping is the default (and the original's only behaviour), so the class
     // marks the opt-out rather than the opt-in.
     { 'vue-diff-nowrap': !props.wrap },
+    { 'vue-diff-no-line-numbers': !props.showLineNumbers },
 ]);
 
 // Normalize null-ish text once, here, so the core never sees it.

@@ -50,6 +50,16 @@
     width: calc(50% - var(--vue-diff-gutter-width));
 }
 
+// `showLineNumbers: false` drops the gutter cells; code takes the width they
+// used to occupy so split sides stay half-and-half.
+.vue-diff-no-line-numbers .vue-diff-line {
+    width: 100%;
+}
+
+.vue-diff-mode-split.vue-diff-no-line-numbers .vue-diff-line {
+    width: 50%;
+}
+
 .vue-diff-code {
     font: inherit;
     background: none;

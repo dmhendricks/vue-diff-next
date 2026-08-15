@@ -8,6 +8,7 @@ export const QUERY_DEFAULTS = {
     folding: false,
     foldMarker: 'dots' as FoldMarker,
     wrap: true,
+    showLineNumbers: true,
 };
 
 export type DemoQuery = typeof QUERY_DEFAULTS;
@@ -42,6 +43,7 @@ export function parseDemoQuery(search: string, allow: QueryAllow): DemoQuery {
         folding: bool(q.get('folding'), QUERY_DEFAULTS.folding),
         foldMarker: pick(q.get('foldMarker'), FOLD_MARKERS, QUERY_DEFAULTS.foldMarker),
         wrap: bool(q.get('wrap'), QUERY_DEFAULTS.wrap),
+        showLineNumbers: bool(q.get('showLineNumbers'), QUERY_DEFAULTS.showLineNumbers),
     };
 }
 
@@ -57,6 +59,7 @@ export function serializeDemoQuery(state: DemoQuery): string {
     if (state.folding !== QUERY_DEFAULTS.folding) q.set('folding', '1');
     if (state.foldMarker !== QUERY_DEFAULTS.foldMarker) q.set('foldMarker', state.foldMarker);
     if (state.wrap !== QUERY_DEFAULTS.wrap) q.set('wrap', '0');
+    if (state.showLineNumbers !== QUERY_DEFAULTS.showLineNumbers) q.set('showLineNumbers', '0');
     const encoded = q.toString();
     return encoded ? `?${encoded}` : '';
 }

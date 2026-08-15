@@ -2,7 +2,7 @@
 [![GitHub License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://raw.githubusercontent.com/dmhendricks/vue-diff-next/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/dmhendricks/vue-diff-next/ci.yaml?label=CI)](https://github.com/dmhendricks/vue-diff-next/actions/workflows/ci.yaml)
 [![NPM Downloads](https://img.shields.io/npm/dt/vue-diff-next.svg?label=npm%20downloads)](https://www.npmjs.com/package/vue-diff-next)
-[![Donate](https://img.shields.io/badge/Donate-Ko--fi-green.svg)](https://ko-fi.com/danielhendricks)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa.svg?logo=github-sponsors&logoColor=white)](https://github.com/sponsors/dmhendricks)
 
 # vue-diff-next
 

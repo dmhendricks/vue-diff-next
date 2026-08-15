@@ -1,10 +1,10 @@
 # vue-diff-next
 
-## Unreleased
+## 1.1.0
 
 ### Added
 
-- Opt-in palettes as a second CSS import (`vue-diff-next/themes/<name>.css`). They are not in `style.css`.
+- Optional themes as a second CSS import (`vue-diff-next/themes/<name>.css`). They are not in `style.css`.
   - Light: `visual-studio-light`, `atom-light`, `github-light`, `coral-light`
   - Dark: `monokai-dark`, `atom-dark`, `visual-studio-dark`, `github-dark`, `coral-dark`
 - `visual-studio-light` and `monokai-dark` match vue-diff's highlight.js `vs` / `monokai` palettes.

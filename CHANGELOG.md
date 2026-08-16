@@ -1,6 +1,6 @@
 # vue-diff-next
 
-## Unreleased
+## 1.2.0
 
 ### Added
 
@@ -10,7 +10,6 @@
 ### Changed
 
 - Upgrade `@speed-highlight/core` from 1.2 to 2.0. Highlighting is synchronous: grammars are bundled and tokenized with `tokenizeWith` rather than lazy-loaded.
-- `js_template_literals` is no longer a standalone grammar; the `language` value still works and maps to `js`.
 
 ## 1.1.0
 

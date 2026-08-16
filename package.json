@@ -1,6 +1,6 @@
 {
   "name": "vue-diff-next",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A modern, lightweight diff viewer component for Vue 3.5+",
   "license": "MIT",
   "author": {
@@ -107,7 +107,7 @@
     "vite-plugin-dts": "^5.0.3",
     "vitest": "^4.1.10",
     "vue": "^3.5.41",
-    "vue-tsc": "^3.3.9"
+    "vue-tsc": "^3.3.10"
   },
   "allowScripts": {
     "@parcel/watcher": true,

@@ -1,5 +1,11 @@
 # vue-diff-next
 
+## Unreleased
+
+### Added
+
+- Dedicated `scss` grammar (`//` comments and `$variables` on top of CSS). `sass` and `less` resolve to it.
+
 ## 1.2.0
 
 ### Added

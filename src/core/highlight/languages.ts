@@ -10,6 +10,7 @@
 
 import * as sh from '@speed-highlight/core/languages';
 import type { ShjLanguageData } from '@speed-highlight/core/tokenize';
+import { scss } from './grammars/scss';
 
 /** Upstream grammar types are narrower than `ShjLanguageData`; the runtime objects match. */
 const data = (grammar: unknown): ShjLanguageData => grammar as ShjLanguageData;
@@ -48,6 +49,7 @@ export const GRAMMAR_DATA = {
     py: data(sh.py),
     regex: data(sh.regex),
     rs: data(sh.rs),
+    scss,
     sql: data(sh.sql),
     todo: data(sh.todo),
     toml: data(sh.toml),
@@ -71,8 +73,8 @@ const GRAMMAR_SET: ReadonlySet<string> = new Set(GRAMMARS);
  *
  * Covers highlight.js names (for vue-diff parity), common file extensions, and
  * languages with no grammar of their own that a related one renders acceptably.
- * `scss`/`less` map to `css`: verified lossless, with only cosmetic differences
- * (`//` comments and `$vars` are not specially tagged).
+ * `sass`/`less` map to `scss` (line comments and `$variables`); indented Sass
+ * syntax is not a separate grammar.
  *
  * `js_template_literals` was a standalone grammar in @speed-highlight/core 1.x;
  * v2 folded it into `js`.
@@ -96,10 +98,9 @@ const ALIASES: Readonly<Record<string, Grammar>> = {
     // removed as a standalone grammar in speed-highlight 2.0
     js_template_literals: 'js',
 
-    // CSS supersets: no dedicated grammar, css degrades cleanly
-    scss: 'css',
-    sass: 'css',
-    less: 'css',
+    // CSS supersets: scss is bundled; sass/less share it
+    sass: 'scss',
+    less: 'scss',
 
     // markup
     htm: 'html',

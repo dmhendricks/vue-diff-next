@@ -1,0 +1,13 @@
+// Default button surface
+$primary: #007bff;
+
+.button {
+  color: #fff;
+  background: $primary;
+  padding: 8px 16px;
+
+  /* Hover darkens the fill */
+  &:hover {
+    background: darken($primary, 10%);
+  }
+}

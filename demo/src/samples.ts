@@ -20,7 +20,7 @@ const lines = (n: number, f: (i: number) => string) => Array.from({ length: n },
  * Demo inputs.
  *
  * `Languages` covers the grammars worth judging a theme against (plus aliases
- * like `scss` → `css`), with comments, numbers, strings, keywords, and whatever
+ * like `sass` → `scss`), with comments, numbers, strings, keywords, and whatever
  * else that grammar paints. Sub-grammars (`jsdoc`, `regex`, `todo`, …) are
  * exercised inside their hosts. Data / edge-case groups cover shapes a diff
  * viewer is actually handed.

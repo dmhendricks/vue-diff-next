@@ -29,10 +29,10 @@ describe('resolveLanguage', () => {
         expect(GRAMMARS).not.toContain('js_template_literals');
     });
 
-    it('maps CSS supersets to css', () => {
-        expect(resolveLanguage('scss')).toBe('css');
-        expect(resolveLanguage('sass')).toBe('css');
-        expect(resolveLanguage('less')).toBe('css');
+    it('maps CSS supersets to scss', () => {
+        expect(resolveLanguage('scss')).toBe('scss');
+        expect(resolveLanguage('sass')).toBe('scss');
+        expect(resolveLanguage('less')).toBe('scss');
     });
 
     it('is case-insensitive and trims whitespace', () => {

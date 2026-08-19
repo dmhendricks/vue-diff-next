@@ -215,34 +215,50 @@ export class UserStore {
         group: 'Languages',
         language: 'scss',
         prev: `// Default button surface
-$primary: #007bff;
+@use 'sass:color';
 
-.button {
+$primary: #007bff !default;
+$name: 'primary';
+
+@mixin surface($pad: 8px 16px) {
+  padding: $pad;
+  border: 0;
+}
+
+.button-#{$name} {
+  @include surface;
   color: #fff;
   background: $primary;
-  padding: 8px 16px;
-  opacity: 1;
 
   /* Hover darkens the fill */
   &:hover {
-    background: darken($primary, 10%);
+    background: color.adjust($primary, $lightness: -10%);
   }
 }
 `,
         current: `// Default button surface
-$primary: #0d6efd;
-$radius: 4px;
+@use 'sass:color';
+@use 'sass:map';
 
-.button {
+$primary: #0d6efd !default;
+$name: 'primary';
+$radius: 4px;
+$spacing: (y: 10px, x: 20px);
+
+@mixin surface($pad: 10px 20px) {
+  padding: $pad;
+  border: 0;
+  border-radius: $radius;
+}
+
+.button-#{$name} {
+  @include surface(map.get($spacing, y) map.get($spacing, x));
   color: #f8f9fa;
   background: $primary;
-  padding: 10px 20px;
-  border-radius: $radius;
-  opacity: 1;
 
   /* Hover darkens the fill */
   &:hover {
-    background: darken($primary, 12%);
+    background: color.adjust($primary, $lightness: -12%);
   }
 
   &:disabled {
@@ -302,7 +318,7 @@ class Parser:
         group: 'Languages',
         language: 'yaml',
         prev: `# GitHub Actions workflow
-name: build
+name: "build"
 on:
   push:
     branches:
@@ -311,12 +327,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    retries: !!int 1
     continue-on-error: No
+    env:
+      NODE_ENV: production
     steps:
       - uses: actions/checkout@v4
+    summary: |
+      Checkout and test on main.
 `,
         current: `# GitHub Actions workflow
-name: ci
+name: "ci"
 on:
   push:
     branches:
@@ -327,10 +348,16 @@ jobs:
   test:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    retries: !!int 3
     continue-on-error: Yes
+    env:
+      NODE_ENV: "development"
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
+    summary: |
+      Checkout, install Node, and test
+      on main, develop, and pull requests.
 `,
     },
     {

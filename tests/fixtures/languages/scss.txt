@@ -1,13 +1,21 @@
 // Default button surface
-$primary: #007bff;
+@use 'sass:color';
 
-.button {
+$primary: #007bff !default;
+$name: 'primary';
+
+@mixin surface($pad: 8px 16px) {
+  padding: $pad;
+  border: 0;
+}
+
+.button-#{$name} {
+  @include surface;
   color: #fff;
   background: $primary;
-  padding: 8px 16px;
 
   /* Hover darkens the fill */
   &:hover {
-    background: darken($primary, 10%);
+    background: color.adjust($primary, $lightness: -10%);
   }
 }

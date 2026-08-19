@@ -29,3 +29,14 @@
 .vue-diff-theme-coral-dark.vue-diff-lang-json {
     --vue-diff-syn-var: #79c0ff;
 }
+
+// CSS/SCSS tag properties, selectors, and units as `var`, and hex / numbers /
+// named values as `num`. YAML keys are `var`, numbers `num`, Yes/No `bool`.
+// Those buckets are foreground in this palette. `yml` resolves to `yaml`.
+.vue-diff-theme-coral-dark.vue-diff-lang-css,
+.vue-diff-theme-coral-dark.vue-diff-lang-scss,
+.vue-diff-theme-coral-dark.vue-diff-lang-yaml {
+    --vue-diff-syn-var: #7eb5ff;
+    --vue-diff-syn-num: #88bbb6;
+    --vue-diff-syn-bool: #88bbb6;
+}

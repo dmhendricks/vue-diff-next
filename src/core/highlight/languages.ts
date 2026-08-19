@@ -73,8 +73,8 @@ const GRAMMAR_SET: ReadonlySet<string> = new Set(GRAMMARS);
  *
  * Covers highlight.js names (for vue-diff parity), common file extensions, and
  * languages with no grammar of their own that a related one renders acceptably.
- * `sass`/`less` map to `scss` (line comments and `$variables`); indented Sass
- * syntax is not a separate grammar.
+ * `sass`/`less` map to `scss` (line comments, `$variables`, interpolation);
+ * indented Sass syntax is not a separate grammar.
  *
  * `js_template_literals` was a standalone grammar in @speed-highlight/core 1.x;
  * v2 folded it into `js`.

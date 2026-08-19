@@ -16,4 +16,14 @@ describe('scss grammar', () => {
         const tokens = tokenizeSource('/* hover */\n.a {}\n', 'scss');
         expect(tokens.find((t) => t.value.includes('hover'))?.type).toBe('cmnt');
     });
+
+    it('tags #{$interpolation} as type, not a hex color', () => {
+        const tokens = tokenizeSource('.btn-#{$name} {}\n', 'scss');
+        expect(tokens.find((t) => t.value === '#{$name}')?.type).toBe('type');
+    });
+
+    it('tags !default as kwd', () => {
+        const tokens = tokenizeSource('$primary: #007bff !default;\n', 'scss');
+        expect(tokens.find((t) => t.value === '!default')?.type).toBe('kwd');
+    });
 });

@@ -29,3 +29,12 @@
 .vue-diff-theme-coral-light.vue-diff-lang-json {
     --vue-diff-syn-var: #2e6ec4;
 }
+
+// Same CSS/SCSS/YAML bucket problem as coral-dark. `yml` resolves to `yaml`.
+.vue-diff-theme-coral-light.vue-diff-lang-css,
+.vue-diff-theme-coral-light.vue-diff-lang-scss,
+.vue-diff-theme-coral-light.vue-diff-lang-yaml {
+    --vue-diff-syn-var: #5c54d4;
+    --vue-diff-syn-num: #007a72;
+    --vue-diff-syn-bool: #007a72;
+}

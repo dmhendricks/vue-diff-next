@@ -6,12 +6,12 @@
 
     --vue-diff-syn-kwd: #ffada8;
     --vue-diff-syn-str: #88bbb6;
-    --vue-diff-syn-num: #d4d4d4;
-    --vue-diff-syn-bool: #d4d4d4;
+    --vue-diff-syn-num: #88bbb6;
+    --vue-diff-syn-bool: #88bbb6;
     --vue-diff-syn-cmnt: #8b8b8b;
     --vue-diff-syn-func: #d2a8ff;
     --vue-diff-syn-class: #79c0ff;
-    --vue-diff-syn-var: #d4d4d4;
+    --vue-diff-syn-var: #79c0ff;
     --vue-diff-syn-type: #7eb5ff;
     --vue-diff-syn-oper: #8b949e;
     --vue-diff-syn-section: #ffada8;
@@ -23,20 +23,4 @@
 .vue-diff-theme-coral-dark.vue-diff-lang-html,
 .vue-diff-theme-coral-dark.vue-diff-lang-xml {
     --vue-diff-syn-var: #56d4dd;
-    --vue-diff-syn-class: #79c0ff;
-}
-
-.vue-diff-theme-coral-dark.vue-diff-lang-json {
-    --vue-diff-syn-var: #79c0ff;
-}
-
-// CSS/SCSS tag properties, selectors, and units as `var`, and hex / numbers /
-// named values as `num`. YAML keys are `var`, numbers `num`, Yes/No `bool`.
-// Those buckets are foreground in this palette. `yml` resolves to `yaml`.
-.vue-diff-theme-coral-dark.vue-diff-lang-css,
-.vue-diff-theme-coral-dark.vue-diff-lang-scss,
-.vue-diff-theme-coral-dark.vue-diff-lang-yaml {
-    --vue-diff-syn-var: #7eb5ff;
-    --vue-diff-syn-num: #88bbb6;
-    --vue-diff-syn-bool: #88bbb6;
 }

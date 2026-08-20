@@ -6,12 +6,12 @@
 
     --vue-diff-syn-kwd: #d94a42;
     --vue-diff-syn-str: #007a72;
-    --vue-diff-syn-num: #354150;
-    --vue-diff-syn-bool: #354150;
+    --vue-diff-syn-num: #007a72;
+    --vue-diff-syn-bool: #007a72;
     --vue-diff-syn-cmnt: #6d6363;
     --vue-diff-syn-func: #9a4d92;
     --vue-diff-syn-class: #2e6ec4;
-    --vue-diff-syn-var: #354150;
+    --vue-diff-syn-var: #2e6ec4;
     --vue-diff-syn-type: #5c54d4;
     --vue-diff-syn-oper: #5a6570;
     --vue-diff-syn-section: #d94a42;
@@ -23,18 +23,4 @@
 .vue-diff-theme-coral-light.vue-diff-lang-html,
 .vue-diff-theme-coral-light.vue-diff-lang-xml {
     --vue-diff-syn-var: #2f7a78;
-    --vue-diff-syn-class: #2e6ec4;
-}
-
-.vue-diff-theme-coral-light.vue-diff-lang-json {
-    --vue-diff-syn-var: #2e6ec4;
-}
-
-// Same CSS/SCSS/YAML bucket problem as coral-dark. `yml` resolves to `yaml`.
-.vue-diff-theme-coral-light.vue-diff-lang-css,
-.vue-diff-theme-coral-light.vue-diff-lang-scss,
-.vue-diff-theme-coral-light.vue-diff-lang-yaml {
-    --vue-diff-syn-var: #5c54d4;
-    --vue-diff-syn-num: #007a72;
-    --vue-diff-syn-bool: #007a72;
 }

@@ -5,6 +5,7 @@
 ### Added
 
 - Dedicated `scss` grammar (`//` comments, `$variables`, `#{$interpolation}`, and `!default` / `!global` / `!optional` on top of CSS). `sass` and `less` resolve to it.
+- Dedicated `php` grammar (from [speed-highlight/core#86](https://github.com/speed-highlight/core/pull/86): tags, `$variables`, attributes, HTML outside `<?php`). `phtml` resolves to it.
 
 ## 1.2.0
 

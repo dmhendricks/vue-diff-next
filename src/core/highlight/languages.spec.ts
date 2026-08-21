@@ -35,6 +35,11 @@ describe('resolveLanguage', () => {
         expect(resolveLanguage('less')).toBe('scss');
     });
 
+    it('maps phtml to php', () => {
+        expect(resolveLanguage('php')).toBe('php');
+        expect(resolveLanguage('phtml')).toBe('php');
+    });
+
     it('is case-insensitive and trims whitespace', () => {
         expect(resolveLanguage('JavaScript')).toBe('js');
         expect(resolveLanguage('  JSON  ')).toBe('json');
@@ -68,6 +73,8 @@ describe('isSupportedLanguage', () => {
         expect(isSupportedLanguage('js')).toBe(true);
         expect(isSupportedLanguage('javascript')).toBe(true);
         expect(isSupportedLanguage('scss')).toBe(true);
+        expect(isSupportedLanguage('php')).toBe(true);
+        expect(isSupportedLanguage('phtml')).toBe(true);
         expect(isSupportedLanguage('js_template_literals')).toBe(true);
     });
 

@@ -268,6 +268,34 @@ $spacing: (y: 10px, x: 20px);
 `,
     },
     {
+        key: 'php',
+        title: 'PHP',
+        group: 'Languages',
+        language: 'php',
+        prev: `<h1><?= $title ?></h1>
+<?php
+// Find a user by id
+function findUser(int $id) {
+  $row = db()->one('SELECT * FROM users WHERE id = ?', [$id]);
+  if ($row === false) {
+    return null;
+  }
+  return $row;
+}
+`,
+        current: `<h1><?= htmlspecialchars($title) ?></h1>
+<?php
+declare(strict_types=1);
+
+// Find a user by id
+#[Deprecated]
+function findUser(int $id): ?User {
+  $row = db()->one('SELECT * FROM users WHERE id = ?', [$id]);
+  return $row ? User::from($row) : null;
+}
+`,
+    },
+    {
         key: 'python',
         title: 'Python',
         group: 'Languages',

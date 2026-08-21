@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<h1><?= $title ?></h1>
+<?php
+// Find a user by id
+#[Deprecated]
+function findUser(int $id): ?User {
+  $row = db()->one('SELECT * FROM users WHERE id = ?', [$id]);
+  return $row ? User::from($row) : null;
+}

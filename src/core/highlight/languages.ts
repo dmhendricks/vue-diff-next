@@ -10,6 +10,7 @@
 
 import * as sh from '@speed-highlight/core/languages';
 import type { ShjLanguageData } from '@speed-highlight/core/tokenize';
+import { php } from './grammars/php';
 import { scss } from './grammars/scss';
 
 /** Upstream grammar types are narrower than `ShjLanguageData`; the runtime objects match. */
@@ -45,6 +46,7 @@ export const GRAMMAR_DATA = {
     make: data(sh.make),
     md: data(sh.md),
     pl: data(sh.pl),
+    php,
     plain: data(sh.plain),
     py: data(sh.py),
     regex: data(sh.regex),
@@ -101,6 +103,8 @@ const ALIASES: Readonly<Record<string, Grammar>> = {
     // CSS supersets: scss is bundled; sass/less share it
     sass: 'scss',
     less: 'scss',
+
+    phtml: 'php',
 
     // markup
     htm: 'html',

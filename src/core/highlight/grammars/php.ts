@@ -38,6 +38,17 @@ export const php: ShjLanguageData = [
         type: 'str',
         match: /<<<(["']?)(\w+)\1[^]*?\n\s*\2\b/g,
     },
+    // Double-quoted strings interpolate. Match them before expand:str so
+    // `{$user?->id}` and `$id` can be tagged `var` while the rest stays `str`.
+    // Single quotes still use expand:str (no interpolation).
+    {
+        match: /"((?!")[^\r\n\\]|\\[^])*"?/g,
+        type: 'str',
+        sub: [
+            { match: /\{\$[^}]+\}/g, type: 'var' },
+            { match: /\$[a-zA-Z_]\w*/g, type: 'var' },
+        ],
+    },
     {
         expand: 'str',
     },

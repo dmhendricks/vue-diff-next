@@ -39,4 +39,10 @@ describe('php grammar', () => {
         const tokens = tokenizeSource('declare(strict_types=1);\n', 'php');
         expect(tokens.find((t) => t.value === 'declare')?.type).toBe('kwd');
     });
+
+    it('tags interpolation inside double-quoted strings as var', () => {
+        const tokens = tokenizeSource('<?php echo "User {$user?->id}: ";\n', 'php');
+        expect(tokens.find((t) => t.value === '{$user?->id}')?.type).toBe('var');
+        expect(tokens.find((t) => t.value.includes('User'))?.type).toBe('str');
+    });
 });

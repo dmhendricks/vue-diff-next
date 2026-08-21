@@ -282,6 +282,20 @@ function findUser(int $id) {
   }
   return $row;
 }
+
+class UserRepository
+{
+  private array $cache = [];
+
+  public function find(int $id)
+  {
+    return $this->cache[$id] ?? findUser($id);
+  }
+}
+
+foreach ([1, 2, 3] as $id) {
+  echo "User {$id}: " . json_encode(findUser($id)) . "\\n";
+}
 `,
         current: `<h1><?= htmlspecialchars($title) ?></h1>
 <?php
@@ -292,6 +306,21 @@ declare(strict_types=1);
 function findUser(int $id): ?User {
   $row = db()->one('SELECT * FROM users WHERE id = ?', [$id]);
   return $row ? User::from($row) : null;
+}
+
+class UserRepository
+{
+  private array $cache = [];
+
+  public function find(int $id): ?User
+  {
+    return $this->cache[$id] ??= findUser($id);
+  }
+}
+
+$users = array_map(fn(int $id) => findUser($id), [1, 2, 3]);
+foreach ($users as $user) {
+  echo "User {$user?->id}: " . json_encode($user) . "\\n";
 }
 `,
     },

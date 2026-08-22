@@ -1,0 +1,12 @@
+# List users from a path
+function Get-User {
+  param([string]$Path)
+
+  if ($null -eq $Path) {
+    return
+  }
+
+  Get-ChildItem -Path $Path | ForEach-Object {
+    Write-Host "User $($_.Name)"
+  }
+}

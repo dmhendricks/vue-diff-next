@@ -12,12 +12,12 @@ A lightweight diff viewer component for Vue 3.5+. Inspired by
 [`vue-diff`](https://github.com/hoiheart/vue-diff), which was archived in February 2025.
 
 Same props, same modes, same look. **~18 kB gzip for the default bundle (style.css + component JS)
-with 32 languages bundled**, versus roughly 75 kB for the original covering 7.
+with 33 languages bundled**, versus roughly 75 kB for the original covering 7.
 
 Try the **[Live Demo](https://dmhendricks.github.io/vue-diff-next/)** to see it in action.
 
 - **Drop-in replacement** — every `vue-diff` prop and default is preserved, verified against the original's own output
-- **32 languages**, all bundled; no per-language imports or registration
+- **33 languages**, all bundled; no per-language imports or registration
 - **Split and unified** modes, with word-level highlighting composed on top of syntax
   highlighting
 
@@ -153,13 +153,13 @@ visible as context.
 Pass any of these to `language`. Aliases in the right column resolve to the same grammar, so
 highlight.js names and file extensions both work:
 
-| Group             | Languages                                              | Also accepted                                                                                                 |
-| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| **Web**           | `html` `css` `scss` `php` `js` `ts` `json` `xml`       | `htm` `vue` · `sass` `less` · `phtml` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` · `jsdoc` |
-| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`        | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck`                 |
-| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md` `leanpub-md`      | `yml` · `conf` `cfg` · `markdown`                                                                             |
-| **Shell & ops**   | `bash` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `dockerfile` · `makefile` · `patch` · `url`                                              |
-| **Other**         | `regex` `todo` `plain`                                 | `plaintext` `text`                                                                                            |
+| Group             | Languages                                                     | Also accepted                                                                                                 |
+| ----------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Web**           | `html` `css` `scss` `php` `js` `ts` `json` `xml`              | `htm` `vue` · `sass` `less` · `phtml` · `javascript` `jsx` `mjs` `cjs` · `typescript` `tsx` · `svg` · `jsdoc` |
+| **Systems**       | `c` `rs` `go` `java` `py` `pl` `lua` `asm` `bf`               | `cpp` `c++` `h` `cs` · `rust` · `golang` · `python` `py3` · `perl` · `assembly` · `brainfuck`                 |
+| **Data & config** | `yaml` `toml` `ini` `csv` `sql` `md` `leanpub-md`             | `yml` · `conf` `cfg` · `markdown`                                                                             |
+| **Shell & ops**   | `bash` `pwsh` `docker` `make` `git` `diff` `http` `uri` `log` | `sh` `zsh` `shell` · `ps1` `powershell` · `dockerfile` · `makefile` · `patch` · `url`                         |
+| **Other**         | `regex` `todo` `plain`                                        | `plaintext` `text`                                                                                            |
 
 Matching is case-insensitive and surrounding whitespace is ignored.
 

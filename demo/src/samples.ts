@@ -325,6 +325,45 @@ foreach ($users as $user) {
 `,
     },
     {
+        key: 'pwsh',
+        title: 'PowerShell',
+        group: 'Languages',
+        language: 'pwsh',
+        prev: `# List users from a path
+function Get-User {
+  param([string]$Path)
+
+  if ($null -eq $Path) {
+    return
+  }
+
+  Get-ChildItem -Path $Path | ForEach-Object {
+    Write-Host "User $($_.Name)"
+  }
+}
+`,
+        current: `# List users from a path
+function Get-User {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)]
+    [string]$Path,
+    [int]$Limit = 10
+  )
+
+  if ($Path -notlike '*') {
+    throw "Path is required"
+  }
+
+  Get-ChildItem -Path $Path -File |
+    Select-Object -First $Limit |
+    ForEach-Object {
+      Write-Host "User $($_.Name): $($_.Length)"
+    }
+}
+`,
+    },
+    {
         key: 'python',
         title: 'Python',
         group: 'Languages',

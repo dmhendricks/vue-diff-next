@@ -10,7 +10,7 @@
     --vue-diff-syn-bool: #007a72;
     --vue-diff-syn-cmnt: #6d6363;
     --vue-diff-syn-func: #9a4d92;
-    --vue-diff-syn-class: #2e6ec4;
+    --vue-diff-syn-class: #9a6700;
     --vue-diff-syn-var: #2e6ec4;
     --vue-diff-syn-type: #5c54d4;
     --vue-diff-syn-oper: #5a6570;
@@ -23,4 +23,8 @@
 .vue-diff-theme-coral-light.vue-diff-lang-html,
 .vue-diff-theme-coral-light.vue-diff-lang-xml {
     --vue-diff-syn-var: #2f7a78;
+}
+
+.vue-diff-theme-coral-light.vue-diff-lang-pwsh {
+    --vue-diff-syn-type: #9a4d92;
 }

@@ -11,6 +11,7 @@
 import * as sh from '@speed-highlight/core/languages';
 import type { ShjLanguageData } from '@speed-highlight/core/tokenize';
 import { php } from './grammars/php';
+import { pwsh } from './grammars/pwsh';
 import { scss } from './grammars/scss';
 
 /** Upstream grammar types are narrower than `ShjLanguageData`; the runtime objects match. */
@@ -47,6 +48,7 @@ export const GRAMMAR_DATA = {
     md: data(sh.md),
     pl: data(sh.pl),
     php,
+    pwsh,
     plain: data(sh.plain),
     py: data(sh.py),
     regex: data(sh.regex),
@@ -105,6 +107,8 @@ const ALIASES: Readonly<Record<string, Grammar>> = {
     less: 'scss',
 
     phtml: 'php',
+    ps1: 'pwsh',
+    powershell: 'pwsh',
 
     // markup
     htm: 'html',

@@ -40,6 +40,12 @@ describe('resolveLanguage', () => {
         expect(resolveLanguage('phtml')).toBe('php');
     });
 
+    it('maps ps1 and powershell to pwsh', () => {
+        expect(resolveLanguage('pwsh')).toBe('pwsh');
+        expect(resolveLanguage('ps1')).toBe('pwsh');
+        expect(resolveLanguage('powershell')).toBe('pwsh');
+    });
+
     it('is case-insensitive and trims whitespace', () => {
         expect(resolveLanguage('JavaScript')).toBe('js');
         expect(resolveLanguage('  JSON  ')).toBe('json');
@@ -75,6 +81,9 @@ describe('isSupportedLanguage', () => {
         expect(isSupportedLanguage('scss')).toBe(true);
         expect(isSupportedLanguage('php')).toBe(true);
         expect(isSupportedLanguage('phtml')).toBe(true);
+        expect(isSupportedLanguage('pwsh')).toBe(true);
+        expect(isSupportedLanguage('ps1')).toBe(true);
+        expect(isSupportedLanguage('powershell')).toBe(true);
         expect(isSupportedLanguage('js_template_literals')).toBe(true);
     });
 

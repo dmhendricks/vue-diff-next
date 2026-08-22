@@ -30,3 +30,9 @@
 .vue-diff-theme-github-dark.vue-diff-lang-json {
     --vue-diff-syn-var: #ffa657;
 }
+
+.vue-diff-theme-github-dark.vue-diff-lang-pwsh {
+    --vue-diff-syn-type: #d2a8ff;
+    --vue-diff-syn-num: #98c379;
+    --vue-diff-syn-oper: #ddd;
+}

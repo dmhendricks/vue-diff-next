@@ -1,12 +1,17 @@
 # vue-diff-next
 
-## Unreleased
+## 1.3.0
 
 ### Added
 
 - Dedicated `scss` grammar (`//` comments, `$variables`, `#{$interpolation}`, and `!default` / `!global` / `!optional` on top of CSS). `sass` and `less` resolve to it.
-- Dedicated `php` grammar (from [speed-highlight/core#86](https://github.com/speed-highlight/core/pull/86): tags, `$variables`, attributes, HTML outside `<?php`). `phtml` resolves to it.
-- Dedicated `pwsh` grammar (Verb-Noun cmdlets, `$variables`, `-eq` / parameters). `ps1` and `powershell` resolve to it.
+- Dedicated `php` grammar (from [speed-highlight/core#86](https://github.com/speed-highlight/core/pull/86): tags, `$variables`, attributes, HTML outside `<?php`, and variables inside double-quoted strings). `phtml` resolves to it.
+- Dedicated `pwsh` grammar (Verb-Noun cmdlets, `$variables`, `-eq` / parameters). `ps1` and `powershell` resolve to it. Dark, coral, GitHub, Monokai, and Twilight palettes give cmdlets, numbers, and operators their own colors.
+
+### Changed
+
+- Coral themes color numbers, booleans, variables, and classes in every language. Those roles were gray, or tinted only for JSON and markup.
+- Upgrade `@speed-highlight/core` from 2.0 to 2.1. Markdown headings and lists, CSS at-rules and custom properties, HTML attributes written in another language, and JavaScript regex-versus-division follow the upstream grammar fixes.
 
 ## 1.2.0
 

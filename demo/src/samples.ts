@@ -272,7 +272,13 @@ $spacing: (y: 10px, x: 20px);
         title: 'PHP',
         group: 'Languages',
         language: 'php',
-        prev: `<h1><?= $title ?></h1>
+        prev: `<!DOCTYPE html>
+<html lang="en">
+<body>
+  <!-- Temporary mixed markup for the PHP grammar -->
+  <h1><?= $title ?></h1>
+  <p class="lede">Hello <?= $name ?>, welcome back.</p>
+  <a href="/users/<?= $id ?>">Profile</a>
 <?php
 // Find a user by id
 function findUser(int $id) {
@@ -296,8 +302,18 @@ class UserRepository
 foreach ([1, 2, 3] as $id) {
   echo "User {$id}: " . json_encode(findUser($id)) . "\\n";
 }
+?>
+  <footer><?= $year ?></footer>
+</body>
+</html>
 `,
-        current: `<h1><?= htmlspecialchars($title) ?></h1>
+        current: `<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<body class="page">
+  <!-- Temporary mixed markup for the PHP grammar -->
+  <h1 class="title"><?= htmlspecialchars($title) ?></h1>
+  <p class="lede">Hello <?= htmlspecialchars($name) ?>, welcome back.</p>
+  <a href="/users/<?= (int) $id ?>" class="profile">Profile</a>
 <?php
 declare(strict_types=1);
 
@@ -322,6 +338,10 @@ $users = array_map(fn(int $id) => findUser($id), [1, 2, 3]);
 foreach ($users as $user) {
   echo "User {$user?->id}: " . json_encode($user) . "\\n";
 }
+?>
+  <footer>&copy; <?= (int) $year ?></footer>
+</body>
+</html>
 `,
     },
     {

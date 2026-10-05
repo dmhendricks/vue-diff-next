@@ -7,9 +7,34 @@
  *
  * @see https://github.com/speed-highlight/core/pull/86
  */
-import type { ShjLanguageData } from '@speed-highlight/core/tokenize';
+import { html } from '@speed-highlight/core/languages';
+import type { ShjLanguageData, ShjRule } from '@speed-highlight/core/tokenize';
+
+type Rule = Extract<ShjRule, { match: unknown }>;
+
+/** `<?php … ?>` / `<?= … ?>` inside markup, or to the end of the line. */
+const phpBlock: Rule = { match: /<\?(?:php\b|=)?[^]*?(?:\?>|$)/g, sub: 'php' };
+
+/** Let PHP blocks into quoted attribute values (`href="/u/<?= $id ?>"`). */
+const withPhpInStrings = (rules: Rule[]): Rule[] =>
+    rules.map((rule) => {
+        if (!Array.isArray(rule.sub)) return rule;
+        const sub = rule.sub as Rule[];
+        if (rule.type === 'str') return { ...rule, sub: [...sub, phpBlock] };
+        return { ...rule, sub: withPhpInStrings(sub) };
+    });
+
+/** The html grammar, with PHP blocks first so they win ties at `<?`. */
+const markup: Rule[] = [phpBlock, ...withPhpInStrings(html as Rule[])];
 
 export const php: ShjLanguageData = [
+    // A line that starts with a tag (`<div`, `</ul>`, `<!DOCTYPE`, `<!--`) is
+    // markup. Diff rows are highlighted one line at a time, so line shape is
+    // the only signal; `$a < $b` and `"<?php"` mid-line stay PHP.
+    {
+        match: /^[ \t]*<[A-Za-z!/][^\n]*/gm,
+        sub: markup,
+    },
     // HTML only after `?>`, not from start-of-string. We tokenize one diff line
     // at a time, so a `^…<?` HTML region would swallow every line that does not
     // itself contain `<?php`.

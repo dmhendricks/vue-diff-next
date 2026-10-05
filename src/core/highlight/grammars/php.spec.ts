@@ -45,4 +45,20 @@ describe('php grammar', () => {
         expect(tokens.find((t) => t.value === '{$user?->id}')?.type).toBe('var');
         expect(tokens.find((t) => t.value.includes('User'))?.type).toBe('str');
     });
+
+    it('highlights a line starting with a tag as HTML, with PHP inside', () => {
+        const tokens = tokenizeSource('  <a href="/u/<?= $id ?>" class="x">Hi</a>', 'php');
+        expect(tokens.find((t) => t.value === 'a')?.type).toBe('var');
+        expect(tokens.find((t) => t.value === 'href')?.type).toBe('class');
+        expect(tokens.find((t) => t.value === '$id')?.type).toBe('var');
+        expect(tokenizeSource('<!DOCTYPE html>', 'php')).toEqual(
+            tokenizeSource('<!DOCTYPE html>', 'html'),
+        );
+    });
+
+    it('keeps PHP lines with < or "<?php" mid-line as PHP', () => {
+        const tokens = tokenizeSource('if ($a < $b) echo "<?php";\n', 'php');
+        expect(tokens.find((t) => t.value === 'if')?.type).toBe('kwd');
+        expect(tokens.find((t) => t.value.includes('<?php'))?.type).toBe('str');
+    });
 });

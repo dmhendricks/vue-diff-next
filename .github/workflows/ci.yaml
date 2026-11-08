@@ -73,7 +73,7 @@ jobs:
   # A matrix job kept separate from the gate job: it re-runs only the parts whose
   # result can vary by Node version, and does not duplicate lint/format/packaging.
   #
-  # Node 20 is absent deliberately: jsdom 30 requires
+  # Node 20 is absent deliberately: jsdom 31 requires
   # ^22.22.2 || ^24.15.0 || >=26.0.0, so the test environment cannot run there
   # even though the library itself can. The `floor` job below covers it.
   test-matrix:
